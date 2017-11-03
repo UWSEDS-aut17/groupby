@@ -17,6 +17,7 @@ SnapChat.com
 
 
 Data | Features |
+| ------------- | ------------- |
 
 | Facebook  | Times logged in, Total time spent, Pages Liked, Number of Friends |
 
