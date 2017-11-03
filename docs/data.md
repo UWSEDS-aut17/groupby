@@ -15,3 +15,13 @@ SnapChat.com
 
 #Evaluation
 
+
+Data | Features |
+| ------------- | ------------- |
+| Facebook  | Times logged in, Total time spent, Pages Liked, Number of Friends |
+| ------------- | ------------- |
+| Instagram  | Times Logged In, Total time spent, Pages Liked, Number of photos uploaded |
+| ------------- | ------------- |
+| SnapChat | Times Logged in, Total time spent, Pages Liked, Number of photos uploaded |
+| ------------- | ------------- |
+| LinkedIn | Times Logged In, Total time spent, Pages Liked, Number of Connections.|
