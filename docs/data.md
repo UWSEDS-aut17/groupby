@@ -29,4 +29,4 @@ SnapChat.com
 As a part of priliminary evaluation, we would be performing some descriptive analysis on the merged data sets.
 This would include visualizations indicating various usage metrics for the user such as people the socialize with the most, topics they related to the most etc.
 
-This would also allow them to understand how their usage various depending on the platform they use.
+This would also allow them to understand how their usage various depending on the platform they use and the level of engagement in each platform.
