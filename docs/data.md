@@ -5,6 +5,7 @@ We would need anonymyzed data to analyse usage statistics on different social me
 Facebook: You can download a dump of your facebook usage data from Facebook website. 
 
 We are researching ways to download self data on Instagram, LinkedIn and Snapchat.
+We would also need a common attribute set to join the different datasets,since usernames don't necessarily have to be consistent across social media platforms.
 
 #Sources
 
@@ -15,6 +16,10 @@ SnapChat.com
 
 #Evaluation
 
+As a part of priliminary evaluation, we would be performing some descriptive analysis on the merged data sets.
+This would include visualizations indicating various usage metrics for the user such as people the socialize with the most, topics they related to the most etc.
 
-Data | Features |
+This would also allow them to understand how their usage various depending on the platform they use.
+
+
 
