@@ -1,6 +1,7 @@
 #Requirements
 
 We would need anonymyzed data to analyse usage statistics on different social media. We are planning to use our own social media data to address the project questions.
+However, since the app is meant for personal use, we need to anonymize ever data set flowing into the system.
 
 Facebook: You can download a dump of your facebook usage data from Facebook website.
 
