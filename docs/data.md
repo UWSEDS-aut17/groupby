@@ -1,4 +1,4 @@
-#Requirements
+# Requirements
 
 We would need anonymyzed data to analyse usage statistics on different social media. We are planning to use our own social media data to address the project questions.
 However, since the app is meant for personal use, we need to anonymize ever data set flowing into the system.
@@ -8,7 +8,7 @@ Facebook: You can download a dump of your facebook usage data from Facebook webs
 We are researching ways to download self data on Instagram, LinkedIn and Snapchat.
 We would also need a common attribute set to join the different datasets, since usernames don't necessarily have to be consistent across social media platforms.
 
-#Sources
+# Sources
 
 List the data sets that you are considering using, their content, and their availability.
 
@@ -20,11 +20,11 @@ It remains the intention to link the different sources, to understand one's soci
 
 We are researching data retrieval for the following products: Instagram, Linkedin, Twitter, Snapchat. If possible to download, the data will be typically available on the product's website under the user profile. Those are:
  
-Instagram.com
-LinkedIn.com
-SnapChat.com
+- Instagram.com
+- LinkedIn.com
+- SnapChat.com
 
-#Evaluation
+# Evaluation
 
 As a part of priliminary evaluation, we would be performing some descriptive analysis on the merged data sets.
 This would include visualizations indicating various usage metrics for the user such as people the socialize with the most, topics they related to the most etc.
