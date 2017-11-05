@@ -2,11 +2,11 @@
 
 ## Requirements
 
-We need data sources that are:
+We need data sources that:
 
-- **structured;** 
+- are **structured;** 
 - identify different **activities** across multiple social media platforms and the 'real world'; and
-- **timestamped.**
+- are **timestamped.**
 
 ## Sources
 
@@ -47,8 +47,6 @@ Facebook data is structured as HTML, which we'll parse with `beautifulsoup` if w
 - SnapChat.com
 
 ## Evaluation
-
-Evaluation. The core part of this section is a table that analyzes the choice of data. The columns of the table are data sets described in the "Data" section. The rows are requirements of the data based on the questions you want to answer. You should complete the cells in the table.
 
 | Dataset | Structure | Activities | Timestamp |
 | --- | --- | --- | --- |
