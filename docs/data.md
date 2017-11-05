@@ -14,7 +14,7 @@ Each source below is readily available to individual users, perhaps with a day o
 
 ### Google Calendar
 
-For each event, exported Google Calendar data includes the following (if population for a given event):
+For each event, exported Google Calendar data includes the following (if populated by the user for a given event):
 
 - Date of creation
 - Duration
