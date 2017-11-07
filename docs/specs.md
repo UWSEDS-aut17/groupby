@@ -25,8 +25,6 @@ Enable social media users to gain insights about their social media use
 
 ## Use cases
 
-_Each use case should provide details about the interactions between the user and the system you are building. The responses provided by the user must be consistent with the user profile. For example, you should not expect a user who is a non-programmer to do python programming. A use case should specify a series of interactions between the user and the system to accomplish one of the elements of the problem statement. You should have at least 3 use cases._
-
 ### Summarize Facebook usage
 
 **Prerequisite:** User has downloaded their Facebook data and our script to the same directory, and has opened a Bash terminal there
