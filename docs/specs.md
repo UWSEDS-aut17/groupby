@@ -6,7 +6,7 @@ Enable social media users to gain insights about their social media use
 
 ## User profile
 
-- **Domain knowledge:** Our user is someone who uses social media (Twitter and/or Facebook) and is therefore familiar with terms that are specific to each platform ("Likes", "Retweets", etc.).
+- **Domain knowledge:** Our user is someone who uses social media and is therefore familiar with terms that are specific to each platform ("Likes", "Retweets", etc.).
 - **Tool access & knowledge:** Our user ...
     - ... uses a digital calendar that can export ICS files
     - ... is comfortable navigating the interfaces of their Twitter, Facebook, LinkedIn, and calendar to export personal data
@@ -15,7 +15,7 @@ Enable social media users to gain insights about their social media use
 
 ## Elements of the problem statement
 
-- **Summarize and/or aggregate individual data sources**
+- **Summarize and aggregate individual data sources**
     - Understand formats and schemas of data exported from Facebook, Twitter, LinkedIn, Google Calendar
     - Identify meaningful summaries (e.g. total number of posts, wordcloud of hashtags, etc.) and aggregations (e.g. total Tweets per week) for each data source
 - **Synthesize across data sources to answer questions**
@@ -51,7 +51,7 @@ Enable social media users to gain insights about their social media use
             - Corrects for overlap between all-day events and scheduled events
         - Outputs summary to file
 
-### Identify daily temporal patterns in social media use
+### Temporal trends in social media activity
 
 **Prerequisite:** User has downloaded their Facebook and Twitter along with our script to the same directory, and has opened a Bash terminal there
 
