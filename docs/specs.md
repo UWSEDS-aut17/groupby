@@ -33,17 +33,35 @@ _Each use case should provide details about the interactions between the user an
 
 - **User:** Launches program, providing filename argument
 - **Program:**
+    - (if invalid arguments) Returns argument options
     - (if invalid file) Returns input requirements
-    - (if valid file)
+    - (if valid file argument)
         - Parses HTML to extract items of interest
-        - Reports items in summary form
+        - Outputs summary to file
 
 ### Summarize Google Calendar data
 
-(ICS)
+**Prerequisite:** User has downloaded their Google Calendar data and our script to the same directory, and has opened a Bash terminal there
 
-Without a lot of analysis, we can't disaggregate different types of activities in calendar data, but we can calculate the overall number of scheduled hours in a day (with special handling for overlapping and/or all-day events)
+- **User:** Launches program, providing filename argument
+- **Program:**
+    - (if invalid arguments) Returns argument options
+    - (if invalid file) Returns input requirements
+    - (if valid file argument)
+        - Parses ICS file to extract items of interest
+        - Calculates duration of events
+            - Corrects for overlap between all-day events and scheduled events
+        - Outputs summary to file
 
 ### Identify daily temporal patterns in social media use
 
+**Prerequisite:** User has downloaded their Facebook and Twitter along with our script to the same directory, and has opened a Bash terminal there
 
+- **User:** Launches program, providing filename arguments
+- **Program:**
+    - (if invalid arguments) Returns argument options
+    - (if invalid files) Returns input requirements
+    - (if valid file arguments)
+        - Parses JSON and HTML files to extract datetimes for events of interest
+        - Aggregates activity by time of day
+        - Outputs data visualization
