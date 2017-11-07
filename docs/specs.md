@@ -8,8 +8,8 @@ Enable social media users to gain insights about their social media use
 
 - **Domain knowledge:** Our user is someone who uses social media (Twitter and/or Facebook) and is therefore familiar with terms that are specific to each platform ("Likes", "Retweets", etc.).
 - **Tool access & knowledge:** Our user ...
-    - ... is comfortable navigating the user interfaces of Twitter and Facebook to export their own data
-    - ... has a digital calendar that can export to ICS files, and is comfortable doing so
+    - ... uses a digital calendar that can export ICS files
+    - ... is comfortable navigating the interfaces of their Twitter, Facebook, LinkedIn, and calendar to export personal data
     - ... is comfortable downloading a script from GitHub to their own computer
     - ... is comfortable opening a shell and typing a few commands
 
@@ -17,7 +17,7 @@ Enable social media users to gain insights about their social media use
 
 - **Summarize and/or aggregate individual data sources**
     - Understand formats and schemas of data exported from Facebook, Twitter, LinkedIn, Google Calendar
-    - Identify meaningful summaries (e.g. total number of posts) and aggregations (e.g. total Tweets per week) for each data source
+    - Identify meaningful summaries (e.g. total number of posts, wordcloud of hashtags, etc.) and aggregations (e.g. total Tweets per week) for each data source
 - **Synthesize across data sources to answer questions**
     - Do the user's levels of activity across different social media platforms rise and fall together, or do they cycle between one platform or another?
     - What times of day do they tend to be most active on social media?
@@ -29,9 +29,14 @@ _Each use case should provide details about the interactions between the user an
 
 ### Summarize Facebook usage
 
-**Prerequisite:** User has downloaded data and script to the same directory, and opened a Bash terminal there
+**Prerequisite:** User has downloaded their Facebook data and our script to the same directory, and has opened a Bash terminal there
 
-Overall number of statuses, shared statuses, links, etc. (HTML)
+- **User:** Launches program, providing filename argument
+- **Program:**
+    - (if invalid file) Returns input requirements
+    - (if valid file)
+        - Parses HTML to extract items of interest
+        - Reports items in summary form
 
 ### Summarize Google Calendar data
 
