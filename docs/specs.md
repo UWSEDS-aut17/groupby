@@ -77,7 +77,7 @@ _**Prerequisite:** User has downloaded their Google Calendar data and our script
 
 ...
 
-### Compare temportal trends across different social media platforms
+### Compare temporal trends across different social media platforms
 
 _**Prerequisite:** User has downloaded their Facebook and Twitter along with our script to the same directory, and has opened a Bash terminal there_
 
