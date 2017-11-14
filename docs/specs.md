@@ -1,8 +1,12 @@
 # Functional specification
 
+<br>
+
 ## Problem statement
 
 Enable social media users to gain insights about their social media use
+
+<br>
 
 ## User profile
 
@@ -19,6 +23,8 @@ Our user ...
 - ... is comfortable downloading a script from GitHub to their own computer
 - ... is comfortable opening a shell and typing a few commands
 
+<br>
+
 ## Elements of the problem statement
 
 - **Summarize and aggregate individual data sources**
@@ -29,11 +35,11 @@ Our user ...
     - What times of day do they tend to be most active on social media?
     - How does their social media activity compare with their other activities, for example, how often does social media activity overlap with scheduled events?
 
+<br>
+
 ## Use cases
 
-### Summarize activity for individual platforms
-
-#### Summarize Facebook data
+### Summarize Facebook data
 
 _**Prerequisite:** User has downloaded their Facebook data and our script to the same directory, and has opened a Bash terminal there_
 
@@ -45,11 +51,11 @@ _**Prerequisite:** User has downloaded their Facebook data and our script to the
         - Parses HTML to extract items of interest
         - Outputs summary to file
 
-#### Summarize LinkedIn data
+### Summarize LinkedIn data
 
-#### Summarize Twitter data
+### Summarize Twitter data
 
-#### Summarize Google Calendar data
+### Summarize Google Calendar data
 
 _**Prerequisite:** User has downloaded their Google Calendar data and our script to the same directory, and has opened a Bash terminal there_
 
@@ -62,10 +68,10 @@ _**Prerequisite:** User has downloaded their Google Calendar data and our script
         - Calculates duration of events
             - Corrects for overlap between all-day events and scheduled events
         - Outputs summary to file
+        
+### Identify peak hours for social media activity in aggregate
 
-### Analyze activity across platforms
-
-#### Temporal trends in social media activity
+### Compare temportal trends across different social media platforms
 
 _**Prerequisite:** User has downloaded their Facebook and Twitter along with our script to the same directory, and has opened a Bash terminal there_
 
@@ -77,3 +83,5 @@ _**Prerequisite:** User has downloaded their Facebook and Twitter along with our
         - Parses JSON and HTML files to extract datetimes for events of interest
         - Aggregates activity by time of day
         - Outputs data visualization
+
+### Compare social media activity with other activities
