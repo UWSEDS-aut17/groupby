@@ -6,12 +6,18 @@ Enable social media users to gain insights about their social media use
 
 ## User profile
 
-- **Domain knowledge:** Our user is someone who uses social media and is therefore familiar with terms that are specific to each platform ("Likes", "Retweets", etc.).
-- **Tool access & knowledge:** Our user ...
-    - ... uses a digital calendar that can export ICS files
-    - ... is comfortable navigating the interfaces of their Twitter, Facebook, LinkedIn, and calendar to export personal data
-    - ... is comfortable downloading a script from GitHub to their own computer
-    - ... is comfortable opening a shell and typing a few commands
+### Domain knowledge 
+
+Our user is someone who uses social media and is therefore familiar with terms that are specific to each platform ("Likes", "Retweets", etc.).
+
+### Tool access & knowledge
+
+Our user ...
+ 
+- ... uses a digital calendar that can export ICS files
+- ... is comfortable navigating the interfaces of their Twitter, Facebook, LinkedIn, and calendar to export personal data
+- ... is comfortable downloading a script from GitHub to their own computer
+- ... is comfortable opening a shell and typing a few commands
 
 ## Elements of the problem statement
 
@@ -25,9 +31,11 @@ Enable social media users to gain insights about their social media use
 
 ## Use cases
 
-### Summarize Facebook usage
+### Summarize activity for individual platforms
 
-**Prerequisite:** User has downloaded their Facebook data and our script to the same directory, and has opened a Bash terminal there
+#### Summarize Facebook data
+
+_**Prerequisite:** User has downloaded their Facebook data and our script to the same directory, and has opened a Bash terminal there_
 
 - **User:** Launches program, providing filename argument
 - **Program:**
@@ -37,9 +45,13 @@ Enable social media users to gain insights about their social media use
         - Parses HTML to extract items of interest
         - Outputs summary to file
 
-### Summarize Google Calendar data
+#### Summarize LinkedIn data
 
-**Prerequisite:** User has downloaded their Google Calendar data and our script to the same directory, and has opened a Bash terminal there
+#### Summarize Twitter data
+
+#### Summarize Google Calendar data
+
+_**Prerequisite:** User has downloaded their Google Calendar data and our script to the same directory, and has opened a Bash terminal there_
 
 - **User:** Launches program, providing filename argument
 - **Program:**
@@ -51,9 +63,11 @@ Enable social media users to gain insights about their social media use
             - Corrects for overlap between all-day events and scheduled events
         - Outputs summary to file
 
-### Temporal trends in social media activity
+### Analyze activity across platforms
 
-**Prerequisite:** User has downloaded their Facebook and Twitter along with our script to the same directory, and has opened a Bash terminal there
+#### Temporal trends in social media activity
+
+_**Prerequisite:** User has downloaded their Facebook and Twitter along with our script to the same directory, and has opened a Bash terminal there_
 
 - **User:** Launches program, providing filename arguments
 - **Program:**
