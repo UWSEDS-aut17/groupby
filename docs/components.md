@@ -7,11 +7,13 @@ _list the components in the design, justifying their inclusion by how they are n
 - read_X_data()
 - clean_X_data()
 - summarize_X_data()
-- compare()
+- aggregate_X_data()
+- peak_hours()
+  - in aggregate
+  - broken down by platform
+- time_use()
 
 ## Component specifications
-
-_components are Python classes or functions_
 
 ### read_Facebook_data()
 
@@ -52,3 +54,22 @@ _components are Python classes or functions_
 ```
 # psuedocode here
 ```
+
+### clean_data()
+
+x4
+
+### summarize_data()
+
+x4
+
+### aggregate_data()
+
+x4
+
+### peak_hours()
+
+- ... in aggregate
+- ... broken down by platform
+
+### time_use()
