@@ -31,11 +31,11 @@ So that users can analyze their social media data as detailed in our use cases, 
 - **Description:** For LinkedIn, types of connections and invites sent/received are being analyzed. This will show what period was one most active in and their interaction with LinkedIn in terms of amount of time spent in networking per week. 
 - **Inputs:** Inputs consist of 2 csv files:  
 1. Connections.csv - Connections.csv contain data about my LinkedIn connections. It contains the following features/columns:
-  1. First Name - Name
-  2. Last Name - Name
-  3. Position - Connection title/position
-  4. Company - Name of the company my connection works in
-  5. Connected_On - Date
+⋅⋅1. First Name - Name
+⋅⋅2. Last Name - Name
+⋅⋅3. Position - Connection title/position
+⋅⋅4. Company - Name of the company my connection works in
+⋅⋅5. Connected_On - Date
 
 2. Invitations.csv - Invitations.csv contain data about invitations sent and received on LinkedIn. They are being grouped by week which results in data about number of invitations sent/received per week. It contains the following features/columns.
   1. From - Invitation Sender's Name
