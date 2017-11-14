@@ -1,17 +1,17 @@
-# Component specification
+# Component design
+
+<br>
 
 ## Component list
 
-_list the components in the design, justifying their inclusion by how they are needed for the use cases in your functional design document_
+So that users can analyze their social media data as detailed in our use cases, we need the following components for each of our four datasets (Twitter, Facebook, LinkedIn, Google Calendar):
 
-- read_X_data()
-- clean_X_data()
-- summarize_X_data()
-- aggregate_X_data()
-- peak_hours()
-  - in aggregate
-  - broken down by platform
-- time_use()
+- **read_X_data()** - read each dataset into native data structures
+- **summarize_X_data()** - calculate meaningful summary statistics and visualizations for X dataset
+- **aggregate_X_data()** - aggregate selected activities for each dataset (# per day or # per week) 
+- **peak_hours()** and **time_use()** - compare and analyze the aggregated versions of our datasets
+
+<br>
 
 ## Component specifications
 
@@ -55,15 +55,11 @@ _list the components in the design, justifying their inclusion by how they are n
 # psuedocode here
 ```
 
-### clean_data()
+### summarize_X_data()
 
 x4
 
-### summarize_data()
-
-x4
-
-### aggregate_data()
+### aggregate_X_data()
 
 x4
 
