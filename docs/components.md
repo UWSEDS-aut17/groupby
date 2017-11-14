@@ -57,11 +57,11 @@ So that users can analyze their social media data as detailed in our use cases, 
 
 ### summarize_X_data()
 
-x4
+...
 
 ### aggregate_X_data()
 
-x4
+...
 
 ### peak_hours()
 
@@ -69,3 +69,5 @@ x4
 - ... broken down by platform
 
 ### time_use()
+
+...
