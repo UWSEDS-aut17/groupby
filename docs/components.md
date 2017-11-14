@@ -37,7 +37,7 @@ So that users can analyze their social media data as detailed in our use cases, 
   - Company - Name of the company my connection works in
   - Connected_On - Date
 
-2. Invitations.csv - Invitations.csv contain data about invitations sent and received on LinkedIn. They are being grouped by week which results in data about number of invitations sent/received per week. It contains the following features/columns.
+2. Invitations.csv - Invitations.csv contain data about invitations sent and received on LinkedIn. They are being grouped by week which results in data about number of invitations sent/received per week. It contains the following features/columns:
   - From - Invitation Sender's Name
   - To - Invitation Receiver's Name
   - Sent At - Date at which Invitation was sent/received.
