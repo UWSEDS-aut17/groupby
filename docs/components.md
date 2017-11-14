@@ -10,6 +10,7 @@ So that users can analyze their social media data as detailed in our use cases, 
 - **summarize_X_data()** - calculate meaningful summary statistics and visualizations for X dataset
 - **aggregate_X_data()** - aggregate selected activities for each dataset (# per day or # per week) 
 - **peak_hours()** and **time_use()** - compare and analyze the aggregated versions of our datasets
+- **choose_report()** - handles command line-based interactions with user (displaying options, help messages, error messages, calling other functions to produce the desired report)
 
 <br>
 
@@ -71,3 +72,7 @@ So that users can analyze their social media data as detailed in our use cases, 
 ### time_use()
 
 ...
+
+### choose_report()
+
+... 
