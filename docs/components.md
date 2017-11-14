@@ -29,26 +29,20 @@ So that users can analyze their social media data as detailed in our use cases, 
 ### read_LinkedIn_data()
 
 - **Description:** For LinkedIn, types of connections and invites sent/received are being analyzed. This will show what period was one most active in and their interaction with LinkedIn in terms of amount of time spent in networking per week. 
-- **Inputs:** Inputs consist of 2 csv files:  
-1. Connections.csv - Connections.csv contain data about my LinkedIn connections. It contains the following features/columns:
-  - First Name - Name
-  - Last Name - Name
-  - Position - Connection title/position
-  - Company - Name of the company my connection works in
-  - Connected_On - Date
-
-2. Invitations.csv - Invitations.csv contain data about invitations sent and received on LinkedIn. They are being grouped by week which results in data about number of invitations sent/received per week. It contains the following features/columns:
-  - From - Invitation Sender's Name
-  - To - Invitation Receiver's Name
-  - Sent At - Date at which Invitation was sent/received.
-  - Message - Message string
-  - Direction - INCOMING / OUTGOING.
-  
+- **Inputs:** 
+  - ***Connections.csv*** - contains data about LinkedIn connections, with the following features/columns:
+    - First Name - Name
+    - Last Name - Name
+    - Position - Connection title/position
+    - Company - Name of the company my connection works in
+    - Connected_On - Date
+  - ***Invitations.csv*** - contains data about invitations sent and received on LinkedIn, grouped by week with the following features/columns:
+    - From - Invitation Sender's Name
+    - To - Invitation Receiver's Name
+    - Sent At - Date at which Invitation was sent/received.
+    - Message - Message string
+    - Direction - INCOMING / OUTGOING.
 - **Outputs:** The ouputs are dataframes obtained by reading the input csv files, with the same features/columns.  
-
-```
-# psuedocode here
-```
 
 ### read_Twitter_data()
 
