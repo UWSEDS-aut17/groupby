@@ -53,7 +53,11 @@ _**Prerequisite:** User has downloaded their Facebook data and our script to the
 
 ### Summarize LinkedIn data
 
+...
+
 ### Summarize Twitter data
+
+...
 
 ### Summarize Google Calendar data
 
@@ -71,6 +75,8 @@ _**Prerequisite:** User has downloaded their Google Calendar data and our script
         
 ### Identify peak hours for social media activity in aggregate
 
+...
+
 ### Compare temportal trends across different social media platforms
 
 _**Prerequisite:** User has downloaded their Facebook and Twitter along with our script to the same directory, and has opened a Bash terminal there_
@@ -85,3 +91,5 @@ _**Prerequisite:** User has downloaded their Facebook and Twitter along with our
         - Outputs data visualization
 
 ### Compare social media activity with other activities
+
+...
