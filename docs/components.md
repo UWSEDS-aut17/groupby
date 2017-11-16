@@ -28,9 +28,7 @@ So that users can analyze their social media data as detailed in our use cases, 
   -***Ads.html*** - information about the ads displayed to the user. Aim to analyze or display the list of ads that have been displayed to the user, and which organizations/ pages have contact information about the user.
 
 -**Outputs:** - The outputs are the necessary dataframes needed for future / next functions, stripped of the html content. Summarize_facebook_data will perform further analysis.
-```
-# psuedocode here
-```
+
 
 ### read_LinkedIn_data()
 
