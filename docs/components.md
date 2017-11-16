@@ -68,9 +68,22 @@ So that users can analyze their social media data as detailed in our use cases, 
 
 ### read_GCal_data()
 
-- **Description:** _high level description of the roles of the component_
-- **Inputs:** _be specific about the data types, e..g. for DataFrames, specify the column names and the types of the column values_
-- **Outputs:** _same consideration as with inputs_
+- **Description:** The objective is to analyze calendar events, duration and frequency over a 1 year period.
+- **Inputs:** The ics file format contains the following attributes:
+   - ***calendar.ics*** - This is the raw calendar format file which contains all the events in the user's calendar.
+        - BEGIN: Beginning of an event or alarm. Values are VEVENT/ALARM
+        - DTSTAMP:20170323T082322Z
+        - LOCATION:Location of Event.
+        - DESCRIPTION: Description of the event
+        - ORGANIZER: Event organizer
+        - SEQUENCE: Whether this is a repeated event. Values are 1/0
+        - SUMMARY: Event title/summary
+        - DTSTART: Timestamp for event start
+        - DTEND: Timestamp for event end
+        - CREATED: Event created on date
+        - RRULE: Rule defined if the event is recurring
+
+- **Outputs:** Same as above, the idea is to transform the ics to a pandas DataFrame format for easier analysis.
 
 ```
 # psuedocode here
