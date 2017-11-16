@@ -50,9 +50,9 @@ So that users can analyze their social media data as detailed in our use cases, 
 - **Inputs:** 
   - ***tweets.csv*** - contains data about tweets posted by the user, with the following features/columns:
     - tweet_id - Unique numeric identifier column for tweets
-    - in_reply_to_status_id - Numeric Identifier if user is responding to an existing tweet
-    - in_reply_to_user_id - Numeric Source tweet user id
-    - timestamp - Tweet Timing
+    - in_reply_to_status_id - Numeric identifier if user is responding to an existing tweet
+    - in_reply_to_user_id - Numeric source tweet user id
+    - timestamp - Tweet timing
     - text - The actual tweet
     - retweeted_status_id - Unique numeric id if retweeted, null otherwise
     - retweeted_status_user_id - Numeric ID of user who retweets
