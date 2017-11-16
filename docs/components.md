@@ -62,15 +62,20 @@ So that users can analyze their social media data as detailed in our use cases, 
     We will be loading the the above csv file, on to a pandas dataframe for subsequent analysis.
 - **Outputs:** 
   - Viz 1 : Number of tweets by Months
+  
     x-axis : Month (Jan - Dec)
     y-axis : Aggregated number of tweets (Sum)
 
   - Viz 2 : Top 5 hashtags
+  
     x-axis : Hashtags used
+    
     y-axis : Number of times the hashtag was used
 
   - Viz 3 : Top 5 mentions
+  
     x-axis : User mentioned in tweet
+    
     y-axis : Number of times the user was mentioned in the tweet.
 ```
 # psuedocode here
