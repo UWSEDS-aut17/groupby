@@ -21,9 +21,9 @@ So that users can analyze their social media data as detailed in our use cases, 
 - **Description:** Facebook gives us multiple html files, that are parsed into python using beautifulsoup. From here we aim to give the user a snapshot of their facebook usage.
 
 - **Inputs:**
-  -***Friends.html*** - contains data about your list of friends, when you became friends with them, and the people you decided to terminate your friendship with. These are hidden in the <div class = contents>, and will be unwrapped into a pandas dataframe for information to display the social activeness since the inception of the user account.
+  -***Friends.html*** - contains data about your list of friends, when you became friends with them, and the people you decided to terminate your friendship with. These are hidden in the '<div class = contents>', and will be unwrapped into a pandas dataframe for information to display the social activeness since the inception of the user account.
 
-  -***Timeline.html*** - contains data about the activity on the user's timeline / profile. Here the necessary information will be extracted from <div class = 'meta'> and <div class = 'comment'>, fed into a pandas dataframe to show the activity of the user over time, and whether there are any specific months which see higher usage.
+  -***Timeline.html*** - contains data about the activity on the user's timeline / profile. Here the necessary information will be extracted from '<div class = 'meta'>' and '<div class = 'comment'>', fed into a pandas dataframe to show the activity of the user over time, and whether there are any specific months which see higher usage.
 
   -***Ads.html*** - information about the ads displayed to the user. Aim to analyze or display the list of ads that have been displayed to the user, and which organizations/ pages have contact information about the user.
 
