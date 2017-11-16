@@ -64,6 +64,7 @@ So that users can analyze their social media data as detailed in our use cases, 
   - Viz 1 : Number of tweets by Months
   
     x-axis : Month (Jan - Dec)
+    
     y-axis : Aggregated number of tweets (Sum)
 
   - Viz 2 : Top 5 hashtags
