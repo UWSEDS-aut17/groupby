@@ -46,10 +46,32 @@ So that users can analyze their social media data as detailed in our use cases, 
 
 ### read_Twitter_data()
 
-- **Description:** _high level description of the roles of the component_ 
-- **Inputs:** _be specific about the data types, e..g. for DataFrames, specify the column names and the types of the column values_
-- **Outputs:** _same consideration as with inputs_
+- **Description:** We are analyzing trends in twitter usage to identify periods where the user is most active on the platform. We will also identify the top hashtags and mentions by the user during the selected date range. 
+- **Inputs:** 
+  - ***tweets.csv*** - contains data about tweets posted by the user, with the following features/columns:
+    - tweet_id - Unique numeric identifier column for tweets
+    - in_reply_to_status_id - Numeric Identifier if user is responding to an existing tweet
+    - in_reply_to_user_id - Numeric Source tweet user id
+    - timestamp - Tweet Timing
+    - text - The actual tweet
+    - retweeted_status_id - Unique numeric id if retweeted, null otherwise
+    - retweeted_status_user_id - Numeric ID of user who retweets
+    - retweeted_status_timestamp - Time of retweet
+    - expanded_urls - Contains any URLs posted with the tweet
 
+    We will be loading the the above csv file, on to a pandas dataframe for subsequent analysis.
+- **Outputs:** 
+  - Viz 1 : Number of tweets by Months
+    x-axis : Month (Jan - Dec)
+    y-axis : Aggregated number of tweets (Sum)
+
+  - Viz 2 : Top 5 hashtags
+    x-axis : Hashtags used
+    y-axis : Number of times the hashtag was used
+
+  - Viz 3 : Top 5 mentions
+    x-axis : User mentioned in tweet
+    y-axis : Number of times the user was mentioned in the tweet.
 ```
 # psuedocode here
 ```
