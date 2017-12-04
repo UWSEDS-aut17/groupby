@@ -12,3 +12,12 @@ Because we believe that social media users--not only marketers--deserve to under
 - Do their levels of activity across different social media platforms rise and fall together, or do they cycle between one platform or another? 
 - What times of day do they tend to be most active on social media?
 - How does their social media activity compare with their other activities, for example, how often does social media activity overlap with scheduled events?
+
+
+### Requirements
+
+- pandas
+- numpy
+- seaborn
+- matplotlib.pyplot
+- datetime
