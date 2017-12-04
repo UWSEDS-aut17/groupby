@@ -37,12 +37,12 @@ Calendar data can be analyzed ***in addition*** to one or more social media data
 
 ### Use the tool (command line)
 
-Options:
-
-- \-T, --twitter
-- \-F, --facebook 
-- \-L, --linkedin
-- \-C, --calendar
+| Option | Argument |
+| --- | ----- |
+| -T | Path to Twitter data directory |
+| -F | Path to Facebook data directory |
+| -L | Path to LinkedIn data directory |
+| -C | Path to Calendar data file |
 
 The simplest use case is to analyze a **single social media dataset:** `python groupby.py -T path/Twitter_directory/`
 
