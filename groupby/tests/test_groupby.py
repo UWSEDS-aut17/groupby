@@ -1,6 +1,8 @@
-import subprocess
 import unittest
-from utils import get_data, remove_data
+from groupby import
+
+
+import subprocess
 
 
 # Path to testing data
@@ -10,9 +12,9 @@ data_path = op.join(sb.__path__[0], 'data')
 
 
 class FileTest(unittest.TestCase):
-    
-    
-    def test_(self):
+        
+    def test_fcn_in_groupby(self):
+        ...
 
     
 if __name__ == '__main__':

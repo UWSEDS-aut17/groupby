@@ -1,6 +1,11 @@
 """
-Description of script
+This script 
 """
+
+import facebook
+import linkedin
+import twitter
+import gcal
 
 
 # check valid args
@@ -43,3 +48,5 @@ plot_tweetDate(month_df, labels ,'Month' , 'Number of Tweets' , 'Top Per Month',
 plt.show()
 
 # FACEBOOK
+
+# CALENDAR
