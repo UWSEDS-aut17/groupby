@@ -1,7 +1,7 @@
 
 # ANALYSIS OF SOCIAL MEDIA DATA
 
-## Team GROUP BY
+## Project Description
 
 ![](doc/project-vision.png)
 
@@ -14,7 +14,27 @@ Because we believe that social media users--not only marketers--deserve to under
 - How does their social media activity compare with their other activities, for example, how often does social media activity overlap with scheduled events?
 
 
-### Requirements
+## Getting Started
+
+### Obtain your data
+
+#### Export your social media data
+
+To use this tool, you must download and unzip ***at least one*** of these datasets from a personal social media account (note that there can be a delay of a day or so, depending on the platform):
+
+- Facebook - [Official instructions](https://www.facebook.com/help/131112897028467)
+- Twitter - [Official instructions](https://support.twitter.com/articles/20170160#)
+- LinkedIn - [Official instructions](https://www.linkedin.com/help/linkedin/answer/50191/accessing-your-account-data?lang=en)
+
+#### Download your calendar data
+
+Calendar data can be analyzed ***in addition*** to one or more social media datasets:
+
+- Google Calendar - [Official instructions](https://support.google.com/calendar/answer/37111?hl=en)
+
+### Install this tool
+
+#### Requirements
 
 - ***Data management:***
   - pandas
@@ -27,4 +47,8 @@ Because we believe that social media users--not only marketers--deserve to under
   - numpy
   - seaborn
   - matplotlib.pyplot
+
+#### Instructions
+
+- Clone the github repo:
 
