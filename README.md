@@ -16,9 +16,15 @@ Because we believe that social media users--not only marketers--deserve to under
 
 ### Requirements
 
-- pandas
-- numpy
-- seaborn
-- matplotlib.pyplot
-- datetime
-- collections
+- ***Data management:***
+  - pandas
+  - collections
+- ***Handling dates:***
+  - datetime
+  - icalendar
+  - pytz
+- ***Data visualization:***
+  - numpy
+  - seaborn
+  - matplotlib.pyplot
+
