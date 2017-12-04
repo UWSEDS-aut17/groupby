@@ -34,21 +34,22 @@ Calendar data can be analyzed ***in addition*** to one or more social media data
 
 ### Install this tool
 
-#### Requirements
-
-- ***Data management:***
-  - pandas
-  - collections
-- ***Handling dates:***
-  - datetime
-  - icalendar
-  - pytz
-- ***Data visualization:***
-  - numpy
-  - seaborn
-  - matplotlib.pyplot
-
 #### Instructions
 
-- Clone the github repo:
+- Clone the github repo: [https://github.com/UWSEDS-aut17/groupby.git](https://github.com/UWSEDS-aut17/groupby.git)
+- From the command line, navigate to the repo and run these commands:
+  - `python setup.py install`
+  - `pip install -r requirements.txt`
+
+#### Requirements
+
+- pandas
+- collections
+- datetime
+- icalendar
+- pytz
+- numpy
+- seaborn
+- matplotlib.pyplot
+
 
