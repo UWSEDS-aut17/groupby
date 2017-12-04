@@ -16,6 +16,13 @@ Because we believe that social media users--not only marketers--deserve to under
 
 ## Getting Started
 
+### Install this tool
+
+- Clone the github repo: [https://github.com/UWSEDS-aut17/groupby.git](https://github.com/UWSEDS-aut17/groupby.git)
+- From the command line, navigate to the repo and run these commands:
+  - `python setup.py install`
+  - `pip install -r requirements.txt`
+
 ### Obtain your data
 
 To use this tool, you must download and unzip ***at least one*** of these datasets from a personal social media account (note that there can be a delay of a day or so, depending on the platform):
@@ -28,12 +35,33 @@ Calendar data can be analyzed ***in addition*** to one or more social media data
 
 - Google Calendar - [Official instructions](https://support.google.com/calendar/answer/37111?hl=en)
 
-### Install this tool
+### Use the tool (command line)
 
-- Clone the github repo: [https://github.com/UWSEDS-aut17/groupby.git](https://github.com/UWSEDS-aut17/groupby.git)
-- From the command line, navigate to the repo and run these commands:
-  - `python setup.py install`
-  - `pip install -r requirements.txt`
+**Options:**
 
-### Use the tool
+- \-T, --twitter
+- \-F, --facebook 
+- \-L, --linkedin
+- \-C, --calendar
+
+The simplest use case is to analyze a **single social media dataset:**
+
+```
+python groupby.py -T path/Twitter_directory/
+```
+
+You can analyze **multiple social media datasets** simultaneously but separately:
+
+```
+python groupby.py -T path/Twitter_directory/ -F path/Facebook_directory/
+```
+
+Finally, you can analyze one or more **social media datasets in conjunction with calendar data:**
+
+```
+python groupby.py -T path/Twitter_directory/ -F path/Facebook_directory/ -C path/Google_Calendar_directory/
+```
+
+In all cases, the program will attempt to analyze the data and generate an HTML report.
+
 
