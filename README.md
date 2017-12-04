@@ -21,3 +21,4 @@ Because we believe that social media users--not only marketers--deserve to under
 - seaborn
 - matplotlib.pyplot
 - datetime
+- collections
