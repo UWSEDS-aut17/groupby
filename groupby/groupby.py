@@ -1,10 +1,6 @@
-"""Something here?"""
-
-
-
-What can the user input?
-
-
+"""
+Description of script
+"""
 
 
 # check valid args
