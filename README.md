@@ -37,31 +37,20 @@ Calendar data can be analyzed ***in addition*** to one or more social media data
 
 ### Use the tool (command line)
 
-**Options:**
+Options:
 
 - \-T, --twitter
 - \-F, --facebook 
 - \-L, --linkedin
 - \-C, --calendar
 
-The simplest use case is to analyze a **single social media dataset:**
+The simplest use case is to analyze a **single social media dataset:** `python groupby.py -T path/Twitter_directory/`
 
-```
-python groupby.py -T path/Twitter_directory/
-```
+You can analyze **multiple social media datasets** simultaneously but separately: `python groupby.py -T path/Twitter_directory/ -F path/Facebook_directory/`
 
-You can analyze **multiple social media datasets** simultaneously but separately:
-
-```
-python groupby.py -T path/Twitter_directory/ -F path/Facebook_directory/
-```
-
-Finally, you can analyze one or more **social media datasets in conjunction with calendar data:**
-
-```
-python groupby.py -T path/Twitter_directory/ -F path/Facebook_directory/ -C path/Google_Calendar_directory/
-```
+Finally, you can analyze one or more **social media datasets in conjunction with calendar data:** `python groupby.py -T path/Twitter_directory/ -F path/Facebook_directory/ -C path/Google_Calendar_directory/`
 
 In all cases, the program will attempt to analyze the data and generate an HTML report.
+
 
 
