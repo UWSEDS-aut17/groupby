@@ -12,34 +12,43 @@ import sys
 
 
 def validate_args(user_args):    
+
+    if len (user_args) < 3:
+        print("\n\n Please indicate at least one social media dataset, for example: \n\n\t python groupby.py -T path/Twitter_directory/")
+        return 'Failed to provide minimum argument'          
+
+    options = user_args[1::2]
+    soc_med = False
+    for opt in options:
+        if opt not in ['-T', '-F', '-L', '-C']:
+            print("\n\n Please indicate valid options: \n\n\t -T, -F, -L, or -C")
+            return 'Wrong option provided (not -T, -F, -L or -C)'
+        if opt in ['-T', '-F', '-L']:
+            soc_med = True
+    if soc_med == False:
+        print("\n\n Please indicate at least one social media dataset, for example: \n\n\t python groupby.py -T path/Twitter_directory/")
+        return 'Failed to provide social media data'          
+    
+    ## each option has an arg?
+    if len(user_args)-1 % 2 != 0:
+        print('\n\n Please make sure every option (-T, -F, -L, -C) has a corresponding path ')
+        return('Incomplete option:argument pair')
+
+
+
+"""
  
     # at least two arguments, the first of which indicates a social media dataset?
     if len(user_args) < 3 or user_args[1] not in ['-T', '-F', '-L']:
         print("\n\n Please indicate at least one social media dataset, for example: \n\n\t python groupby.py -T path/Twitter_directory/")
         return 'Failed to provide minimum argument'
-        
-    ## every other arg is either -T, -F, -L, -C?
-    opts = user_args[1::2]
-    for o in opts:
-        if o not in ['-T', '-F', '-L', 'C']:
-            print("\n\n Please indicate valid options: \n\n\t -T, -F, -L, or -C")
-            return 'Wrong option provided (not -T, -F, -L or -C)'
+"""
 
-    ## each option has an arg?
-    if len(user_args) % 2 != 0:
-        print()
-        return('')
+"""
 
 
+def open_files(user_args):
 
-user_args = sys.argv
-validate_args(user_args)
-
-
-
-def process_args(user_args):
-
-    ## each option has an arg? == files open?
     for i in len(user_args)-1:
         
         # Twitter
@@ -93,7 +102,7 @@ def process_args(user_args):
             else:
                 cal = True
 
-"""
+
 if tw:
     unique_tweets,retweeted = tweet_explore(tweets_df)
     hashtags, hashtags_int, values = hashtag_clean(tweets_df)
@@ -130,3 +139,11 @@ if fb:
 if cal:
     pass
 """
+
+
+user_args = sys.argv
+
+validate_args(user_args)
+
+#open_files(user_args)
+

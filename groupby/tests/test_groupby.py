@@ -19,7 +19,8 @@ import subprocess
 class FileTest(unittest.TestCase):
         
     def test_validate_args_fails_1(self):
-        failing_arg = args(failing_arg)
+        failing_arg = ['groupby.py'] 
+        val = validate_args(failing_arg)
         self.assertEqual(val, 'Failed to provide minimum argument')
 
     def test_validate_args_fails_2(self):
@@ -30,7 +31,7 @@ class FileTest(unittest.TestCase):
     def test_validate_args_fails_3(self):
         failing_arg = ['groupby.py', '-C', 'path/to/calendar']
         val = validate_args(failing_arg)
-        self.assertEqual(val, 'Failed to provide minimum argument')
+        self.assertEqual(val, 'Failed to provide social media data')
 
     def test_validate_args_fails_4(self):
         failing_arg = ['groupby.py', '-F', 'path/to/Facebook', 'pure', 'utter', 'nonsense']
@@ -42,6 +43,14 @@ class FileTest(unittest.TestCase):
         val = validate_args(failing_arg)
         self.assertEqual(val, 'Incomplete option:argument pair')
 
+    def test_validate_arg_succeeds_1(self):
+        successful_arg = ['groupby.py', '-C', 'path/to/calendar', '-F', 'path/to/Facebook']
+
+"""
+    def test_open_files_1(self):
+        failing_arg = ['groupby.py', '-F', 'data/fake_data.html']
+        val = open_files()
+"""
 
     
 if __name__ == '__main__':
