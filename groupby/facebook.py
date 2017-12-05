@@ -9,21 +9,21 @@ import numpy as np
 import seaborn as sns
 
 
-def read_facebook_timeline_data():
+def read_facebook_timeline_data(fname):
     """
     This function reads in the appropriate html file for timeline information
     """
-    with open('../Assignment_4-Text_Analytics/html/timeline.htm') as f:
+    with open(fname) as f:
         soup = BeautifulSoup(f, "lxml")
     return soup
 
-def clean_timeline():
+def clean_timeline(fname):
     """
     Calls the read_facebook_timeline_data function, and then strips 
     data of all html tags. Once done this creates the information for 
     usage across days of the week, month of the year and year.
     """
-    soup = read_facebook_timeline_data()
+    soup = read_facebook_timeline_data(fname)
     timeline_info = soup.find_all("div", class_ = 'meta')
     clean_timeline = []
     for i in timeline_info:
@@ -67,8 +67,8 @@ def plot(df, x,y, xlabel, ylabel, title, fig_size, fig_color):
     fig.set_size_inches(fig_size)
     return
 
-
-days, month, year = clean_timeline()
+"""
+days, month, year = clean_timeline(fname)
 
 plot(days, 'Days', 'Count', 'Day Of Week', 'Timeline Count', 
     'Bar plot', (15,5), 'purple')
@@ -87,21 +87,23 @@ plot(year, 'Date', 'Count', 'Year', 'Activity count', 'Bar plot- Activity Across
         (15,5), 'red')
 plt.show()
 
-def read_facebook_friends_data():
+"""
+
+def read_facebook_friends_data(fname):
     """
     This function reads in the appropriate html file for friends information
     """
-    with open('../Assignment_4-Text_Analytics/html/friends.htm') as f:
+    with open(fname) as f:
         soup = BeautifulSoup(f, "lxml")
     return soup
 
-def clean_friends():
+def clean_friends(fname):
     """
     Calls the read_facebook_friends_data function, and then strips 
     data of all html tags. Once done this creates the information for 
     friends made across the years.
     """
-    soup = read_facebook_friends_data()
+    soup = read_facebook_friends_data(fname)
     friends_info = soup.find_all('div', class_ = 'contents')
     clean_friends = []
     for i in friends_info:
@@ -128,9 +130,11 @@ def clean_friends():
     year = year.reset_index()
     return year
 
+"""
 
 year = clean_friends()
 plot(year, 'Year', 'Date', 'Year', 'New Friends count', 'Bar plot- New Friend count made Across the Years',
         (15,5), 'red')
 plt.show()
 
+"""

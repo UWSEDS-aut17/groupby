@@ -3,6 +3,9 @@ import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt
 import datetime
+
+def open_linkedin(fname):
+    
     
 def clean_df(df, date_column):
     df[date_column] = pd.to_datetime(df[date_column]).dt.date

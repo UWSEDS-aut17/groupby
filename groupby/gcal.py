@@ -17,14 +17,16 @@ def open_gcal(fname):
     
     """
     
-    cal_file = open(fname, 'rb')
-    
     try:
+        cal_file = open(fname, 'rb')
         gcal = Calendar.from_ical(cal_file.read())
         return gcal
     except:
         print("\n\n Please provide a valid path to your Google Calendar data "
             "(the actual ICS file)")
+        return "Can't read Google Calendar data"
+
+        
 
 
 def cal_to_df(data):
@@ -93,9 +95,9 @@ def plot_events(events):
     pass
 
 
-fname = 'data/shsher@uw.edu.ics'
-cal_data = open_gcal(fname)
-cal_df = cal_to_df(cal_data)
-events = events_per_month(cal_df)
-events_per_week(cal_df)
-plot_events(events, 'Total Events')
+#fname = 'data/shsher@uw.edu.ics'
+#cal_data = open_gcal(fname)
+#cal_df = cal_to_df(cal_data)
+#events = events_per_month(cal_df)
+#events_per_week(cal_df)
+#plot_events(events, 'Total Events')

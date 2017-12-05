@@ -2,7 +2,7 @@ import unittest
 from groupby.main import validate_args, open_files, build_report
 
 
-class FileTest(unittest.TestCase):
+class GroupbyTest(unittest.TestCase):
         
     # Validating arguments
         
@@ -49,45 +49,52 @@ class FileTest(unittest.TestCase):
     def test_open_files_twitter_fails(self):
         failing_arg = ['groupby.py', '-T', 'fake/path']
         val = open_files(failing_arg)
-        self.assertEqual(val, "Can't read Twitter data")       
+        self.assertEqual(val[1][0], "Can't read Twitter data")       
 
     def test_open_files_twitter_succeeds(self):
         successful_arg = ['groupby.py', '-T', 'data']
         val = open_files(successful_arg)
-        self.assertTrue(val[0], "File(s) loaded successfully")
+        self.assertTrue(val[1][0], "File(s) loaded successfully")
 
     def test_open_files_linkedin_fails(self):
         failing_arg = ['groupby.py', '-L', 'fake/path']
         val = open_files(failing_arg)
-        self.assertEqual(val, "Can't read LinkedIn data")   
-        
-    def test_open_files_linkedin_succeeds(self):
-        successful_arg = ['groupby.py', '-L', 'data']
-        val = open_files(successful_arg)
-        self.assertTrue(val[0], "File(s) loaded successfully")
+        self.assertEqual(val[1][1], "Can't read LinkedIn data")   
 
     def test_open_files_facebook_fails(self):
         failing_arg = ['groupby.py', '-F', 'fake/path']
         val = open_files(failing_arg)
-        self.assertEqual(val, "Can't read Facebook data")       
-
-    def test_open_files_facebook_succeeds(self):
-        successful_arg = ['groupby.py', '-F', 'data']
-        val = open_files(successful_arg)
-        self.assertTrue(val[0], "File(s) loaded successfully")
+        self.assertEqual(val[1][2], "Can't read Facebook data")       
 
     def test_open_files_gcal_fails(self):
         failing_arg = ['groupby.py', '-T', 'data', '-C', 'fake/file.ics']
         val = open_files(failing_arg)
-        self.assertEqual(val, "Can't read Google Calendar data")       
+        self.assertEqual(val[1][3], "Can't read Google Calendar data")       
                 
     def test_open_files_multiple_files_succeed(self):
         successful_arg = ['groupby.py', '-T', 'data', '-C', 
                           'data/shsher@uw.edu.ics']
         val = open_files(successful_arg)
         self.assertEqual(val[0], "File(s) loaded successfully")
-        
+
+"""
+
+    def test_open_files_facebook_succeeds(self):
+        successful_arg = ['groupby.py', '-F', 'data']
+        val = open_files(successful_arg)
+        self.assertTrue(val[1][2], "File(s) loaded successfully")
+
+    def test_open_files_linkedin_succeeds(self):
+        successful_arg = ['groupby.py', '-L', 'data']
+        val = open_files(successful_arg)
+        self.assertTrue(val[1][1], "File(s) loaded successfully")
+
+
+"""
+
+
     # Building reports
+   
    
 if __name__ == '__main__':
     unittest.main()

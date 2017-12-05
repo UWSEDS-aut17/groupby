@@ -6,14 +6,10 @@
 
 import sys
 import pandas as pd
-from icalendar import Calendar, Event
 
-from .twitter import *
-from .linkedin import *
-from .facebook import *
-#from .gcal import *
-
-
+import groupby.twitter
+import groupby.gcal
+import groupby.linkedin
 
 def validate_args(user_args):
     r"""Check user-provided arguments for validity.
@@ -60,23 +56,6 @@ def validate_args(user_args):
 
 
 
-
-
-
-    """
-        if val == '-T':
-            tw_path = user_args[i+1]
-            tw_file = 'tweets.csv'
-            try:
-                tweets_df = pd.read_csv(tw_path + '/' + tw_file)
-            except:
-                print("\n\n Please provide a valid path to your Twitter "
-                    "directory")
-                return "Can't read Twitter data"
-    """
-
-
-
 def open_files(user_args):
     r"""Open files and save data.
     
@@ -107,11 +86,12 @@ def open_files(user_args):
         if val == '-T':
             tw_path = user_args[i+1]
             tw_file = 'tweets.csv'
-            tweets_df = twitter.open_tweets(tw_path + '/' + tw_file)
+            tweets_df = groupby.twitter.open_tweets(tw_path + '/' + tw_file)
       
         if val == '-L':
             li_path = user_args[i+1]
             li_connections_file = 'Connections.csv'
+            
             li_invitations_file = 'Invitations.csv'
             try:
                 con_df = pd.read_csv(li_path + '/' + li_connections_file, 
@@ -136,12 +116,8 @@ def open_files(user_args):
                 return "Can't read Facebook data"
         
         if val == '-C':
-            try:
-                cal_file = open(user_args[i+1], 'rb')
-                gcal = Calendar.from_ical(cal_file.read())
-            except:
-                print("\n\n Please provide a valid path to your Google Calendar data (ICS file)")
-                return "Can't read Google Calendar data"
+            gcal_file = user_args[i+1]
+            gcal = groupby.gcal.open_gcal(gcal_file)
     
     tw = tweets_df
     li = [con_df, invites_df] 
