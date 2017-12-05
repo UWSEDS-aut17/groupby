@@ -62,7 +62,7 @@ Finally, you can analyze one or more **social media datasets in conjunction with
 python groupby.py -T path/Twitter_directory/ -F path/Facebook_directory/ -C path/Google_Calendar_directory/
 ```
 
-In all cases, the program will attempt to analyze the data and generate an HTML report.
+In all cases, the program will attempt to analyze the data and generate a PDF report.
 
 
 
