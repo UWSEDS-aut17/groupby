@@ -3,18 +3,6 @@ import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt
 import datetime
-
-
-# Exceptions in file handling
-def read_safely(path):
-  error = None
-  try:
-    con_df = pd.read_csv(path,encoding = "ISO-8859-1")
-    return con_df
-  except FileNotFoundError as err:
-    print("File %s does not exist. Try again." % path)
-    
-    
     
 def clean_df(df, date_column):
     df[date_column] = pd.to_datetime(df[date_column]).dt.date

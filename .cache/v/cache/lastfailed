@@ -1,0 +1,7 @@
+{
+  "groupby/tests/test_facebook.py": true,
+  "groupby/tests/test_gcal.py": true,
+  "groupby/tests/test_groupby.py": true,
+  "groupby/tests/test_linkedin.py": true,
+  "groupby/tests/test_twitter.py": true
+}

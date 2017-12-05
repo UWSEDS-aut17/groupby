@@ -6,12 +6,6 @@ import datetime
 from collections import Counter
 
 
-
-def read_twitter():
-    tweets_csv = pd.read_csv('tweets.csv')
-    return tweets_csv
-
-
 def tweet_explore(tweets_df):
     unique_tweets = tweets_df.tweet_id.nunique()
     retweeted = tweets_df.retweeted_status_id.nunique()
@@ -90,5 +84,3 @@ def plot_tweetDate(x,y, xlabel, ylabel, title, fig_size, fig_color):
     plt.xticks(x['month'], y)
     fig.set_size_inches(fig_size)
     return
-
-

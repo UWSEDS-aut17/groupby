@@ -1,6 +1,6 @@
 
 import unittest
-from groupby import validate_args, open_files, analyze_data
+from groupby import *
 
 
 """ Useful code
@@ -18,6 +18,8 @@ import subprocess
 
 
 class FileTest(unittest.TestCase):
+        
+    # Interpreting arguments
         
     def test_validate_args_fails_1(self):
         failing_arg = ['groupby.py'] 
@@ -53,14 +55,24 @@ class FileTest(unittest.TestCase):
         successful_arg = ['groupby.py', '-C', 'path/to/calendar', '-F', 'path/to/Facebook']
         val = validate_args(successful_arg)
         self.assertEqual(val, None)
-
-"""
-    def test_open_files_fails_1(self):
-        failing_arg = ['groupby.py', '-F', 'data/fake_data.html']
-        val = open_files(failing_arg)
-        self.assertEqual(val, "")
+        
+        
 """
 
+    # Opening files
     
+    def test_open_files_Twitter_fails(self):
+        failing_arg = ['groupby.py', '-T', 'fake/path']
+        val = validate_args(failing_arg)
+        self.assertEqual(val, "Incomplete option:argument pair")       
+    
+    def test_open_files_Twitter_succeeds(self):
+        successful_arg = ['groupby.py', '-T', 'data']
+        val = validate_args(successful_arg)
+        self.assertEqual(val, None)
+
+"""        
+        
+   
 if __name__ == '__main__':
     unittest.main()

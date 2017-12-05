@@ -1,24 +1,29 @@
 from icalendar import Calendar, Event
-from datetime import datetime
-from pytz import UTC # timezone
+import pandas as pd
 
 
+def open_gcal(fname):
+    cal_file = open(fname, 'rb')
+    try:
+        gcal = Calendar.from_ical(cal_file.read())
+        return gcal
+    except:
+        print("\n\n Please provide a valid path to your Google Calendar data (ICS file)")
 
-"""
-Decisions to make:
 
-- Count or duration?
-- Count or duration for all-day events?
-- Overlapping all-day events??
-"""
+def cal_to_df(data):
+    
+    cal_data = []
+    for component in data.walk():
+        if component.name == "VEVENT":
+            dt_c = component.get('dtstart').dt
+            cal_data.append(dt_c)
+    cal_df = pd.DataFrame({'event_date':cal_data})            
+    return cal_df
 
+def events_per_week():
+    pass
 
-cal = Calendar()
-gcal = Calendar.from_ical(g.read())
-for component in gcal.walk():
-    if component.name == "VEVENT":
-        print(component.get('summary'))
-        print(component.get('dtstart'))
-        print(component.get('dtend'))
-        print(component.get('dtstamp'))
-g.close()
+fname = 'data/shsher@uw.edu.ics'
+cal_data = open_gcal(fname)
+cal_to_df(cal_data)

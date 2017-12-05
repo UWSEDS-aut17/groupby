@@ -3,12 +3,10 @@
 """
 
 
-import sys
 
-#import facebook
-#import linkedin
-#import twitter
-#import gcal
+import sys
+import pandas as pd
+from icalendar import Calendar, Event
 
 
 def validate_args(user_args):
@@ -33,16 +31,18 @@ def validate_args(user_args):
 
     options = user_args[1::2]
     soc_med = False
+    
     for opt in options:
         if opt not in ['-T', '-F', '-L', '-C']:
             print("\n\n Please indicate valid options: \n\t -T, -F, -L, or -C")
             return "Wrong option provided (not -T, -F, -L or -C)"
         if opt in ['-T', '-F', '-L']:
             soc_med = True
+  
     if soc_med == False:
         print("\n\n Please indicate at least one social media dataset, "
             "for example: \n\t python groupby.py -T path/Twitter_directory/")
-        return "Failed to provide social media data"  
+        return "Failed to provide social media data" 
     
     if (len(user_args)-1) % 2 != 0:
         print("\n\n For every option (-T, -F, -L, -C), indicate a corresponding "
@@ -54,70 +54,72 @@ def validate_args(user_args):
 
 
 def open_files(user_args):
+    
+    tweets_df = None
+    con_df = None 
+    invites_df = None 
+    friends_df = None 
+    timeline_df = None 
+    ads_df = None 
+    gcal = None
 
-
-    for i in range(len(user_args)-1):
-        
-        # Twitter
-        if user_args[i+1] == '-T':       
+    for i, val in enumerate(user_args):
+   
+        if val == '-T':
             tw_path = user_args[i+1]
             tw_file = 'tweets.csv'
             try:
-                tweets_df = twitter.read_twitter(tw_path + tw_file)
+                tweets_df = pd.read_csv(tw_path + '/' + tw_file)
             except:
-                tw = False
                 print("\n\n Please provide a valid path to your Twitter directory")
-                return "Can't read Twitter data"
-            else:
-                tw = True
-        
-        
-                # Facebook
-        if user_args[i] == '-F':
+
+            
+        if val == '-L':
+            li_path = user_args[i+1]
+            li_connections_file = 'Connections.csv'
+            li_invitations_file = 'Invitations.csv'
+            try:
+                con_df = pd.read_csv(li_path + '/' + li_connections_file, encoding = "ISO-8859-1")
+                invites_df = pd.read_csv(li_path + '/' + li_invitations_file, encoding = "ISO-8859-1")
+            except:
+                print("\n\n Please provide a valid path to your LinkedIn directory")
+
+        """
+        if val == '-F':
             fb_path = user_args[i+1]
             fb_friends_file = 'html/friends.htm'
             fb_timeline_file = 'html/timeline.htm'
             fb_ads_file = 'html/ads.htm'
             try:
-                fb = open()
+                friends_df = 
+                timeline_df =
+                ads_df =
             except:
-                fb = False
                 print("\n\n Please provide a valid path to your Facebook directory")
-            else:
-                fb = True
+        """
         
-        # LinkedIn
-        if user_args[i] == '-L':
-            li_path = user_args[i+1]
-            li_connections_file = 'connections.csv'
-            li_invitations_file = 'Invitations.csv'
+        if val == '-C':
+            cal_file = open(user_args[i+1], 'rb')
             try:
-                con_df = linkedin.read_safely(li_path + li_connections_file)
-                invites_df = linkedin.read_safely(li_path + li_invitations_file)
+                gcal = Calendar.from_ical(cal_file.read())
             except:
-                li = False
-                print("\n\n Please provide a valid path to your LinkedIn directory")  
-            else:
-                li = True
+                print("\n\n Please provide a valid path to your Google Calendar data (ICS file)")
 
-        if user_args[i] == '-C':
-            cal_file = user_args[i+1]
-            try:
-                g = open('shsher@uw.edu.ics','rb')
-            except:
-                cal = False
-                print("\n\n Please provide a valid path to your Google Calendar data (ICS file)")  
-            else:
-                cal = True
+    return [tweets_df, [con_df, invites_df], [friends_df, timeline_df, ads_df], gcal]
 
 
-def analyze_data(user_args):
-
+def analyze_data(data):
+    
+    tw = data[0]
+    li = data[1]
+    fb = data[2]
+    cal = data[3]
+    
     if tw:
-        unique_tweets,retweeted = tweet_explore(tweets_df)
-        hashtags, hashtags_int, values = hashtag_clean(tweets_df)
-        friends_list, friends_int, m_values = mentions_clean(tweets_df)
-        month_df, labels = date_clean(tweets_df)
+        unique_tweets,retweeted = twitter.tweet_explore(tweets_df)
+        hashtags, hashtags_int, values = twitter.hashtag_clean(tweets_df)
+        friends_list, friends_int, m_values = twitter.mentions_clean(tweets_df)
+        month_df, labels = twitter.date_clean(tweets_df)
         print('Total number of unique tweets:', unique_tweets)
         print('Total retweeted tweets', retweeted)
         plot(tweets,values , tweets_int ,'hashtags' , 'Number' , 'Top 5 Tweet Hashtags', (15,5) , 'Green')
@@ -154,5 +156,7 @@ user_args = sys.argv
 
 validate_args(user_args)
 
-open_files(user_args)
+data = open_files(user_args)
+
+#analyze_data(data)
 
