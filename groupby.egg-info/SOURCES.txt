@@ -4,6 +4,7 @@ groupby/facebook.py
 groupby/gcal.py
 groupby/linkedin.py
 groupby/main.py
+groupby/plotters.py
 groupby/twitter.py
 groupby.egg-info/PKG-INFO
 groupby.egg-info/SOURCES.txt

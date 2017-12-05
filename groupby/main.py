@@ -12,6 +12,7 @@ import groupby.facebook
 import groupby.plotters
 
 
+
 def validate_args(user_args):
     r"""Check user-provided arguments for validity.
         
@@ -70,31 +71,29 @@ def open_files(user_args):
     
     Returns
     -------
-    data : a list of lists
+    data : list of lists
     
         data[0] : confirmation/error message for testing
     
         data[1] : list containing the data
         
-            data[1][0] : pandas dataframe of tweets, or error message
+            data[1][0] : pandas dataframe of tweets, error message, or None
             
-            data[1][1] : list of pandas dataframes, or error message
+            data[1][1] : list of pandas dataframes, error message, or None
                 data[1][1][0] : pandas dataframe of LinkedIn connections
                 data[1][1][1] : pandas dataframe of LinkedIn invitations
             
-            data[1][2] : list of pandas dataframes, or error message
+            data[1][2] : list of pandas dataframes, error message, or None
                 data[1][2][0] : pandas dataframe of Facebook friends
                 data[1][2][1] : pandas dataframe of Facebook timeline
             
-            data[1][3] : icalendar.Calendar, or error message
+            data[1][3] : icalendar.Calendar, error message, or None
     
     """
     
-    tweets_df = None
-    con_df = None 
-    invites_df = None 
-    friends_df = None 
-    timeline_df = None 
+    tw = None
+    li = None
+    fb = None
     gcal = None
 
     for i, val in enumerate(user_args):
@@ -103,7 +102,7 @@ def open_files(user_args):
             tw_path = user_args[i+1]
             tw_file = 'tweets.csv'
             tw_fname = tw_path + '/' + tw_file
-            tweets_df = groupby.twitter.open_tweets(tw_fname)
+            tw = groupby.twitter.open_tweets(tw_fname)
       
         if val == '-L':
             li_path = user_args[i+1]
@@ -113,6 +112,7 @@ def open_files(user_args):
             li_invites_file = 'Invitations.csv'
             li_invites_fname = li_path + '/' + li_invites_file
             invites_df = groupby.linkedin.open_linkedin(li_invites_fname)
+            li = [con_df, invites_df]
 
         if val == '-F':
             fb_path = user_args[i+1]
@@ -122,101 +122,140 @@ def open_files(user_args):
             fb_timeline_file = 'html/timeline.htm'
             fb_timeline_fname = fb_path + '/' + fb_timeline_file
             timeline_df = groupby.facebook.open_timeline(fb_timeline_fname)
-                    
+            fb = [friends_df, timeline_df]
+            
         if val == '-C':
             gcal_file = user_args[i+1]
             gcal = groupby.gcal.open_gcal(gcal_file)
-    
-    tw = tweets_df
-    li = [con_df, invites_df] 
-    fb = [friends_df, timeline_df]
-    data = ["File(s) loaded successfully", [tw, li, fb, gcal]]
-    
-    return data
+            
+    return ["File(s) loaded successfully", [tw, li, fb, gcal]]
+
+
+
+err_msg = ["Can't read Twitter data",
+           "Can't read LinkedIn data",
+           "Can't read Facebook data",
+           "Can't read Google Calendar data"]
 
 
 def build_report(data):    
+    r"""Build PDF report with data visualizations and tables.
+    
+    Parameters
+    ----------
+    data : list of lists
+    
+        data[0] : pandas dataframe of tweets, error message, or None
+        
+        data[1] : list of pandas dataframes, error message, or None
+            data[1][0] : pandas dataframe of LinkedIn connections
+            data[1][1] : pandas dataframe of LinkedIn invitations
+            
+        data[2] : list of pandas dataframes, error message, or None
+            data[2][0] : pandas dataframe of Facebook friends
+            data[2][1] : pandas dataframe of Facebook timeline
+            
+        data[3] : icalendar.Calendar, error message, or None
+    
+    """
+    
+    print(data)
     
     tw = data[0]
     li = data[1]
     fb = data[2]
-    cal = data[3]
+    gcal = data[3]
     
     report_figures = []
     
-    if tw:
-        unique_tweets,retweeted = twitter.tweet_explore(tweets_df)
-        hashtags, hashtags_int, values = twitter.hashtag_clean(tweets_df)
-        friends_list, friends_int, m_values = twitter.mentions_clean(tweets_df)
-        month_df, labels = twitter.date_clean(tweets_df)
-        print('Total number of unique tweets:', unique_tweets)
-        print('Total retweeted tweets', retweeted)
-        plot(tweets, values, tweets_int, 'hashtags', 'Number', 'Top 5 Tweet Hashtags', (15,5) , 'Green')
-        plt.show()
-        plot(friends_list, m_values, friends_int, 'Friend', 'Number of Mentions', 'Top 5 Friend Mentions', (15,5) , 'Green')
-        plt.show()
-        plot_tweetDate(month_df, labels,'Month', 'Number of Tweets', 'Top Per Month', (15,5) , 'Purple')
-        plt.show()
+    try:
+        
+        if not tw == None or tw in err_msg:
+            print("made it here")
+            """
+            unique_tweets,retweeted = twitter.tweet_explore(tweets_df)
+            hashtags, hashtags_int, values = twitter.hashtag_clean(tweets_df)
+            friends_list, friends_int, m_values = twitter.mentions_clean(tweets_df)
+            month_df, labels = twitter.date_clean(tweets_df)
+            print('Total number of unique tweets:', unique_tweets)
+            print('Total retweeted tweets', retweeted)
+            plot(tweets, values, tweets_int, 'hashtags', 'Number', 
+                'Top 5 Tweet Hashtags', (15,5) , 'Green')
+            plt.show()
+            plot(friends_list, m_values, friends_int, 'Friend', 
+                'Number of Mentions', 'Top 5 Friend Mentions', (15,5) , 'Green')
+            plt.show()
+            plot_tweetDate(month_df, labels,'Month', 'Number of Tweets', 
+                        'Top Per Month', (15,5) , 'Purple')
+            plt.show()
+            """
+                
+        if li:
             
-    if li:
-        
-        con_df_by_week = linkedin.clean_df(con_df, 'Connected On')
-        invites_sent, invites_received = get_sent_receive_invites(invites_df, 'Direction')
-        invites_sent_by_week = clean_df(invites_sent, 'Sent At')
-        invites_received_by_week = clean_df(invites_received, 'Sent At')
-        
-        plot(con_df_by_week,'Connected On','Email Address', 'Weeks', 
-            'Number of Connections', 'Bar Plot - Number of Connections per week', 
-            (15,5), 'purple')
-        
-        plot(invites_sent_by_week,'Sent At','From', 'Weeks', 
-            'Number of Invites', 'Bar Plot - Number of Invites Sent per week', 
-            (15,5), 'green')
-        
-        plot(invites_received_by_week,'Sent At','From', 'Weeks', 
-            'Number of Invites', 'Bar Plot - Number of Invites Sent per week', 
-            (15,5), 'red')
-        
-        recruiters_df = import_recruiters_contacts('Connections.csv')
-
-    if fb:
-        
-        """
-        FACEBOOK TIMELINE
-
-        days, month, year = clean_timeline(fname)
-
-        plot(days, 'Days', 'Count', 'Day Of Week', 'Timeline Count', 
-            'Bar plot', (15,5), 'purple')
-        plt.show()
-
-        plot(days, 'Days', 'Count', 'Day Of Week', 'Timeline Count', 
-            'Bar plot', (15,5), 'purple')
-
-        plt.show()
-
-        plot(month, 'Date', 'Count', 'Month', 'Activity count across months', 'Bar plot',
-                (15,5), 'blue')
-        plt.show()
-
-        plot(year, 'Date', 'Count', 'Year', 'Activity count', 'Bar plot- Activity Across the Years',
+            con_df_by_week = groupby.linkedin.clean_df(con_df, 'Connected On')
+            invites_sent, invites_received = groupby.get_sent_receive_invites(invites_df, 'Direction')
+            invites_sent_by_week = groupby.clean_df(invites_sent, 'Sent At')
+            invites_received_by_week = groupby.clean_df(invites_received, 'Sent At')
+            
+            """
+            plot(con_df_by_week,'Connected On','Email Address', 'Weeks', 
+                'Number of Connections', 'Bar Plot - Number of Connections per week', 
+                (15,5), 'purple')
+            
+            plot(invites_sent_by_week,'Sent At','From', 'Weeks', 
+                'Number of Invites', 'Bar Plot - Number of Invites Sent per week', 
+                (15,5), 'green')
+            
+            plot(invites_received_by_week,'Sent At','From', 'Weeks', 
+                'Number of Invites', 'Bar Plot - Number of Invites Sent per week', 
                 (15,5), 'red')
-        plt.show()
+            
+            recruiters_df = import_recruiters_contacts('Connections.csv')
+            """
 
-        """
-        
-        """ FACEBOOK FRIENDS
-        year = clean_friends()
-        plot(year, 'Year', 'Date', 'Year', 'New Friends count', 'Bar plot- New Friend count made Across the Years',
-        (15,5), 'red')
-        plt.show()
+        if fb:
+            
+            """
+            FACEBOOK TIMELINE
 
-        """
+            days, month, year = clean_timeline(fname)
 
-        pass
+            plot(days, 'Days', 'Count', 'Day Of Week', 'Timeline Count', 
+                'Bar plot', (15,5), 'purple')
+            plt.show()
 
-    if cal:
-        pass
+            plot(days, 'Days', 'Count', 'Day Of Week', 'Timeline Count', 
+                'Bar plot', (15,5), 'purple')
+
+            plt.show()
+
+            plot(month, 'Date', 'Count', 'Month', 'Activity count across months', 'Bar plot',
+                    (15,5), 'blue')
+            plt.show()
+
+            plot(year, 'Date', 'Count', 'Year', 'Activity count', 'Bar plot- Activity Across the Years',
+                    (15,5), 'red')
+            plt.show()
+
+            """
+            
+            """ FACEBOOK FRIENDS
+            year = clean_friends()
+            plot(year, 'Year', 'Date', 'Year', 'New Friends count', 'Bar plot- New Friend count made Across the Years',
+            (15,5), 'red')
+            plt.show()
+
+            """
+
+            pass
+
+        if gcal:
+            pass
+    
+        return "Report generated successfully"
+    
+    except:
+        return "Unable to generate report"
 
 
 user_args = sys.argv
@@ -225,6 +264,6 @@ validate_args(user_args)
 
 data = open_files(user_args)[1]
 
-#build_report(data)
+build_report(data)
 # https://matplotlib.org/api/backend_pdf_api.html#matplotlib.backends.backend_pdf.PdfPages
 

@@ -29,9 +29,6 @@ def plot_tweetDate(x,y, xlabel, ylabel, title, fig_size, fig_color):
 # FACEBOOK
 
 def plot(df, x,y, xlabel, ylabel, title, fig_size, fig_color):
-    """
-    Standard helper plot function
-    """
     fig,ax= plt.subplots(nrows=1)
     ax.bar(df[x],df[y], color = fig_color)
     ax.set_title(title)
