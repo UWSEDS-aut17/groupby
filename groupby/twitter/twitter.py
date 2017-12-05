@@ -11,6 +11,7 @@ def open_tweets(fname):
         tweets_df = pd.read_csv(fname)
     except:
         print("\n\n Please provide a valid path to your Twitter directory")
+        return "Can't read Twitter data"
 
 
 def tweet_explore(tweets_df):

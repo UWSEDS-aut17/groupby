@@ -7,6 +7,7 @@
 import sys
 import pandas as pd
 from icalendar import Calendar, Event
+
 from .twitter import *
 from .linkedin import *
 from .facebook import *
@@ -15,7 +16,7 @@ from .facebook import *
 
 
 def validate_args(user_args):
-    r"""Checking user-provided arguments for validity.
+    r"""Check user-provided arguments for validity.
         
     Parameters
     ----------
@@ -50,15 +51,48 @@ def validate_args(user_args):
         return "Failed to provide social media data" 
     
     if (len(user_args)-1) % 2 != 0:
-        print("\n\n For every option (-T, -F, -L, -C), indicate a corresponding "
-            "path, for example: \n\t python groupby.py -T path/here/")
+        print("\n\n For every option (-T, -F, -L, -C), indicate a "
+            "corresponding path, for example: "
+            "\n\t python groupby.py -T path/here/")
         return "Incomplete option:argument pair"
     
     return None
 
 
 
+
+
+
+    """
+        if val == '-T':
+            tw_path = user_args[i+1]
+            tw_file = 'tweets.csv'
+            try:
+                tweets_df = pd.read_csv(tw_path + '/' + tw_file)
+            except:
+                print("\n\n Please provide a valid path to your Twitter "
+                    "directory")
+                return "Can't read Twitter data"
+    """
+
+
+
 def open_files(user_args):
+    r"""Open files and save data.
+    
+    Parameters
+    ----------
+    user_args : list of strings
+        arguments passed from command line to script via sys.argv    
+    
+    Returns
+    -------
+    data : a list of lists
+        data[0] is a confirmation message for testing
+        data[1] is a list containing the data
+    
+    
+    """
     
     tweets_df = None
     con_df = None 
@@ -69,24 +103,21 @@ def open_files(user_args):
     gcal = None
 
     for i, val in enumerate(user_args):
-   
+         
         if val == '-T':
             tw_path = user_args[i+1]
             tw_file = 'tweets.csv'
-            try:
-                tweets_df = pd.read_csv(tw_path + '/' + tw_file)
-            except:
-                print("\n\n Please provide a valid path to your Twitter directory")
-                return "Can't read Twitter data"
-
-            
+            tweets_df = twitter.open_tweets(tw_path + '/' + tw_file)
+      
         if val == '-L':
             li_path = user_args[i+1]
             li_connections_file = 'Connections.csv'
             li_invitations_file = 'Invitations.csv'
             try:
-                con_df = pd.read_csv(li_path + '/' + li_connections_file, encoding = "ISO-8859-1")
-                invites_df = pd.read_csv(li_path + '/' + li_invitations_file, encoding = "ISO-8859-1")
+                con_df = pd.read_csv(li_path + '/' + li_connections_file, 
+                                     encoding = "ISO-8859-1")
+                invites_df = pd.read_csv(li_path + '/' + li_invitations_file, 
+                                         encoding = "ISO-8859-1")
             except:
                 print("\n\n Please provide a valid path to your LinkedIn directory")
                 return "Can't read LinkedIn data"
@@ -111,11 +142,18 @@ def open_files(user_args):
             except:
                 print("\n\n Please provide a valid path to your Google Calendar data (ICS file)")
                 return "Can't read Google Calendar data"
+    
+    tw = tweets_df
+    li = [con_df, invites_df] 
+    fb = [friends_df, timeline_df, ads_df]
+    
+    data = ["File(s) loaded successfully",
+            [tw, li, fb, gcal]]
+    
+    return data
 
-    return [tweets_df, [con_df, invites_df], [friends_df, timeline_df, ads_df], gcal]
 
-
-def build_report(data):
+def build_report(data):    
     
     tw = data[0]
     li = data[1]
@@ -163,7 +201,7 @@ user_args = sys.argv
 
 validate_args(user_args)
 
-data = open_files(user_args)
+data = open_files(user_args)[1]
 
 
 #build_report()
