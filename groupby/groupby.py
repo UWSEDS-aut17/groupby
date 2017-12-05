@@ -122,11 +122,11 @@ def analyze_data(data):
         month_df, labels = twitter.date_clean(tweets_df)
         print('Total number of unique tweets:', unique_tweets)
         print('Total retweeted tweets', retweeted)
-        plot(tweets,values , tweets_int ,'hashtags' , 'Number' , 'Top 5 Tweet Hashtags', (15,5) , 'Green')
+        plot(tweets, values, tweets_int, 'hashtags', 'Number', 'Top 5 Tweet Hashtags', (15,5) , 'Green')
         plt.show()
-        plot(friends_list,m_values , friends_int ,'Friend' , 'Number of Mentions' , 'Top 5 Friend Mentions', (15,5) , 'Green')
+        plot(friends_list, m_values, friends_int, 'Friend', 'Number of Mentions', 'Top 5 Friend Mentions', (15,5) , 'Green')
         plt.show()
-        plot_tweetDate(month_df, labels ,'Month' , 'Number of Tweets' , 'Top Per Month', (15,5) , 'Purple')
+        plot_tweetDate(month_df, labels,'Month', 'Number of Tweets', 'Top Per Month', (15,5) , 'Purple')
         plt.show()
             
     if li:
