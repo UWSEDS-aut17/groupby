@@ -26,7 +26,7 @@ def validate_args(user_args):
         
     """
 
-    if len (user_args) < 3:
+    if len(user_args) < 3:
         print("\n\n Please indicate at least one social media dataset, " 
             "for example: \n\t python groupby.py -T path/Twitter_directory/")
         return "Failed to provide minimum argument"    
@@ -44,7 +44,7 @@ def validate_args(user_args):
             "for example: \n\t python groupby.py -T path/Twitter_directory/")
         return "Failed to provide social media data"  
     
-    if len(user_args)-1 % 2 != 0:
+    if (len(user_args)-1) % 2 != 0:
         print("\n\n For every option (-T, -F, -L, -C), indicate a corresponding "
             "path, for example: \n\t python groupby.py -T path/here/")
         return "Incomplete option:argument pair"
@@ -55,17 +55,19 @@ def validate_args(user_args):
 
 def open_files(user_args):
 
-    for i in len(user_args)-1:
+
+    for i in range(len(user_args)-1):
         
         # Twitter
-        if user_args[i] == '-T':       
+        if user_args[i+1] == '-T':       
             tw_path = user_args[i+1]
             tw_file = 'tweets.csv'
             try:
-                tweets_df = read_twitter(tw_path + tw_file)
+                tweets_df = twitter.read_twitter(tw_path + tw_file)
             except:
                 tw = False
-                print("Please provide a valid path to your Twitter directory")
+                print("\n\n Please provide a valid path to your Twitter directory")
+                return "Can't read Twitter data"
             else:
                 tw = True
         
@@ -80,7 +82,7 @@ def open_files(user_args):
                 fb = open()
             except:
                 fb = False
-                print("Please provide a valid path to your Facebook directory")
+                print("\n\n Please provide a valid path to your Facebook directory")
             else:
                 fb = True
         
@@ -94,7 +96,7 @@ def open_files(user_args):
                 invites_df = linkedin.read_safely(li_path + li_invitations_file)
             except:
                 li = False
-                print("Please provide a valid path to your LinkedIn directory")  
+                print("\n\n Please provide a valid path to your LinkedIn directory")  
             else:
                 li = True
 
@@ -104,7 +106,7 @@ def open_files(user_args):
                 g = open('shsher@uw.edu.ics','rb')
             except:
                 cal = False
-                print("Please provide a valid path to your Google Calendar data (ICS file)")  
+                print("\n\n Please provide a valid path to your Google Calendar data (ICS file)")  
             else:
                 cal = True
 
@@ -152,5 +154,5 @@ user_args = sys.argv
 
 validate_args(user_args)
 
-#open_files(user_args)
+open_files(user_args)
 

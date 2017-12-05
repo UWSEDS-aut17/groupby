@@ -1,5 +1,6 @@
+
 import unittest
-from groupby import validate_args
+from groupby import validate_args, open_files, analyze_data
 
 
 """ Useful code
@@ -43,13 +44,21 @@ class FileTest(unittest.TestCase):
         val = validate_args(failing_arg)
         self.assertEqual(val, 'Incomplete option:argument pair')
 
-    def test_validate_arg_succeeds_1(self):
+    def test_validate_args_fails_6(self):
+        failing_arg = ['groupby.py', '-F', 'path/to/Facebook', '-C']
+        val = validate_args(failing_arg)
+        self.assertEqual(val, "Incomplete option:argument pair")
+
+    def test_validate_args_succeeds_1(self):
         successful_arg = ['groupby.py', '-C', 'path/to/calendar', '-F', 'path/to/Facebook']
+        val = validate_args(successful_arg)
+        self.assertEqual(val, None)
 
 """
-    def test_open_files_1(self):
+    def test_open_files_fails_1(self):
         failing_arg = ['groupby.py', '-F', 'data/fake_data.html']
-        val = open_files()
+        val = open_files(failing_arg)
+        self.assertEqual(val, "")
 """
 
     
