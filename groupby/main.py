@@ -5,11 +5,12 @@
 
 
 import sys
-import pandas as pd
-
 import groupby.twitter
 import groupby.gcal
 import groupby.linkedin
+import groupby.facebook
+import groupby.plotters
+
 
 def validate_args(user_args):
     r"""Check user-provided arguments for validity.
@@ -59,6 +60,9 @@ def validate_args(user_args):
 def open_files(user_args):
     r"""Open files and save data.
     
+    Parses the list of arguments provided by the user, calling other modules
+    to open the files.
+    
     Parameters
     ----------
     user_args : list of strings
@@ -67,9 +71,22 @@ def open_files(user_args):
     Returns
     -------
     data : a list of lists
-        data[0] is a confirmation message for testing
-        data[1] is a list containing the data
     
+        data[0] : confirmation/error message for testing
+    
+        data[1] : list containing the data
+        
+            data[1][0] : pandas dataframe of tweets, or error message
+            
+            data[1][1] : list of pandas dataframes, or error message
+                data[1][1][0] : pandas dataframe of LinkedIn connections
+                data[1][1][1] : pandas dataframe of LinkedIn invitations
+            
+            data[1][2] : list of pandas dataframes, or error message
+                data[1][2][0] : pandas dataframe of Facebook friends
+                data[1][2][1] : pandas dataframe of Facebook timeline
+            
+            data[1][3] : icalendar.Calendar, or error message
     
     """
     
@@ -78,7 +95,6 @@ def open_files(user_args):
     invites_df = None 
     friends_df = None 
     timeline_df = None 
-    ads_df = None 
     gcal = None
 
     for i, val in enumerate(user_args):
@@ -86,45 +102,35 @@ def open_files(user_args):
         if val == '-T':
             tw_path = user_args[i+1]
             tw_file = 'tweets.csv'
-            tweets_df = groupby.twitter.open_tweets(tw_path + '/' + tw_file)
+            tw_fname = tw_path + '/' + tw_file
+            tweets_df = groupby.twitter.open_tweets(tw_fname)
       
         if val == '-L':
             li_path = user_args[i+1]
-            li_connections_file = 'Connections.csv'
-            
-            li_invitations_file = 'Invitations.csv'
-            try:
-                con_df = pd.read_csv(li_path + '/' + li_connections_file, 
-                                     encoding = "ISO-8859-1")
-                invites_df = pd.read_csv(li_path + '/' + li_invitations_file, 
-                                         encoding = "ISO-8859-1")
-            except:
-                print("\n\n Please provide a valid path to your LinkedIn directory")
-                return "Can't read LinkedIn data"
+            li_con_file = 'Connections.csv'
+            li_con_fname = li_path + '/' + li_con_file
+            con_df = groupby.linkedin.open_linkedin(li_con_fname)            
+            li_invites_file = 'Invitations.csv'
+            li_invites_fname = li_path + '/' + li_invites_file
+            invites_df = groupby.linkedin.open_linkedin(li_invites_fname)
 
         if val == '-F':
             fb_path = user_args[i+1]
             fb_friends_file = 'html/friends.htm'
+            fb_friends_fname = fb_path + '/' + fb_friends_file
+            friends_df = groupby.facebook.open_friends(fb_friends_fname)
             fb_timeline_file = 'html/timeline.htm'
-            fb_ads_file = 'html/ads.htm'
-            try:
-                friends_df = pd.read_csv(fb_path + '/' + fb_friends_file)
-                timeline_df = pd.read_csv(fb_path + '/' + fb_timeline_file)
-                ads_df = pd.read_csv(fb_path + '/' + fb_ads_file)
-            except:
-                print("\n\n Please provide a valid path to your Facebook directory")
-                return "Can't read Facebook data"
-        
+            fb_timeline_fname = fb_path + '/' + fb_timeline_file
+            timeline_df = groupby.facebook.open_timeline(fb_timeline_fname)
+                    
         if val == '-C':
             gcal_file = user_args[i+1]
             gcal = groupby.gcal.open_gcal(gcal_file)
     
     tw = tweets_df
     li = [con_df, invites_df] 
-    fb = [friends_df, timeline_df, ads_df]
-    
-    data = ["File(s) loaded successfully",
-            [tw, li, fb, gcal]]
+    fb = [friends_df, timeline_df]
+    data = ["File(s) loaded successfully", [tw, li, fb, gcal]]
     
     return data
 
@@ -135,6 +141,8 @@ def build_report(data):
     li = data[1]
     fb = data[2]
     cal = data[3]
+    
+    report_figures = []
     
     if tw:
         unique_tweets,retweeted = twitter.tweet_explore(tweets_df)
@@ -151,22 +159,60 @@ def build_report(data):
         plt.show()
             
     if li:
+        
         con_df_by_week = linkedin.clean_df(con_df, 'Connected On')
         invites_sent, invites_received = get_sent_receive_invites(invites_df, 'Direction')
         invites_sent_by_week = clean_df(invites_sent, 'Sent At')
         invites_received_by_week = clean_df(invites_received, 'Sent At')
+        
         plot(con_df_by_week,'Connected On','Email Address', 'Weeks', 
             'Number of Connections', 'Bar Plot - Number of Connections per week', 
             (15,5), 'purple')
+        
         plot(invites_sent_by_week,'Sent At','From', 'Weeks', 
             'Number of Invites', 'Bar Plot - Number of Invites Sent per week', 
             (15,5), 'green')
+        
         plot(invites_received_by_week,'Sent At','From', 'Weeks', 
             'Number of Invites', 'Bar Plot - Number of Invites Sent per week', 
             (15,5), 'red')
-        import_recruiters_contacts('Connections.csv')
+        
+        recruiters_df = import_recruiters_contacts('Connections.csv')
 
     if fb:
+        
+        """
+        FACEBOOK TIMELINE
+
+        days, month, year = clean_timeline(fname)
+
+        plot(days, 'Days', 'Count', 'Day Of Week', 'Timeline Count', 
+            'Bar plot', (15,5), 'purple')
+        plt.show()
+
+        plot(days, 'Days', 'Count', 'Day Of Week', 'Timeline Count', 
+            'Bar plot', (15,5), 'purple')
+
+        plt.show()
+
+        plot(month, 'Date', 'Count', 'Month', 'Activity count across months', 'Bar plot',
+                (15,5), 'blue')
+        plt.show()
+
+        plot(year, 'Date', 'Count', 'Year', 'Activity count', 'Bar plot- Activity Across the Years',
+                (15,5), 'red')
+        plt.show()
+
+        """
+        
+        """ FACEBOOK FRIENDS
+        year = clean_friends()
+        plot(year, 'Year', 'Date', 'Year', 'New Friends count', 'Bar plot- New Friend count made Across the Years',
+        (15,5), 'red')
+        plt.show()
+
+        """
+
         pass
 
     if cal:
@@ -179,7 +225,6 @@ validate_args(user_args)
 
 data = open_files(user_args)[1]
 
-
-#build_report()
+#build_report(data)
 # https://matplotlib.org/api/backend_pdf_api.html#matplotlib.backends.backend_pdf.PdfPages
 

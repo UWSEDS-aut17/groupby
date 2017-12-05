@@ -71,24 +71,3 @@ def mentions_clean(tweets_df):
         
     return friends_list, friends_int,m_values
 
-
-def plot(x,y,z, xlabel, ylabel, title, fig_size, fig_color):
-    fig,ax= plt.subplots(nrows=1)
-    ax.bar(z[0:5],y[0:5], color = fig_color)
-    ax.set_title(title)
-    ax.set_xlabel(xlabel)
-    ax.set_ylabel(ylabel)
-    plt.xticks(z[0:5], x[0:5])
-    fig.set_size_inches(fig_size)
-    return
-
-
-def plot_tweetDate(x,y, xlabel, ylabel, title, fig_size, fig_color):
-    fig,ax= plt.subplots(nrows=1)
-    ax.bar(x['month'],x['tweet_id'], color = fig_color)
-    ax.set_title(title)
-    ax.set_xlabel(xlabel)
-    ax.set_ylabel(ylabel)
-    plt.xticks(x['month'], y)
-    fig.set_size_inches(fig_size)
-    return
