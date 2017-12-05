@@ -1,6 +1,6 @@
 
 import unittest
-from groupby import *
+from groupby.main import validate_args, open_files, build_report
 
 
 """ Useful code
@@ -56,22 +56,28 @@ class FileTest(unittest.TestCase):
         val = validate_args(successful_arg)
         self.assertEqual(val, None)
         
-        
-"""
 
     # Opening files
     
-    def test_open_files_Twitter_fails(self):
+    def test_open_files_twitter_fails(self):
         failing_arg = ['groupby.py', '-T', 'fake/path']
-        val = validate_args(failing_arg)
-        self.assertEqual(val, "Incomplete option:argument pair")       
-    
-    def test_open_files_Twitter_succeeds(self):
-        successful_arg = ['groupby.py', '-T', 'data']
-        val = validate_args(successful_arg)
-        self.assertEqual(val, None)
+        val = open_files(failing_arg)
+        self.assertEqual(val, "Can't read Twitter data")       
 
-"""        
+    def test_open_files_linkedin_fails(self):
+        failing_arg = ['groupby.py', '-L', 'fake/path']
+        val = open_files(failing_arg)
+        self.assertEqual(val, "Can't read LinkedIn data")       
+
+    def test_open_files_facebook_fails(self):
+        failing_arg = ['groupby.py', '-F', 'fake/path']
+        val = open_files(failing_arg)
+        self.assertEqual(val, "Can't read Facebook data")       
+
+    def test_open_files_gcal_fails(self):
+        failing_arg = ['groupby.py', '-T', 'data', '-C', 'fake/file.ics']
+        val = open_files(failing_arg)
+        self.assertEqual(val, "Can't read Google Calendar data")       
         
    
 if __name__ == '__main__':

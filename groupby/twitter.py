@@ -6,6 +6,13 @@ import datetime
 from collections import Counter
 
 
+def open_tweets(fname):
+    try:
+        tweets_df = pd.read_csv(fname)
+    except:
+        print("\n\n Please provide a valid path to your Twitter directory")
+
+
 def tweet_explore(tweets_df):
     unique_tweets = tweets_df.tweet_id.nunique()
     retweeted = tweets_df.retweeted_status_id.nunique()

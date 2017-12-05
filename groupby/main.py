@@ -7,6 +7,11 @@
 import sys
 import pandas as pd
 from icalendar import Calendar, Event
+from .twitter import *
+from .linkedin import *
+from .facebook import *
+#from .gcal import *
+
 
 
 def validate_args(user_args):
@@ -72,6 +77,7 @@ def open_files(user_args):
                 tweets_df = pd.read_csv(tw_path + '/' + tw_file)
             except:
                 print("\n\n Please provide a valid path to your Twitter directory")
+                return "Can't read Twitter data"
 
             
         if val == '-L':
@@ -83,32 +89,33 @@ def open_files(user_args):
                 invites_df = pd.read_csv(li_path + '/' + li_invitations_file, encoding = "ISO-8859-1")
             except:
                 print("\n\n Please provide a valid path to your LinkedIn directory")
+                return "Can't read LinkedIn data"
 
-        """
         if val == '-F':
             fb_path = user_args[i+1]
             fb_friends_file = 'html/friends.htm'
             fb_timeline_file = 'html/timeline.htm'
             fb_ads_file = 'html/ads.htm'
             try:
-                friends_df = 
-                timeline_df =
-                ads_df =
+                friends_df = pd.read_csv(fb_path + '/' + fb_friends_file)
+                timeline_df = pd.read_csv(fb_path + '/' + fb_timeline_file)
+                ads_df = pd.read_csv(fb_path + '/' + fb_ads_file)
             except:
                 print("\n\n Please provide a valid path to your Facebook directory")
-        """
+                return "Can't read Facebook data"
         
         if val == '-C':
-            cal_file = open(user_args[i+1], 'rb')
             try:
+                cal_file = open(user_args[i+1], 'rb')
                 gcal = Calendar.from_ical(cal_file.read())
             except:
                 print("\n\n Please provide a valid path to your Google Calendar data (ICS file)")
+                return "Can't read Google Calendar data"
 
     return [tweets_df, [con_df, invites_df], [friends_df, timeline_df, ads_df], gcal]
 
 
-def analyze_data(data):
+def build_report(data):
     
     tw = data[0]
     li = data[1]
@@ -158,8 +165,7 @@ validate_args(user_args)
 
 data = open_files(user_args)
 
-#analyze_data(data)
 
-#report_data()
+#build_report()
 # https://matplotlib.org/api/backend_pdf_api.html#matplotlib.backends.backend_pdf.PdfPages
 
