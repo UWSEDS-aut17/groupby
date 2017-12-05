@@ -2,71 +2,98 @@
 This script 
 """
 
-import facebook
-import linkedin
-import twitter
-import gcal
+
+import sys
+
+#import facebook
+#import linkedin
+#import twitter
+#import gcal
 
 
-## at least two args, first of which is -T, -F, -L?
-print("Please indicate at least one social media dataset, for example: python groupby.py -T path/Twitter_directory/")
+def validate_args(user_args):    
+ 
+    # at least two arguments, the first of which indicates a social media dataset?
+    if len(user_args) < 3 or user_args[1] not in ['-T', '-F', '-L']:
+        print("\n\n Please indicate at least one social media dataset, for example: \n\n\t python groupby.py -T path/Twitter_directory/")
+        return 'Failed to provide minimum argument'
+        
+    ## every other arg is either -T, -F, -L, -C?
+    opts = user_args[1::2]
+    for o in opts:
+        if o not in ['-T', '-F', '-L', 'C']:
+            print("\n\n Please indicate valid options: \n\n\t -T, -F, -L, or -C")
+            return 'Wrong option provided (not -T, -F, -L or -C)'
 
-## every other arg is either -T, -F, -L, -C?
-print("Please indicate valid options: -T, -F, -L, or -C")
+    ## each option has an arg?
+    if len(user_args) % 2 != 0:
+        print()
+        return('')
 
-## each option has an arg? == files open?
-for i in len(args)-1:
-    
-    # Twitter
-    if args[i] == '-T':       
-        tw_path = args[i+1]
-        tw_file = 'tweets.csv'
-        try:
-            tweets_df = read_twitter(tw_path + tw_file)
-        except:
-            tw = False
-            print("Please provide a valid path to your Twitter directory")
-        else:
-            tw = True
-    
-    # Facebook
-    if args[i] == '-F':
-        fb_path = args[i+1]
-        fb_friends_file = 'html/friends.htm'
-        fb_timeline_file = 'html/timeline.htm'
-        fb_ads_file = 'html/ads.htm'
-        try:
-            fb = open()
-        except:
-            fb = False
-            print("Please provide a valid path to your Facebook directory")
-        else:
-            fb = True
-    
-    # LinkedIn
-    if args[i] == '-L':
-        li_path = args[i+1]
-        li_connections_file = 'connections.csv'
-        li_invitations_file = 'Invitations.csv'
-        try:
-            con_df = linkedin.read_safely(li_path + li_connections_file)
-            invites_df = linkedin.read_safely(li_path + li_invitations_file)
-        except:
-            li = False
-            print("Please provide a valid path to your LinkedIn directory")  
-        else:
-            li = True
 
-    if args[i] == '-C':
-        cal_file = args[i+1]
-        try:
-            g = open('shsher@uw.edu.ics','rb')
-        except:
-            cal = False
-            print("Please provide a valid path to your Google Calendar data (ICS file)")  
-        else:
-            cal = True
 
+user_args = sys.argv
+validate_args(user_args)
+
+
+
+def process_args(user_args):
+
+    ## each option has an arg? == files open?
+    for i in len(user_args)-1:
+        
+        # Twitter
+        if user_args[i] == '-T':       
+            tw_path = user_args[i+1]
+            tw_file = 'tweets.csv'
+            try:
+                tweets_df = read_twitter(tw_path + tw_file)
+            except:
+                tw = False
+                print("Please provide a valid path to your Twitter directory")
+            else:
+                tw = True
+        
+        
+                # Facebook
+        if user_args[i] == '-F':
+            fb_path = user_args[i+1]
+            fb_friends_file = 'html/friends.htm'
+            fb_timeline_file = 'html/timeline.htm'
+            fb_ads_file = 'html/ads.htm'
+            try:
+                fb = open()
+            except:
+                fb = False
+                print("Please provide a valid path to your Facebook directory")
+            else:
+                fb = True
+        
+        # LinkedIn
+        if user_args[i] == '-L':
+            li_path = user_args[i+1]
+            li_connections_file = 'connections.csv'
+            li_invitations_file = 'Invitations.csv'
+            try:
+                con_df = linkedin.read_safely(li_path + li_connections_file)
+                invites_df = linkedin.read_safely(li_path + li_invitations_file)
+            except:
+                li = False
+                print("Please provide a valid path to your LinkedIn directory")  
+            else:
+                li = True
+
+        if user_args[i] == '-C':
+            cal_file = user_args[i+1]
+            try:
+                g = open('shsher@uw.edu.ics','rb')
+            except:
+                cal = False
+                print("Please provide a valid path to your Google Calendar data (ICS file)")  
+            else:
+                cal = True
+
+"""
 if tw:
     unique_tweets,retweeted = tweet_explore(tweets_df)
     hashtags, hashtags_int, values = hashtag_clean(tweets_df)
@@ -98,5 +125,8 @@ if li:
     import_recruiters_contacts('Connections.csv')
 
 if fb:
-    
+    pass
+
 if cal:
+    pass
+"""
