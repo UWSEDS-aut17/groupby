@@ -160,3 +160,6 @@ data = open_files(user_args)
 
 #analyze_data(data)
 
+#report_data()
+# https://matplotlib.org/api/backend_pdf_api.html#matplotlib.backends.backend_pdf.PdfPages
+
