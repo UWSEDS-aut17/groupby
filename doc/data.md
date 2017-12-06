@@ -51,5 +51,6 @@ Facebook data is structured as HTML, which we'll parse with `beautifulsoup` if w
 | Dataset | Structure | Activities | Timestamp |
 | --- | --- | --- | --- |
 | Google Calendar | ICS | Without a lot of analysis, we can't disaggregate different types of activities in calendar data, but we can calculate the overall number of scheduled hours in a day (with special handling for overlapping and/or all-day events) | X |
-| Twitter | JSON | Overall number of tweets; number of tweets featuring an interaction with another user, containing a URL, containing a hashtag, etc. | X |
+| Twitter | CSV | Overall number of tweets; number of tweets featuring an interaction with another user, containing a URL, containing a hashtag, etc. | X |
 | Facebook | HTML | Overall number of statuses, shared statuses, links, etc. | X |
+| LinkedIn | CSV | Overall number of invitations, direction of invitations, number of new connections | X |
