@@ -88,9 +88,16 @@ def open_files(user_args):
                 data[1][2][1] : pandas dataframe of Facebook timeline
             
             data[1][3] : icalendar.Calendar, error message, or None
+            
+        data[3] : list of Booleans
+            data[3][0] : True if Twitter data opened successfully
+            data[3][1] : True if LinkedIn data opened successfully
+            data[3][2] : True if Facebook data opened successfully
+            data[3][3] : True if Google Calendar data opened successfully
     
     """
     
+    status = [False, False, False, False]
     tw = None
     li = None
     fb = None
@@ -102,7 +109,10 @@ def open_files(user_args):
             tw_path = user_args[i+1]
             tw_file = 'tweets.csv'
             tw_fname = tw_path + '/' + tw_file
-            tw = groupby.twitter.open_tweets(tw_fname)
+            #tw = groupby.twitter.open_tweets(tw_fname)
+            tw = groupby.twitter.open_tweets('data/tweets.csv')
+            if tw != "Can't read Twitter data":
+                status[0] = True
     
         if val == '-L':
             li_path = user_args[i+1]
@@ -113,6 +123,8 @@ def open_files(user_args):
             li_invites_fname = li_path + '/' + li_invites_file
             invites_df = groupby.linkedin.open_linkedin(li_invites_fname)
             li = [con_df, invites_df]
+            if li[0] != "Can't read LinkedIn data":
+                status[1] = True
 
         if val == '-F':
             fb_path = user_args[i+1]
@@ -123,12 +135,17 @@ def open_files(user_args):
             fb_timeline_fname = fb_path + '/' + fb_timeline_file
             timeline_df = groupby.facebook.open_timeline(fb_timeline_fname)
             fb = [friends_df, timeline_df]
+            if fb[0] != "Can't read Facebook data":
+                status[2] = True
             
         if val == '-C':
             gcal_file = user_args[i+1]
             gcal = groupby.gcal.open_gcal(gcal_file)
+            if gcal != "Can't read Google Calendar data":
+                status[3] = True
             
-    return ["File(s) loaded successfully", [tw, li, fb, gcal]]
+    return ["File(s) loaded successfully", [tw, li, fb, gcal], status]
+
 
 
 def build_report(user_args, data):    
@@ -194,6 +211,9 @@ def build_report(user_args, data):
                 
             if val == '-C':
                 gcal = data[3]
+                
+        return "Report generated successfully"
+    
     except:
         return "Unable to generate report"
 

@@ -51,11 +51,6 @@ class GroupbyTest(unittest.TestCase):
         val = open_files(failing_arg)
         self.assertEqual(val[1][0], "Can't read Twitter data")       
 
-    def test_open_files_twitter_succeeds(self):
-        successful_arg = ['groupby.py', '-T', 'data']
-        val = open_files(successful_arg)
-        self.assertEqual(val[0], "File(s) loaded successfully")
-
     def test_open_files_linkedin_fails(self):
         failing_arg = ['groupby.py', '-L', 'fake/path']
         val = open_files(failing_arg)
@@ -71,23 +66,27 @@ class GroupbyTest(unittest.TestCase):
         val = open_files(failing_arg)
         self.assertEqual(val[1][3], "Can't read Google Calendar data")       
                 
-    def test_open_files_multiple_files_succeed(self):
-        successful_arg = ['groupby.py', '-T', 'data', '-C', 
-                          'data/shsher@uw.edu.ics']
+    def test_open_files_twitter_succeeds(self):
+        successful_arg = ['groupby.py', '-T', 'data']
         val = open_files(successful_arg)
-        self.assertEqual(val[0], "File(s) loaded successfully")
+        self.assertEqual(val[2][0], True)
+
+    def test_open_files_linkedin_succeeds(self):
+        successful_arg = ['groupby.py', '-L', 'data']
+        val = open_files(successful_arg)
+        self.assertEqual(val[2][1], True)
 
     def test_open_files_facebook_succeeds(self):
         successful_arg = ['groupby.py', '-F', '~/Projects/CSE-583/CSE 583 - Team project /Facebook']
         val = open_files(successful_arg)
-        self.assertEqual(val[0], "File(s) loaded successfully")
+        self.assertEqual(val[2][2], True)
 
-    """
-    def test_open_files_linkedin_succeeds(self):
-        successful_arg = ['groupby.py', '-L', 'data']
+    def test_open_files_multiple_files_succeed(self):
+        successful_arg = ['groupby.py', '-T', 'data', '-C', 
+                          'data/shsher@uw.edu.ics']
         val = open_files(successful_arg)
-        self.assertTrue(val[1][1], "File(s) loaded successfully")
-    """
+        #self.assertEqual(val[0], "File(s) loaded successfully")
+        self.assertEqual(val[2][3], True)
 
     # groupby.main.build_report()
 
@@ -95,15 +94,13 @@ class GroupbyTest(unittest.TestCase):
         successful_arg = ['groupby.py', '-T', 'data']
         data = open_files(successful_arg)
         val = build_report(successful_arg, data[1])
-        self.assertEqual(val, "Report generated successfully")
+        self.assertEqual(val[0], "Report generated successfully")
 
-    """
     def test_build_report_multiple_succeeds(self):
         successful_arg = ['groupby.py', '-T', 'data', '-C', 'data/shsher@uw.edu.ics', '-F', 'data']
         data = open_files(successful_arg)[1]
         val = build_report(data)
         self.assertEqual(val, "Report generated successfully")
-    """
    
 if __name__ == '__main__':
     unittest.main()

@@ -5,6 +5,8 @@ import matplotlib.pyplot as plt
 import datetime
 from collections import Counter
 
+import sys
+
 
 def open_tweets(fname):
     try:
@@ -12,6 +14,7 @@ def open_tweets(fname):
         return tweets_df
     except:
         print("\n\n Please provide a valid path to your Twitter directory")
+        #print(sys.exc_info()[0])
         return "Can't read Twitter data"
 
 
@@ -75,3 +78,6 @@ def mentions_clean(tweets_df):
         friends_int.append(i)
         
     return mentions, friends_int, m_values
+
+
+#print(open_tweets('data/tweets.csv'))
