@@ -1,22 +1,18 @@
-"""python main.py -T data
+"""python setup.py test
 
 """
 
 
 
 import sys
-import os
 import matplotlib.pyplot as plt
-from matplotlib.backends.backend_pdf import PdfPages
 from datetime import datetime
-import twitter
-import gcal
-import linkedin
-import facebook
-import plotters
+import groupby.twitter
+import groupby.gcal
+import groupby.linkedin
+import groupby.facebook
+import groupby.plotters
 
-
-cwd = os.getcwd()
 
 
 def validate_args(user_args):
@@ -109,52 +105,48 @@ def open_files(user_args):
     fb = None
     gcal = None
     
-    try:
+    for i, val in enumerate(user_args):
+        
+        if val == '-T':
+            tw_path = user_args[i+1]
+            tw_file = 'tweets.csv'
+            tw_fname = tw_path + '/' + tw_file
+            #tw = groupby.twitter.open_tweets(tw_fname)
+            tw = groupby.twitter.open_tweets('data/tweets.csv')
+            if tw != "Can't read Twitter data":
+                status[0] = True
     
-        for i, val in enumerate(user_args):
+        if val == '-L':
+            li_path = user_args[i+1]
+            li_con_file = 'Connections.csv'
+            li_con_fname = li_path + '/' + li_con_file
+            con_df = groupby.linkedin.open_linkedin(li_con_fname)            
+            li_invites_file = 'Invitations.csv'
+            li_invites_fname = li_path + '/' + li_invites_file
+            invites_df = groupby.linkedin.open_linkedin(li_invites_fname)
+            li = [con_df, invites_df]
+            if li[0] != "Can't read LinkedIn data":
+                status[1] = True
+
+        if val == '-F':
+            fb_path = user_args[i+1]
+            fb_friends_file = 'html/friends.htm'
+            fb_friends_fname = fb_path + '/' + fb_friends_file
+            friends_df = groupby.facebook.open_friends(fb_friends_fname)
+            fb_timeline_file = 'html/timeline.htm'
+            fb_timeline_fname = fb_path + '/' + fb_timeline_file
+            timeline_df = groupby.facebook.open_timeline(fb_timeline_fname)
+            fb = [friends_df, timeline_df]
+            if fb[0] != "Can't read Facebook data":
+                status[2] = True
             
-            if val == '-T':
-                tw_path = user_args[i+1]
-                tw_file = 'tweets.csv'
-                tw_fname = cwd + '/' + tw_path + '/' + tw_file
-                tw = twitter.open_tweets(tw_fname)
-                #if tw != "Can't read Twitter data":
-                    #status[0] = True
-
-            if val == '-L':
-                li_path = user_args[i+1]
-                li_con_file = 'Connections.csv'
-                li_con_fname = cwd + '/' + li_path + '/' + li_con_file
-                con_df = linkedin.open_linkedin(li_con_fname)            
-                li_invites_file = 'Invitations.csv'
-                li_invites_fname = cwd + '/' + li_path + '/' + li_invites_file
-                invites_df = linkedin.open_linkedin(li_invites_fname)
-                li = [con_df, invites_df]
-                #if li[0] != "Can't read LinkedIn data":
-                    #status[1] = True
-
-            if val == '-F':
-                fb_path = user_args[i+1]
-                fb_friends_file = 'html/friends.htm'
-                fb_friends_fname = cwd + '/' + fb_path + '/' + fb_friends_file
-                friends_df = facebook.open_friends(fb_friends_fname)
-                fb_timeline_file = 'html/timeline.htm'
-                fb_timeline_fname = cwd + '/' + fb_path + '/' + fb_timeline_file
-                timeline_df = facebook.open_timeline(fb_timeline_fname)
-                fb = [friends_df, timeline_df]
-                #if fb[0] != "Can't read Facebook data":
-                    #status[2] = True
-                
-            if val == '-C':
-                gcal_file = user_args[i+1]
-                gcal = gcal.open_gcal(gcal_file)
-                #if gcal != "Can't read Google Calendar data":
-                    #status[3] = True
-                
-        return ["File(s) loaded successfully", [tw, li, fb, gcal], status]
-    
-    except:
-        return "Unable to load file(s)"
+        if val == '-C':
+            gcal_file = user_args[i+1]
+            gcal = groupby.gcal.open_gcal(gcal_file)
+            if gcal != "Can't read Google Calendar data":
+                status[3] = True
+            
+    return ["File(s) loaded successfully", [tw, li, fb, gcal], status]
 
 
 
@@ -178,7 +170,9 @@ def build_report(user_args, data):
         data[3] : icalendar.Calendar, error message, or None
     
     """
-            
+    
+    report_figures = []
+        
     try:
         
         for i, val in enumerate(user_args):
@@ -186,34 +180,38 @@ def build_report(user_args, data):
             if val == '-T':
 
                 tweets_df = data[0]
-                
-                unique_tweets, retweeted = twitter.tweet_explore(tweets_df)
+                unique_tweets, retweeted = groupby.twitter.tweet_explore(tweets_df)
+                hashtags, hashtags_int, values = groupby.twitter.hashtag_clean(tweets_df)
+                friends_list, friends_int, m_values = groupby.twitter.mentions_clean(tweets_df)
+                month_df, labels = groupby.twitter.date_clean(tweets_df)
+
                 tweets = ('Total number of unique tweets:', unique_tweets)
                 retweets = ('Total retweeted tweets', retweeted)
+                top_5_hashtags = groupby.plotters.plot(tweets, values, 
+                                                        tweets_int, 'hashtags', 
+                                                        'Number', 
+                                                        'Top 5 Tweet Hashtags', 
+                                                        (15,5), 'Green', '-T')
+                top_mentions = groupby.plotters.plot(friends_list, m_values, 
+                                                     friends_int, 'Friend', 
+                                                     'Number of Mentions', 
+                                                     'Top 5 Friend Mentions', 
+                                                     (15,5) , 'Green', '-T')
+                tweets_per_month = groupby.plotters.plot_tweetDate(month_df, 
+                                                                   labels,
+                                                                   'Month', 
+                                                                   'Number of Tweets', 
+                                                                    'Total Tweets Per Month', 
+                                                                    (15,5) , 'Purple')
                 
-                hashtags, hashtags_int, values = twitter.hashtag_clean(tweets_df)
-                top_5_hashtags = plotters.plot(hashtags, values, hashtags_int, 'hashtags', 'Number', 'Top 5 Tweet Hashtags', (15,5), 'Green', '-T')
-                print(top_5_hashtags)
-
-                friends_list, friends_int, m_values = twitter.mentions_clean(tweets_df)
-                top_mentions = plotters.plot(friends_list, m_values, friends_int, 'Friend', 'Number of Mentions', 'Top 5 Friend Mentions', (15,5) , 'Green', '-T')
-                print(top_mentions)
-
-                month_df, labels = twitter.date_clean(tweets_df)
-                tweets_per_month = plotters.plot_tweetDate(month_df, labels, 'Month', 'Number of Tweets', 'Total Tweets Per Month', (15,5) , 'Purple')
-                print(tweets_per_month)
-
-                #with PdfPages('report-{}.pdf'.format(datetime.now().strftime('%Y-%m-%d-%H-%M-%S'))) as pdf:
-                pdf = PdfPages('report.pdf')
-                pdf.savefig(top_5_hashtags)
-                pdf.savefig(top_mentions)
-                pdf.savefig(tweets_per_month)
-                """
-                pdf.attach_note(plt.text(retweets))
-                pdf.attach_note(tweets)
-
-                """
-                pdf.close()
+                with PdfPages('report-{}.pdf'.format(datetime.now().strftime('%Y-%m-%d-%H-%M-%S'))) as pdf:
+                    pdf.attach_note(tweets)
+                    pdf.attach_note(retweets)
+                    pdf.savefig(top_5_hashtags)
+                    pdf.savefig(top_mentions)
+                    pdf.savefig(tweets_per_month)
+                    pdf.close()
+                    
                 
             if val == '-L':
                 li = data[1]
@@ -227,16 +225,17 @@ def build_report(user_args, data):
                 
         return "Report generated successfully"
     
-    except:        
-        print(sys.exc_info()[0])
+    except:
         return "Unable to generate report"
-   
+
+    #generate report
+    
     """
     try:
                 
         if li:
             
-            con_df_by_week = linkedin.clean_df(con_df, 'Connected On')
+            con_df_by_week = groupby.linkedin.clean_df(con_df, 'Connected On')
             invites_sent, invites_received = groupby.get_sent_receive_invites(invites_df, 'Direction')
             invites_sent_by_week = groupby.clean_df(invites_sent, 'Sent At')
             invites_received_by_week = groupby.clean_df(invites_received, 'Sent At')
@@ -293,15 +292,12 @@ def build_report(user_args, data):
     
     """
 
-
-
 user_args = sys.argv
 
 validate_args(user_args)
 
 data = open_files(user_args)[1]
 
-print(build_report(user_args, data))
+build_report(user_args, data)
 # https://matplotlib.org/api/backend_pdf_api.html#matplotlib.backends.backend_pdf.PdfPages
-# https://sukhbinder.wordpress.com/2015/09/09/pdf-with-matplotlib/
 
