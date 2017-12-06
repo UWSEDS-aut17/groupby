@@ -1,4 +1,0 @@
-{
-  "groupby/tests/test_linkedin.py": true,
-  "groupby/tests/test_twitter.py": true
-}
