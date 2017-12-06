@@ -37,29 +37,29 @@ Calendar data can be analyzed ***in addition*** to one or more social media data
 
 ### Use the tool (command line)
 
-| Option | Argument |
-| --- | ----- |
-| -T | Path to Twitter data directory |
-| -F | Path to Facebook data directory |
-| -L | Path to LinkedIn data directory |
-| -C | Path to Calendar data file |
+| Option | Argument | Example Argument |
+| --- | --- | --- |
+| -T | Path to Twitter data directory | ~/Downloads/Twitter |
+| -F | Path to Facebook data directory | ../backups/Facebook12-20-2014 |
+| -L | Path to LinkedIn data directory | data |
+| -C | Path to Calendar data file | ~/Documents/mycal.ics |
 
 The simplest use case is to analyze a **single social media dataset:** 
 
 ```
-python groupby.py -T path/Twitter_directory/
+python groupby.py -T path/Twitter_directory
 ```
 
 You can analyze **multiple social media datasets** simultaneously but separately: 
 
 ```
-python groupby.py -T path/Twitter_directory/ -F path/Facebook_directory/
+python groupby.py -T path/Twitter_directory -F path/Facebook_directory
 ```
 
 Finally, you can analyze one or more **social media datasets in conjunction with calendar data:** 
 
 ```
-python groupby.py -T path/Twitter_directory/ -F path/Facebook_directory/ -C path/Google_Calendar_directory/
+python groupby.py -T path/Twitter_directory -F path/Facebook_directory -C path/Google_Calendar_directory
 ```
 
 In all cases, the program will attempt to analyze the data and generate a PDF report.
