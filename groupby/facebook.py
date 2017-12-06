@@ -12,11 +12,10 @@ import seaborn as sns
 def open_facebook(fname):
     """
     This function reads in the appropriate html file for timeline information
-    """
+    """    
     with open(fname) as f:
         soup = BeautifulSoup(f, "lxml")
     return soup
-    
     
 def open_timeline(fname):
     """

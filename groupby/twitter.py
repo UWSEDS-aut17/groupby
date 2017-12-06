@@ -9,6 +9,7 @@ from collections import Counter
 def open_tweets(fname):
     try:
         tweets_df = pd.read_csv(fname)
+        return tweets_df
     except:
         print("\n\n Please provide a valid path to your Twitter directory")
         return "Can't read Twitter data"
@@ -70,4 +71,3 @@ def mentions_clean(tweets_df):
         friends_int.append(i)
         
     return friends_list, friends_int,m_values
-

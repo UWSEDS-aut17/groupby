@@ -95,15 +95,15 @@ def open_files(user_args):
     li = None
     fb = None
     gcal = None
-
+    
     for i, val in enumerate(user_args):
-         
+        
         if val == '-T':
             tw_path = user_args[i+1]
             tw_file = 'tweets.csv'
             tw_fname = tw_path + '/' + tw_file
             tw = groupby.twitter.open_tweets(tw_fname)
-      
+    
         if val == '-L':
             li_path = user_args[i+1]
             li_con_file = 'Connections.csv'
@@ -131,14 +131,7 @@ def open_files(user_args):
     return ["File(s) loaded successfully", [tw, li, fb, gcal]]
 
 
-
-err_msg = ["Can't read Twitter data",
-           "Can't read LinkedIn data",
-           "Can't read Facebook data",
-           "Can't read Google Calendar data"]
-
-
-def build_report(data):    
+def build_report(user_args, data):    
     r"""Build PDF report with data visualizations and tables.
     
     Parameters
@@ -159,36 +152,55 @@ def build_report(data):
     
     """
     
-    print(data)
-    
-    tw = data[0]
-    li = data[1]
-    fb = data[2]
-    gcal = data[3]
-    
     report_figures = []
-    
+        
     try:
         
-        if not tw == None or tw in err_msg:
-            print("made it here")
-            """
-            unique_tweets,retweeted = twitter.tweet_explore(tweets_df)
-            hashtags, hashtags_int, values = twitter.hashtag_clean(tweets_df)
-            friends_list, friends_int, m_values = twitter.mentions_clean(tweets_df)
-            month_df, labels = twitter.date_clean(tweets_df)
-            print('Total number of unique tweets:', unique_tweets)
-            print('Total retweeted tweets', retweeted)
-            plot(tweets, values, tweets_int, 'hashtags', 'Number', 
-                'Top 5 Tweet Hashtags', (15,5) , 'Green')
-            plt.show()
-            plot(friends_list, m_values, friends_int, 'Friend', 
-                'Number of Mentions', 'Top 5 Friend Mentions', (15,5) , 'Green')
-            plt.show()
-            plot_tweetDate(month_df, labels,'Month', 'Number of Tweets', 
-                        'Top Per Month', (15,5) , 'Purple')
-            plt.show()
-            """
+        for i, val in enumerate(user_args):
+            
+            if val == '-T':
+
+                tweets_df = data[0]
+                unique_tweets, retweeted = groupby.twitter.tweet_explore(tweets_df)
+                hashtags, hashtags_int, values = groupby.twitter.hashtag_clean(tweets_df)
+                friends_list, friends_int, m_values = groupby.twitter.mentions_clean(tweets_df)
+                month_df, labels = groupby.twitter.date_clean(tweets_df)
+
+                tweets = ('Total number of unique tweets:', unique_tweets)
+                retweets = ('Total retweeted tweets', retweeted)
+                top_5_hashtags = groupby.plotters.plot(tweets, values, 
+                                                        tweets_int, 'hashtags', 
+                                                        'Number', 
+                                                        'Top 5 Tweet Hashtags', 
+                                                        (15,5), 'Green', '-T')
+                top_mentions = groupby.plotters.plot(friends_list, m_values, 
+                                                     friends_int, 'Friend', 
+                                                     'Number of Mentions', 
+                                                     'Top 5 Friend Mentions', 
+                                                     (15,5) , 'Green', '-T')
+                tweets_per_month = groupby.plotters.plot_tweetDate(month_df, 
+                                                                   labels,
+                                                                   'Month', 
+                                                                   'Number of Tweets', 
+                                                                    'Total Tweets Per Month', 
+                                                                    (15,5) , 'Purple')
+                
+            if val == '-L':
+                li = data[1]
+        
+            if val == '-F':
+                fb = data[2]
+                
+                
+            if val == '-C':
+                gcal = data[3]
+    except:
+        return "Unable to generate report"
+
+    #generate report
+    
+    """
+    try:
                 
         if li:
             
@@ -197,7 +209,7 @@ def build_report(data):
             invites_sent_by_week = groupby.clean_df(invites_sent, 'Sent At')
             invites_received_by_week = groupby.clean_df(invites_received, 'Sent At')
             
-            """
+            
             plot(con_df_by_week,'Connected On','Email Address', 'Weeks', 
                 'Number of Connections', 'Bar Plot - Number of Connections per week', 
                 (15,5), 'purple')
@@ -211,12 +223,12 @@ def build_report(data):
                 (15,5), 'red')
             
             recruiters_df = import_recruiters_contacts('Connections.csv')
-            """
+            
 
         if fb:
             
-            """
-            FACEBOOK TIMELINE
+            
+            # FACEBOOK TIMELINE
 
             days, month, year = clean_timeline(fname)
 
@@ -237,26 +249,17 @@ def build_report(data):
                     (15,5), 'red')
             plt.show()
 
-            """
+            # FACEBOOK FRIENDS
             
-            """ FACEBOOK FRIENDS
             year = clean_friends()
             plot(year, 'Year', 'Date', 'Year', 'New Friends count', 'Bar plot- New Friend count made Across the Years',
             (15,5), 'red')
             plt.show()
 
-            """
-
-            pass
-
         if gcal:
             pass
     
-        return "Report generated successfully"
-    
-    except:
-        return "Unable to generate report"
-
+    """
 
 user_args = sys.argv
 
@@ -264,6 +267,6 @@ validate_args(user_args)
 
 data = open_files(user_args)[1]
 
-build_report(data)
+build_report(user_args, data)
 # https://matplotlib.org/api/backend_pdf_api.html#matplotlib.backends.backend_pdf.PdfPages
 
