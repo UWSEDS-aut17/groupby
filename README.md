@@ -16,12 +16,13 @@ Because we believe that social media users--not only marketers--deserve to under
 
 ## Getting Started
 
-### Install this tool
+### Install and test this tool
 
 - Clone the github repo: [https://github.com/UWSEDS-aut17/groupby.git](https://github.com/UWSEDS-aut17/groupby.git)
 - From the command line, navigate to the repo and run these commands:
   - `python setup.py install`
   - `pip install -r requirements.txt`
+  - `python setup.py test`
 
 ### Obtain your data
 
