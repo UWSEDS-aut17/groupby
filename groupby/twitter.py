@@ -59,6 +59,10 @@ def mentions_clean(tweets_df):
             _friends_list.append(friends[i])
 
     friends_list = [item for sublist in _friends_list for item in sublist]
+    
+    for i in range(0,len(friends_list)):
+        friends_list[i] = re.sub('[^A-Za-z0-9]+', '', friends_list[i])
+        
     friends_dict = Counter(friends_list)
     mentions = []
     m_values = []
@@ -67,7 +71,7 @@ def mentions_clean(tweets_df):
         m_values.append(v)
     friends_int = []
     
-    for i in range(0,len(friends_list)):
+    for i in range(0,len(mentions)):
         friends_int.append(i)
         
-    return friends_list, friends_int,m_values
+    return mentions, friends_int, m_values
