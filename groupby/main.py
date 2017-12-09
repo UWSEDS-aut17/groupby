@@ -14,6 +14,7 @@ import gcal
 import linkedin
 import facebook
 import plotters
+from wordcloud import WordCloud
 
 
 cwd = os.getcwd()
@@ -192,22 +193,26 @@ def build_report(user_args, data):
                 retweets = ('Total retweeted tweets', retweeted)
                 
                 hashtags, hashtags_int, values = twitter.hashtag_clean(tweets_df)
-                top_5_hashtags = plotters.plot(hashtags, values, hashtags_int, 'hashtags', 'Number', 'Top 5 Tweet Hashtags', (15,5), 'Green', '-T')
+                top_5_hashtags = plotters.plot(hashtags, values, hashtags_int, 'Hashtags', 'Number', 'Top 5 Tweet Hashtags', (15,5), 'Green', '-T')
                 print(top_5_hashtags)
 
                 friends_list, friends_int, m_values = twitter.mentions_clean(tweets_df)
                 top_mentions = plotters.plot(friends_list, m_values, friends_int, 'Friend', 'Number of Mentions', 'Top 5 Friend Mentions', (15,5) , 'Green', '-T')
                 print(top_mentions)
 
+
                 month_df, labels = twitter.date_clean(tweets_df)
                 tweets_per_month = plotters.plot_tweetDate(month_df, labels, 'Month', 'Number of Tweets', 'Total Tweets Per Month', (15,5) , 'Purple')
                 print(tweets_per_month)
+
+                wc = plotters.plot_wc(hashtags)
 
                 #with PdfPages('report-{}.pdf'.format(datetime.now().strftime('%Y-%m-%d-%H-%M-%S'))) as pdf:
                 pdf = PdfPages('report.pdf')
                 pdf.savefig(top_5_hashtags)
                 pdf.savefig(top_mentions)
                 pdf.savefig(tweets_per_month)
+                pdf.savefig(wc)
                 """
                 pdf.attach_note(plt.text(retweets))
                 pdf.attach_note(tweets)
