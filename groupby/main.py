@@ -14,7 +14,7 @@ import gcal
 import linkedin
 import facebook
 import plotters
-
+import argparse
 
 cwd = os.getcwd()
 
@@ -178,52 +178,64 @@ def build_report(user_args, data):
         data[3] : icalendar.Calendar, error message, or None
     
     """
-            
+    print(user_args,data)
     try:
-        
-        for i, val in enumerate(user_args):
-            
-            if val == '-T':
+        pdf = PdfPages('report.pdf')
+        # for i, val in enumerate(user_args):
+        #     print(val)
+        if user_args.twitter is not None :
+            tw_file = user_args.twitter
+            tw_fname = cwd + '/' + data + '/' + tw_file
+            tw = twitter.open_tweets(tw_fname)
+            tweets_df = tw
 
-                tweets_df = data[0]
-                
-                unique_tweets, retweeted = twitter.tweet_explore(tweets_df)
-                tweets = ('Total number of unique tweets:', unique_tweets)
-                retweets = ('Total retweeted tweets', retweeted)
-                
-                hashtags, hashtags_int, values = twitter.hashtag_clean(tweets_df)
-                top_5_hashtags = plotters.plot(hashtags, values, hashtags_int, 'hashtags', 'Number', 'Top 5 Tweet Hashtags', (15,5), 'Green', '-T')
-                print(top_5_hashtags)
+            unique_tweets, retweeted = twitter.tweet_explore(tweets_df)
+            tweets = ('Total number of unique tweets:', unique_tweets)
+            retweets = ('Total retweeted tweets', retweeted)
 
-                friends_list, friends_int, m_values = twitter.mentions_clean(tweets_df)
-                top_mentions = plotters.plot(friends_list, m_values, friends_int, 'Friend', 'Number of Mentions', 'Top 5 Friend Mentions', (15,5) , 'Green', '-T')
-                print(top_mentions)
+            hashtags, hashtags_int, values = twitter.hashtag_clean(tweets_df)
+            top_5_hashtags = plotters.plot(hashtags, values, hashtags_int, 'hashtags', 'Number', 'Top 5 Tweet Hashtags',
+                                           (15, 5), 'Green', '-T')
+            print(top_5_hashtags)
 
-                month_df, labels = twitter.date_clean(tweets_df)
-                tweets_per_month = plotters.plot_tweetDate(month_df, labels, 'Month', 'Number of Tweets', 'Total Tweets Per Month', (15,5) , 'Purple')
-                print(tweets_per_month)
+            friends_list, friends_int, m_values = twitter.mentions_clean(tweets_df)
+            top_mentions = plotters.plot(friends_list, m_values, friends_int, 'Friend', 'Number of Mentions',
+                                         'Top 5 Friend Mentions', (15, 5), 'Green', '-T')
+            print(top_mentions)
 
-                #with PdfPages('report-{}.pdf'.format(datetime.now().strftime('%Y-%m-%d-%H-%M-%S'))) as pdf:
-                pdf = PdfPages('report.pdf')
-                pdf.savefig(top_5_hashtags)
-                pdf.savefig(top_mentions)
-                pdf.savefig(tweets_per_month)
-                """
-                pdf.attach_note(plt.text(retweets))
-                pdf.attach_note(tweets)
+            month_df, labels = twitter.date_clean(tweets_df)
+            tweets_per_month = plotters.plot_tweetDate(month_df, labels, 'Month', 'Number of Tweets',
+                                                       'Total Tweets Per Month', (15, 5), 'Purple')
+            print(tweets_per_month)
 
-                """
-                pdf.close()
-                
-            if val == '-L':
-                li = data[1]
-        
-            if val == '-F':
-                fb = data[2]
-                
-                
-            if val == '-C':
-                gcal = data[3]
+            # with PdfPages('report-{}.pdf'.format(datetime.now().strftime('%Y-%m-%d-%H-%M-%S'))) as pdf:
+
+            pdf.savefig(top_5_hashtags)
+            pdf.savefig(top_mentions)
+            pdf.savefig(tweets_per_month)
+            """
+            pdf.attach_note(plt.text(retweets))
+            pdf.attach_note(tweets)
+
+            """
+
+        if user_args.linkedin is not None:
+            li = data[1]
+
+        if user_args.facebook is not None:
+            fb = data[2]
+
+        if user_args.calendar is not None:
+            calendar_file = user_args.calendar
+            print(calendar_file)
+            fig_list = gcal.get_plots(calendar_file)
+            for fig in fig_list:
+                pdf.savefig(fig)
+
+
+        pdf.close()
+
+
                 
         return "Report generated successfully"
     
@@ -295,13 +307,42 @@ def build_report(user_args, data):
 
 
 
-user_args = sys.argv
+# user_args = sys.argv
+# validate_args(user_args)
+# data = open_files(user_args)[1]
+# print(build_report(user_args, data))
 
-validate_args(user_args)
-
-data = open_files(user_args)[1]
-
-print(build_report(user_args, data))
 # https://matplotlib.org/api/backend_pdf_api.html#matplotlib.backends.backend_pdf.PdfPages
 # https://sukhbinder.wordpress.com/2015/09/09/pdf-with-matplotlib/
 
+def main():
+    parser = argparse.ArgumentParser(
+        description='Analyzes social media events to track time spent on activities.')
+    parser.add_argument('-T',
+                        '--twitter',
+                        help=('The directory for twitter data')
+                        )
+    parser.add_argument('-L',
+                        '--linkedin',
+                        help=('The directory for linkedin data')
+                        )
+    parser.add_argument('-F',
+                        '--facebook',
+                        help='the calendar file (.ics)'
+                        #type=argparse.FileType('r', encoding='iso-8859-1'),
+                       )
+    parser.add_argument('-C',
+                        '--calendar',
+                        help=('the path containing calendar files')
+                        )
+
+
+    args = parser.parse_args()
+    print(args)
+    return build_report(args,'data')
+                        # .twitter,
+                        #      args.linkedin,
+                        #      args.facebook,
+                        #      args.calendar)
+
+main()

@@ -1,103 +1,162 @@
-from icalendar import Calendar, Event
+import argparse
+import arrow
+import codecs
+import datetime
+import ics
+import itertools
+import pyparsing as pp
+import re
+import os
+from collections import defaultdict
+import io
 import pandas as pd
+import matplotlib
 import matplotlib.pyplot as plt
+import calendar
 
 
-def open_gcal(fname):
-    """Opens Google Calendar ICS file.
-    
-    Parameters
-    ----------
-    fname : string
-        the full path (including filename) of the Google Calendar data
-    
-    Returns
-    -------
-    gcal : icalendar.Calendar object
-    
+
+def _group(s, groups):
+    """Group a string using regex groups.
+
+    Args:
+        s: the string to group
+        groups: a list of tuples of (regex pattern, replacement string)
+    Returns:
+        the group for the string
     """
-    
-    try:
-        cal_file = open(fname, 'rb')
-        gcal = Calendar.from_ical(cal_file.read())
-        return gcal
-    except:
-        print("\n\n Please provide a valid path to your Google Calendar data "
-            "(the actual ICS file)")
-        return "Can't read Google Calendar data"
-
-        
+    for pattern, replacement in groups:
+        if pattern.match(s):
+            return replacement
+    return s
 
 
-def cal_to_df(data):
-    """Converts icalendar.Calendar object to pandas dataframe.
-    
-    Create dataframe with event_date, year, month, and day columns, where 
-    each row represents an event. Each event is counted as occurring on the day 
-    it began, i.e. multi-day events are counted only once.
-    
-    Parameters
-    ----------
-    data : icalendar.Calendar object
-    
-    Returns
-    -------
-    cal_df : pandas dataframe
-    
+def _total_hours(seconds):
+    """Converts seconds to hours.
+
+    Args:
+        seconds: the total seconds
+    Returns:
+        the total hours as a float
     """
-    
-    cal_data = []
-    for component in data.walk():
-        if component.name == "VEVENT":
-            dt_c = component.get('dtstart').dt
-            cal_data.append(dt_c)
-    cal_df = pd.DataFrame({'event_date':cal_data})  
-    cal_df['year'] = pd.to_datetime(cal_df['event_date'], utc=True).dt.year
-    cal_df['month'] = pd.to_datetime(cal_df['event_date'], utc=True).dt.month 
-    cal_df['day'] = pd.to_datetime(cal_df['event_date'], utc=True).dt.day
+    return seconds / 3600.0
+
+
+def _process_calendar(calendar_file):
+    """Processes a calendar, grouping events by name.
+
+    Args:
+        calendar_file: the ics calendar file
+        start_date: the starting date, or None
+        end_date: the end date, or None
+        allday: if true, includes all day events in processing
+        grouping_regex_strs: regular expressions for grouping patterns
+    """
+    print("Calendar file name", calendar_file)
+    print("File type", calendar_file)
+    calendar = ics.Calendar(open(calendar_file).read())
+    cal_df = pd.DataFrame(columns=['day', 'month', 'year', 'hour', 'event_name', 'duration'])
+    groups = defaultdict(lambda: 0)
+    total_seconds = 0
+    i = 0
+    for event in calendar.events:
+        start_date = arrow.get(event.begin)
+        end_date = arrow.get(event.end)
+        cal_df.loc[i] = [start_date.datetime.day, start_date.datetime.month, start_date.datetime.year,
+                         start_date.datetime.hour,
+                         event.name, event.duration.total_seconds()]
+        i += 1
+
+
     return cal_df
 
 
-def events_per_month(cal_df):
-    """Count total events per month.
-    
-    Parameters
-    ----------
-    cal_df : pandas dataframe
-    
-    Returns
-    -------
-    events_per_month : pandas series
-        
+def _valid_date(s):
+    """Validates and converts a date as arrow-compatible.
+
+    Args:
+        s: the string argument
+    Returns:
+        an arrow date
+    Raises:
+        ArgumentTypeError: if the date is invalid
     """
-    
-    events_per_month = cal_df.groupby(['year', 'month']).count()
-    print(events_per_month)
-    return events_per_month
+    try:
+        return arrow.get(s)
+    except TypeError:
+        msg = "Not a valid date: '{0}'.".format(s)
+        raise argparse.ArgumentTypeError(msg)
 
 
-def events_per_week(cal_df):
-    cal_df['event_date'] = pd.to_datetime(cal_df['event_date'], utc=True).dt.date
-    cal_df['event_date'] = cal_df['event_date'] - pd.to_timedelta(7, unit='d')
-    events_per_week = cal_df.groupby(['event_date']).count().reset_index()
-    print(events_per_week)
-    return events_per_week
+def plot(x, y, z, xlabel, ylabel, title, fig_size, fig_color, flag):
+    try:
+        fig, ax = plt.subplots(nrows=1)
+        ax.bar(z[0:5], y[0:5], color=fig_color)
+        ax.set_title(title)
+        ax.set_xlabel(xlabel)
+        ax.set_ylabel(ylabel)
+
+        if flag == '-T' or flag == '-L':
+            plt.xticks(z[0:5], x[0:5])
+
+        fig.set_size_inches(fig_size)
+        return fig
+    except:
+        return "Can't generate plot"
 
 
-def plot_events(events):
-    """Plot total events per month.
-    
-    Parameters
-    ----------
-    events_df : pandas series
-        
-    """
-    pass
+def plot_data(x, y, x_column, y_column, xlabel, ylabel, title, fig_size, fig_color):
+    fig, ax = plt.subplots(nrows=1)
+    ax.bar(x[x_column], x[y_column], color=fig_color)
+    ax.set_title(title)
+    ax.set_xlabel(xlabel)
+    ax.set_ylabel(ylabel)
+    plt.xticks(x[x_column], y)
+    fig.set_size_inches(fig_size)
+    return fig
+
+def get_plots(calendar_file):
+    calendar_file = 'data/shsher@uw.edu.ics'
+    cal_df = _process_calendar(calendar_file)
+    cal_df.head()
+    cal_df['minutes'] = cal_df['duration'] / 60
+    cal_df['hours'] = cal_df['duration'] / 3600
+
+    # remove birthdays and events longer than 1 day
+    cal_df = cal_df[~cal_df['event_name'].str.contains('birthday')]
+    cal_df = cal_df[(cal_df['hours'] < 24) & (cal_df['hours'] > 0)]
+
+    cal_df['count'] = 1
+    cal_min = cal_df.groupby(['event_name'], as_index=False)['event_name', 'count', 'minutes'].sum()
+    cal_min.sort_values('minutes', ascending=False)
+    cal_month = cal_df.groupby('month', as_index=False)['count'].sum()
+    cal_month_time = cal_df.groupby('month', as_index=False)['hours'].sum()
+    cal_year_time = cal_df.groupby('year', as_index=False)['count'].sum()
+
+    months = ["January",
+              "Febuary",
+              "March",
+              "April",
+              "May",
+              "June",
+              "July",
+              "August",
+              "September",
+              "October",
+              "November",
+              "December"]
+
+    fig1 = plot_data(cal_month_time, months, 'month', 'hours', 'Month', 'Hours Spent ',
+                   'Total Time Spent Per Month', (15, 5), 'Maroon')
+
+    fig2 = plot_data(cal_month, months, 'month', 'count', 'Month', 'Number of Events ',
+                   'Total Events Per Month', (15, 5), 'DarkBlue')
+
+    fig3 = plot_data(cal_year_time, [2016, 2017, 2018], 'year', 'count', 'Year',
+                   'Number of Events', 'Number of Events', (10, 5), 'Green')
+
+    return [fig1,fig2,fig3]
 
 
-#fname = 'data/shsher@uw.edu.ics'
-#cal_data = open_gcal(fname)
-#cal_df = cal_to_df(cal_data)
-#events = events_per_month(cal_df)
-#events_per_week(cal_df)
-#plot_events(events, 'Total Events')
+
+
