@@ -3,6 +3,7 @@ collections==
 calendar==
 datetime==
 icalendar==
+ics==
 matplotlib==1.5.1
 numpy==1.10.4
 os==
@@ -11,3 +12,4 @@ pytz==
 re==
 seaborn==
 sys==
+wordcloud==
