@@ -208,11 +208,15 @@ def build_report(user_args, data):
                                                        'Total Tweets Per Month', (15, 5), 'Purple')
             print(tweets_per_month)
 
+            wc = plotters.plot_wc(hashtags)
+
             # with PdfPages('report-{}.pdf'.format(datetime.now().strftime('%Y-%m-%d-%H-%M-%S'))) as pdf:
 
             pdf.savefig(top_5_hashtags)
             pdf.savefig(top_mentions)
             pdf.savefig(tweets_per_month)
+            pdf.savefig(wc)
+            
             """
             pdf.attach_note(plt.text(retweets))
             pdf.attach_note(tweets)
