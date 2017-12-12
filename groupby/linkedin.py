@@ -15,9 +15,15 @@ def open_linkedin(fname):
 
 
 def clean_df(df, date_column):
-    df[date_column] = pd.to_datetime(df[date_column]).dt.date
-    df[date_column] = df[date_column] - pd.to_timedelta(7, unit='d')
-    df_by_week = df.groupby([date_column]).count().reset_index()
+    df['count'] = 1
+    df[date_column] = pd.to_datetime(df[date_column])
+    df['date_minus_time'] = df[date_column].apply(
+        lambda df: datetime.datetime(year=df.year, month=df.month, day=df.day))
+    df.set_index(df["date_minus_time"], inplace=True)
+
+    week_counts = df['count'].resample('W', how='sum')
+    week_counts = week_counts.fillna(0)
+    df_by_week = pd.DataFrame({date_column: week_counts.index, 'count': week_counts.values})
     return df_by_week
 
 
@@ -34,3 +40,12 @@ def import_recruiters_contacts(path):
                                                    (any(word in x for word in words)) else x,1)
     recruiters_df = contacts_df[contacts_df['Position'] == 'Recruiter']
     return recruiters_df
+
+def plot(df, x,y, xlabel, ylabel, title, fig_size, fig_color):
+    fig,ax= plt.subplots(nrows=1)
+    ax.plot(df[x],df[y], color = fig_color)
+    ax.set_title(title)
+    ax.set_xlabel(xlabel)
+    ax.set_ylabel(ylabel)
+    fig.set_size_inches(fig_size)
+    return

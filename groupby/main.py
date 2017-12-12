@@ -2,8 +2,6 @@
 
 """
 
-
-
 import sys
 import os
 import matplotlib.pyplot as plt
@@ -211,7 +209,7 @@ def build_report(user_args, data):
 
             wc = plotters.plot_wc(hashtags)
 
-            scores_dict = twitter.sentiment_dict('AFINN-111.txt')
+            scores_dict = twitter.sentiment_dict('data/AFINN-111.txt')
             sentiments = twitter.tweet_score(tweets,scores_dict,tweets_df)
             sent_plot = plotters.plot_sentiment(sentiments)
 
@@ -230,7 +228,35 @@ def build_report(user_args, data):
             """
 
         if user_args.linkedin is not None:
-            li = data[1]
+            li_path = user_args.linkedin
+
+            li_con_file = 'Connections.csv'
+            li_con_fname = cwd + '/' + li_path + '/' + li_con_file
+            print(li_con_fname)
+            li_invites_file = 'Invitations.csv'
+            li_invites_fname = cwd + '/' + li_path + '/' + li_invites_file
+
+            con_df = linkedin.open_linkedin(li_con_fname)
+            invites_df = linkedin.open_linkedin(li_invites_fname)
+
+            con_df_by_week = linkedin.clean_df(con_df, 'Connected On')
+
+            invites_sent, invites_received = linkedin.get_sent_receive_invites(invites_df, 'Direction')
+            invites_sent_by_week = linkedin.clean_df(invites_sent, 'Sent At')
+            invites_received_by_week = linkedin.clean_df(invites_received, 'Sent At')
+
+            print("hellos")
+            fig1 = linkedin.plot(con_df_by_week, 'Connected On', 'count', 'Weeks', 'Number of Connections',
+                                 'Bar Plot - Number of Connections per week', (15, 5), '#8D6CAB')
+
+            fig2 = linkedin.plot(invites_sent_by_week, 'Sent At', 'count', 'Weeks', 'Number of Invites',
+                                 'Bar Plot - Number of Invites Sent per week', (15, 5), '#8D6CAB')
+
+            fig3 = linkedin.plot(invites_received_by_week, 'Sent At', 'count', 'Weeks', 'Number of Invites',
+                                 'Bar Plot - Number of Invites Sent per week', (15, 5), '#8D6CAB')
+            pdf.savefig(fig1)
+            pdf.savefig(fig2)
+            pdf.savefig(fig3)
 
         if user_args.facebook is not None:
             fb = data[2]
