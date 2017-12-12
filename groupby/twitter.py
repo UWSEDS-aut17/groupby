@@ -91,3 +91,37 @@ def mentions_clean(tweets_df):
     except:
         print(sys.exc_info()[0])
         print("Can't clean mentions")
+
+def sentiment_dict(fp):
+    scores_dict = {}
+    sf = open(fp)
+    for line in sf:
+        word,score = line.split("\t")
+        scores_dict[word] = int(score)
+    sf.close()
+    return scores_dict
+
+def tweet_score(tweets,scores_dict,tweets_df):
+    tweets_df['year'] = pd.to_datetime(tweets_df['timestamp']).dt.year
+    tweets = []
+
+    for text in tweets_df['text']:
+        tweets.append(text)
+
+    final_score = []
+    for line in tweets:
+        tweet_score = 0
+        for word in line.split():
+            if word in scores_dict.keys():
+                tweet_score += scores_dict[word]
+        final_score.append(tweet_score)
+
+    sentiment_df = pd.DataFrame(
+    {'year': tweets_df['year'].values,
+     'score': final_score,
+    })
+
+    sentiments = sentiment_df.groupby('year')['score'].mean().reset_index()
+    sentiments['year'] = sentiments['year'].astype(int)
+
+    return sentiments

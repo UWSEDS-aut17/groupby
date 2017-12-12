@@ -15,6 +15,7 @@ import linkedin
 import facebook
 import plotters
 import argparse
+import pandas as pd
 
 cwd = os.getcwd()
 
@@ -210,12 +211,17 @@ def build_report(user_args, data):
 
             wc = plotters.plot_wc(hashtags)
 
+            scores_dict = twitter.sentiment_dict('AFINN-111.txt')
+            sentiments = twitter.tweet_score(tweets,scores_dict,tweets_df)
+            sent_plot = plotters.plot_sentiment(sentiments)
+
             # with PdfPages('report-{}.pdf'.format(datetime.now().strftime('%Y-%m-%d-%H-%M-%S'))) as pdf:
 
             pdf.savefig(top_5_hashtags)
             pdf.savefig(top_mentions)
             pdf.savefig(tweets_per_month)
             pdf.savefig(wc)
+            pdf.savefig(sent_plot)
             
             """
             pdf.attach_note(plt.text(retweets))

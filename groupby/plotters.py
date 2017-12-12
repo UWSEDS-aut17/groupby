@@ -46,4 +46,15 @@ def plot_wc(x):
         plt.imshow(wordcloud)
         return fig
 
+def plot_sentiment(sentiments):
+    plt.style.use('seaborn-white')
+    fig,ax= plt.subplots(nrows=1)
+    ax.plot(sentiments['year'],sentiments['score'], color = '#1DA1F2',marker='o',linewidth=2)
+    ax.set_title('Sentiment by Year',fontsize=24,fontweight='bold')
+    ax.set_xlabel('Year',fontsize=18)
+    ax.set_ylabel('Average Sentiment',fontsize=18)
+    plt.yticks(fontsize=16,fontstyle='italic')
+    plt.xticks(sentiments['year'],fontsize=16,fontstyle='italic')
+    fig.set_size_inches(16,10)
+    return
 # GCAL+SOC
