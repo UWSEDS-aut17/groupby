@@ -4,11 +4,13 @@ As the internal structure of the archives may change over time, this file maps f
 Variables from this script are used by main.py.
 """
 
+import main
 
-linkedin_cons = + 'Connections.csv'
-linkedin_invs = + 'Invitations.csv'
 
-facebook_friends = + '/html/friends.htm'
-facebook_timeline = + '/html/messages.htm'
+linkedin_cons = main.args_linkedin + 'Connections.csv'
+linkedin_invs = main.args_linkedin + 'Invitations.csv'
 
-twitter = + 'tweets.csv'
+facebook_friends = main.args_facebook + '/html/friends.htm'
+facebook_timeline = main.args_facebook + '/html/messages.htm'
+
+twitter = main.args_twitter + 'tweets.csv'

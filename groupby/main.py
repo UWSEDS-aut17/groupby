@@ -14,6 +14,7 @@ import subprocess
 import sys
 
 import facebook
+#import fnames
 import gcal
 import linkedin
 import plotters
@@ -236,9 +237,10 @@ def build_report(user_args, data):
             pdf.set_margins(1, 1)
             pdf.set_font('Arial', 'B', 20)
             pdf.cell(w=0, h=1, txt="Twitter", align='C', ln=1)
-            
-            tw_file = user_args.twitter
-            tw_fname = cwd + '/' + data + '/' + tw_file
+                        
+            tw_path = user_args.twitter
+            tw_file = "tweets.csv"
+            tw_fname = tw_path + '/' + tw_file
             tw = twitter.open_tweets(tw_fname)
             tweets_df = tw
 
