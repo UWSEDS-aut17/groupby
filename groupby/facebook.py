@@ -71,7 +71,7 @@ def clean_timeline(filename):
     month['Date'] = month['Date'].apply(lambda x: calendar.month_abbr[x])
     year = date['Date'].groupby(date.Date.dt.year).agg('count')
     year = pd.DataFrame(year).rename(columns = {'Date': 'Count'}).reset_index()
-    return days, month, year
+    return days, month, year, date
 
 def plot(df, x,y, xlabel, ylabel, title, fig_size, fig_color):
     fig,ax= plt.subplots(nrows=1)

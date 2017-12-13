@@ -21,7 +21,7 @@ def clean_df(df, date_column):
         lambda df: datetime.datetime(year=df.year, month=df.month, day=df.day))
     df.set_index(df["date_minus_time"], inplace=True)
 
-    week_counts = df['count'].resample('W', how='sum')
+    week_counts = df['count'].resample('W').sum()
     week_counts = week_counts.fillna(0)
     df_by_week = pd.DataFrame({date_column: week_counts.index, 'count': week_counts.values})
     return df_by_week

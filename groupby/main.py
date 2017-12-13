@@ -22,6 +22,8 @@ import twitter
 
 cwd = os.getcwd()
 
+pd.options.mode.chained_assignment = None
+
 
 def validate_args(user_args):
     r"""Check user-provided arguments for validity.
@@ -291,7 +293,7 @@ def build_report(user_args, data):
  
             friends_df = facebook.clean_friends(fb_friends_fname)
  
-            days,month, year = facebook.clean_timeline(fb_timeline_fname)    
+            days, month, year, fb_df = facebook.clean_timeline(fb_timeline_fname)    
                 
             activity_per_day = facebook.plot(days, 'Days', 'Count', 'Day Of Week', 'Timeline Count', 'Bar plot', (15,5), 'purple')
             activity_per_day.savefig('activity_per_day.png')
@@ -342,6 +344,12 @@ def build_report(user_args, data):
         
         
         # generate combined plot
+        # tweets_df
+        # con_df
+        # fb_df
+        # tweets_df_moth = make__month()
+        # same
+        # joined_df
         
 
         pdf.output('report.pdf', 'F')
