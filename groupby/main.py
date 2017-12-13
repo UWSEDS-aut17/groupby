@@ -17,8 +17,8 @@ import facebook
 import gcal
 import linkedin
 import plotters
+import together
 import twitter
-
 
 cwd = os.getcwd()
 
@@ -343,15 +343,20 @@ def build_report(user_args, data):
             pdf.image('total_events.png', w=6, x=0.3)
             subprocess.call(['rm', 'total_events.png'])
         
-        
-        # generate combined plot
-        # tweets_df
-        # con_df
-        # fb_df
-        # tweets_df_moth = make__month()
-        # same
-        # joined_df
-        
+        if user_args.twitter and user_args.facebook and user_args.linkedin:
+            tweets_df_month = together.make_month(tweets_df, 'timestamp', 'T')
+            fb_df_month = together.make_month(fb_df, 'Date', 'F')
+            conn_df_month = together.make_month(con_df, 'Connected On', 'L')
+            cal_df_new = gcal.get_cal_dates(cal_df)
+            gcal_df_month = together.make_month(cal_df_new, 'Date', 'G')
+            joined_df = tweets_df_month.merge(conn_df_month, left_on='index', right_on='index', how='outer').merge(gcal_df_month, left_on='index', right_on='index',
+                                                                                                                   how='outer').merge(fb_df_month, left_on='index', right_on='index',
+                                                                                                                   how='outer').sort_values(by='index').fillna(0)
+            all_together = together.plot_crossds(joined_df)
+            all_together.savefig('all_together.png')
+            pdf.image('all_together.png', w=8.5, x=0)
+            subprocess.call(['rm', 'all_together.png'])
+            
 
         pdf.output('report.pdf', 'F')
         return "Report generated successfully"

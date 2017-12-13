@@ -145,19 +145,19 @@ def get_plots(cal_df):
               "December"]
 
     fig1 = plot_data(cal_month_time, months, 'month', 'hours', 'Month', 'Hours Spent ',
-                   'Total Time Spent Per Month', (15, 5), 'Maroon')
+                   'Total Time Spent Per Month', (15, 5), '#db3236')
 
     fig2 = plot_data(cal_month, months, 'month', 'count', 'Month', 'Number of Events ',
-                   'Total Events Per Month', (15, 5), 'DarkBlue')
+                   'Total Events Per Month', (15, 5), '#db3236')
 
     fig3 = plot_data(cal_year_time, [2016, 2017, 2018], 'year', 'count', 'Year',
-                   'Number of Events', 'Number of Events', (10, 5), 'Green')
+                   'Number of Events', 'Number of Events', (10, 5), '#db3236')
 
     return [fig1,fig2,fig3]
 
 def get_cal_dates(cal_df):
-    cal_dates = pd.DataFrame(columns=['date','count'])
-    cal_dates['date']  = pd.to_datetime(cal_df[['day','month','year']])
+    cal_dates = pd.DataFrame(columns=['Date','count'])
+    cal_dates['Date']  = pd.to_datetime(cal_df[['day','month','year']])
     cal_dates['count']=1
     return cal_dates
 

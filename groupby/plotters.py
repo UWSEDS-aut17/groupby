@@ -42,7 +42,7 @@ def plot_wc(x):
     fig = plt.figure(figsize = (60,20))
     plt.axis("off")
     plt.title('Hashtags Word Cloud',fontsize=50,fontweight='bold' )
-    wordcloud = WordCloud(background_color = 'black',width = 4000,height = 2000).generate(' '.join(str(e) for e in x))
+    wordcloud = WordCloud(background_color = 'black',width = 1000,height = 500).generate(' '.join(str(e) for e in x))
     plt.imshow(wordcloud)
     return fig
 
