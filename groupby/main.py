@@ -191,6 +191,8 @@ def build_report(user_args, data):
         pdf = FPDF('P', 'in', 'Letter')
                         
         if user_args.linkedin is not None:
+
+            print("Processing LinkedIn data...")
                         
             pdf.add_page()
             pdf.set_font('Arial', 'B', 20)
@@ -227,6 +229,8 @@ def build_report(user_args, data):
             print("LinkedIn data processed successfully")
 
         if user_args.twitter is not None:
+
+            print("Processing Twitter data...")
 
             pdf.add_page()
             pdf.set_margins(1, 1)
@@ -284,6 +288,8 @@ def build_report(user_args, data):
         
         if user_args.facebook is not None:
  
+            print("Processing Facebook data...")
+ 
             pdf.add_page()
             pdf.set_font('Arial', 'B', 20)
             pdf.cell(w=0, h=0.5, txt="Facebook", align='C', ln=1)
@@ -324,6 +330,9 @@ def build_report(user_args, data):
             print("Facebook data processed successfully")
         
         if user_args.calendar is not None:
+            
+            print("Processing calendar data...")
+            
             pdf.add_page()
             pdf.set_font('Arial', 'B', 20)
             pdf.cell(w=0, h=0.5, txt="Calendar", align='C', ln=1)
@@ -365,8 +374,9 @@ def build_report(user_args, data):
             pdf.image('all_together.png', w=9.5, h=6)
             subprocess.call(['rm', 'all_together.png'])
 
-        pdf.output('report.pdf', 'F')
-        print("Report generated successfully")
+        pdf_loc = user_args.output + '/' + 'report.pdf'
+        pdf.output(pdf_loc, 'F')
+        print("Report generated successfully at {}".format(pdf_loc))
         return
     
     except:        
@@ -394,6 +404,11 @@ def main():
     parser.add_argument('-C',
                         '--calendar',
                         help=('The Google Calendar file (.ics)')
+                        )
+
+    parser.add_argument('-O',
+                        '--output',
+                        help=('The directory where the report should be located, e.g. ~/Desktop')
                         )
 
     args = parser.parse_args()

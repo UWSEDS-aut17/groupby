@@ -92,6 +92,8 @@ def mentions_clean(tweets_df):
         print(sys.exc_info()[0])
         print("Can't clean mentions")
 
+
+
 def sentiment_dict(fp):
     scores_dict = {}
     sf = open(fp)
@@ -100,6 +102,8 @@ def sentiment_dict(fp):
         scores_dict[word] = int(score)
     sf.close()
     return scores_dict
+
+
 
 def tweet_score(tweets,scores_dict,tweets_df):
     tweets_df['year'] = pd.to_datetime(tweets_df['timestamp']).dt.year
