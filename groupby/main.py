@@ -322,9 +322,10 @@ def build_report(user_args, data):
             pdf.cell(w=0, h=0.5, txt="Calendar", align='C', ln=1)
             
             calendar_file = user_args.calendar
-            time_per_month, events_per_month, total_events = gcal.get_plots(calendar_file)
+            cal_df = gcal._process_calendar(calendar_file)
+            time_per_month, events_per_month, total_events = gcal.get_plots(cal_df)
             #fig_list = gcal.get_plots(calendar_file)
-            
+            cal_dates = gcal.get_cal_dates(cal_df)
             #for fig in fig_list:
                 #fig.savefig('temp.png')
                 #pdf.image('temp.png', w=8.5, x=0)

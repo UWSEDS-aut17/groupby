@@ -53,7 +53,6 @@ def _process_calendar(calendar_file):
         grouping_regex_strs: regular expressions for grouping patterns
     """
     print("Calendar file name", calendar_file)
-    print("File type", calendar_file)
     calendar = ics.Calendar(open(calendar_file).read())
     cal_df = pd.DataFrame(columns=['day', 'month', 'year', 'hour', 'event_name', 'duration'])
     groups = defaultdict(lambda: 0)
@@ -115,10 +114,9 @@ def plot_data(x, y, x_column, y_column, xlabel, ylabel, title, fig_size, fig_col
     fig.set_size_inches(fig_size)
     return fig
 
-def get_plots(calendar_file):
+def get_plots(cal_df):
     #calendar_file = 'data/shsher@uw.edu.ics'
-    cal_df = _process_calendar(calendar_file)
-    cal_df.head()
+
     cal_df['minutes'] = cal_df['duration'] / 60
     cal_df['hours'] = cal_df['duration'] / 3600
 
@@ -157,6 +155,11 @@ def get_plots(calendar_file):
 
     return [fig1,fig2,fig3]
 
+def get_cal_dates(cal_df):
+    cal_dates = pd.DataFrame(columns=['date','count'])
+    cal_dates['date']  = pd.to_datetime(cal_df[['day','month','year']])
+    cal_dates['count']=1
+    return cal_dates
 
 
 
