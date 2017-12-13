@@ -116,7 +116,7 @@ def plot_data(x, y, x_column, y_column, xlabel, ylabel, title, fig_size, fig_col
     return fig
 
 def get_plots(calendar_file):
-    calendar_file = 'data/shsher@uw.edu.ics'
+    #calendar_file = 'data/shsher@uw.edu.ics'
     cal_df = _process_calendar(calendar_file)
     cal_df.head()
     cal_df['minutes'] = cal_df['duration'] / 60

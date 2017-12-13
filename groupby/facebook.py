@@ -36,7 +36,9 @@ def clean_timeline(filename):
         clean_new_timeline.append([x.strip() for x in i.split(',')])
 
     days_information = [item[0] for item in clean_new_timeline]
+    
     days = dict(Counter(days_information))
+    
     list_of_days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
     for k in list_of_days:
         if k not in days:
@@ -45,6 +47,8 @@ def clean_timeline(filename):
             pass
 
     days = pd.DataFrame.from_dict(days, orient = 'index').reset_index().rename(columns = {'index': 'Days', 0:'Count'})
+    
+    
     weekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
     mapping = {day: i for i, day in enumerate(weekdays)}
     key = days['Days'].map(mapping)
@@ -55,9 +59,13 @@ def clean_timeline(filename):
     clean_new_date = []
     for i in date_information:
         clean_new_date.append([x.strip() for x in i.split('at')])
+        
     date_information = [item[0] for item in clean_new_date]
     date = pd.DataFrame(np.array(date_information), columns= {'Date'})
+    
+    
     date['Date'] = pd.to_datetime(date['Date'])
+    
     month = date['Date'].groupby([date.Date.dt.month]).agg('count')
     month = pd.DataFrame(month).rename(columns = {'Date': 'Count'}).reset_index()
     month['Date'] = month['Date'].apply(lambda x: calendar.month_abbr[x])
@@ -67,19 +75,19 @@ def clean_timeline(filename):
 
 def plot(df, x,y, xlabel, ylabel, title, fig_size, fig_color):
     fig,ax= plt.subplots(nrows=1)
-    ax.bar(df.index,df[y], color = fig_color)
+    ax.bar(df.index,df[y], color = '#3b5998')
     ax.set_title(title)
     ax.set_xlabel(xlabel)
     ax.set_ylabel(ylabel)
     plt.xticks(df.index,df[x])
     fig.set_size_inches(fig_size)
-    return  fig
+    return fig
 
 def read_facebook_friends_data(filename):
     """
     This function reads in the appropriate html file for friends information
     """
-    with open('data/fb/friends.htm') as f:
+    with open(filename) as f:
         soup = BeautifulSoup(f, "lxml")
     return soup
 

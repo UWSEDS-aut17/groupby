@@ -2,18 +2,23 @@
 
 """
 
-import sys
-import os
+
+import argparse
+from datetime import datetime
+from fpdf import FPDF
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_pdf import PdfPages
-from datetime import datetime
-import twitter
+import os
+import pandas as pd
+import subprocess
+import sys
+
+import facebook
 import gcal
 import linkedin
-import facebook
 import plotters
-import argparse
-import pandas as pd
+import twitter
+
 
 cwd = os.getcwd()
 
@@ -55,11 +60,11 @@ def validate_args(user_args):
     
     if (len(user_args)-1) % 2 != 0:
         print("\n\n For every option (-T, -F, -L, -C), indicate a "
-            "corresponding path, for example: "
+            "corresponding path or filename, as appropriate. For example: "
             "\n\t python groupby.py -T path/here/")
         return "Incomplete option:argument pair"
     
-    return None
+    return
 
 
 
@@ -135,10 +140,12 @@ def open_files(user_args):
             if val == '-F':
                 fb_path = user_args[i+1]
                 fb_friends_file = 'html/friends.htm'
-                fb_friends_fname = cwd + '/' + fb_path + '/' + fb_friends_file
+                fb_friends_fname = fb_path + '/' + fb_friends_file
                 friends_df = facebook.open_friends(fb_friends_fname)
+                print(len(friends_df))
+                print(type(friends_df))
                 fb_timeline_file = 'html/timeline.htm'
-                fb_timeline_fname = cwd + '/' + fb_path + '/' + fb_timeline_file
+                fb_timeline_fname = fb_path + '/' + fb_timeline_file
                 timeline_df = facebook.open_timeline(fb_timeline_fname)
                 fb = [friends_df, timeline_df]
                 #if fb[0] != "Can't read Facebook data":
@@ -177,205 +184,199 @@ def build_report(user_args, data):
         data[3] : icalendar.Calendar, error message, or None
     
     """
-    print(user_args,data)
+
     try:
-        pdf = PdfPages('report.pdf')
-        # for i, val in enumerate(user_args):
-        #     print(val)
-        if user_args.twitter is not None :
+        pdf = FPDF('P', 'in', 'Letter')
+            
+        if user_args.twitter is not None:
+
+            pdf.add_page()
+            pdf.set_margins(1, 1)
+            pdf.set_font('Arial', 'B', 20)
+            pdf.cell(w=0, h=1, txt="Twitter", align='C', ln=1)
+            
             tw_file = user_args.twitter
             tw_fname = cwd + '/' + data + '/' + tw_file
             tw = twitter.open_tweets(tw_fname)
             tweets_df = tw
 
             unique_tweets, retweeted = twitter.tweet_explore(tweets_df)
-            tweets = ('Total number of unique tweets:', unique_tweets)
-            retweets = ('Total retweeted tweets', retweeted)
+            tweets = "Total number of unique tweets: {}".format(unique_tweets)
+            retweets = "Total retweeted tweets: {}".format(retweeted)
+            pdf.set_font('Arial', '', 12)
+            pdf.cell(w=0, h=.3, txt=tweets, ln=1)
+            pdf.cell(w=0, h=.3, txt=retweets, ln=1)
 
             hashtags, hashtags_int, values = twitter.hashtag_clean(tweets_df)
-            top_5_hashtags = plotters.plot(hashtags, values, hashtags_int, 'hashtags', 'Number', 'Top 5 Tweet Hashtags',
-                                           (15, 5), 'Green', '-T')
-            print(top_5_hashtags)
+            top_5_hashtags = plotters.plot(hashtags, values, hashtags_int, 'hashtags', 'Number', 'Top 5 Tweet Hashtags', (15, 5), 'Green', '-T')
+            top_5_hashtags.savefig('top_5_hashtags.png')
+            pdf.image('top_5_hashtags.png', w=7)
+            subprocess.call(['rm', 'top_5_hashtags.png'])
 
             friends_list, friends_int, m_values = twitter.mentions_clean(tweets_df)
-            top_mentions = plotters.plot(friends_list, m_values, friends_int, 'Friend', 'Number of Mentions',
-                                         'Top 5 Friend Mentions', (15, 5), 'Green', '-T')
-            print(top_mentions)
+            top_mentions = plotters.plot(friends_list, m_values, friends_int, 'Friend', 'Number of Mentions', 'Top 5 Friend Mentions', (15, 5), 'Green', '-T')
+            top_mentions.savefig('top_mentions.png')
+            pdf.image('top_mentions.png', w=7)
+            subprocess.call(['rm', 'top_mentions.png'])
 
             month_df, labels = twitter.date_clean(tweets_df)
-            tweets_per_month = plotters.plot_tweetDate(month_df, labels, 'Month', 'Number of Tweets',
-                                                       'Total Tweets Per Month', (15, 5), 'Purple')
-            print(tweets_per_month)
+            tweets_per_month = plotters.plot_tweetDate(month_df, labels, 'Month', 'Number of Tweets', 'Total Tweets Per Month', (15, 5), 'Purple')
+            tweets_per_month.savefig('tweets_per_month.png')
+            pdf.image('tweets_per_month.png', w=7)
+            subprocess.call(['rm', 'tweets_per_month.png'])
 
-            wc = plotters.plot_wc(hashtags)
+            tweet_wordcloud = plotters.plot_wc(hashtags)
+            tweet_wordcloud.savefig('tweet_wordcloud.png')
+            pdf.add_page('L')
+            pdf.set_margins(0, 0)
+            pdf.image('tweet_wordcloud.png', w=18, x=-3.5, y=1)
+            subprocess.call(['rm', 'tweet_wordcloud.png'])
 
             scores_dict = twitter.sentiment_dict('data/AFINN-111.txt')
             sentiments = twitter.tweet_score(tweets,scores_dict,tweets_df)
             sent_plot = plotters.plot_sentiment(sentiments)
-
-            # with PdfPages('report-{}.pdf'.format(datetime.now().strftime('%Y-%m-%d-%H-%M-%S'))) as pdf:
-
-            pdf.savefig(top_5_hashtags)
-            pdf.savefig(top_mentions)
-            pdf.savefig(tweets_per_month)
-            pdf.savefig(wc)
-            pdf.savefig(sent_plot)
+            sent_plot.savefig('sent_plot.png')
+            pdf.add_page('P')
+            pdf.set_margins(1, 1)
+            pdf.cell(w=0, h=.3, txt='', align='C', ln=1)
+            pdf.image('sent_plot.png', w=7)
+            subprocess.call(['rm', 'sent_plot.png'])
             
-            """
-            pdf.attach_note(plt.text(retweets))
-            pdf.attach_note(tweets)
-
-            """
-
         if user_args.linkedin is not None:
+                        
+            pdf.add_page()
+            pdf.set_font('Arial', 'B', 20)
+            pdf.cell(w=0, h=0.5, txt="LinkedIn", align='C', ln=1)
+                        
             li_path = user_args.linkedin
-
             li_con_file = 'Connections.csv'
-            li_con_fname = cwd + '/' + li_path + '/' + li_con_file
-            print(li_con_fname)
+            li_con_fname = li_path + '/' + li_con_file
             li_invites_file = 'Invitations.csv'
-            li_invites_fname = cwd + '/' + li_path + '/' + li_invites_file
+            li_invites_fname = li_path + '/' + li_invites_file
 
             con_df = linkedin.open_linkedin(li_con_fname)
+            con_df_by_week = linkedin.clean_df(con_df, 'Connected On')
             invites_df = linkedin.open_linkedin(li_invites_fname)
 
-            con_df_by_week = linkedin.clean_df(con_df, 'Connected On')
+            connections = linkedin.plot(con_df_by_week, 'Connected On', 'count', 'Weeks', 'Number of Connections', 'Number of Connections per week', (15, 5), '#8D6CAB')
+            connections.savefig('connections.png')
+            pdf.image('connections.png', w=8.5, x=0)
+            subprocess.call(['rm', 'connections.png'])
 
             invites_sent, invites_received = linkedin.get_sent_receive_invites(invites_df, 'Direction')
             invites_sent_by_week = linkedin.clean_df(invites_sent, 'Sent At')
+            inv_sent = linkedin.plot(invites_sent_by_week, 'Sent At', 'count', 'Weeks', 'Number of Invites', 'Number of Invites Sent per week', (15, 5), '#8D6CAB')
+            inv_sent.savefig('inv_sent.png')
+            pdf.image('inv_sent.png', w=8.5, x=0)
+            subprocess.call(['rm', 'inv_sent.png'])
+
             invites_received_by_week = linkedin.clean_df(invites_received, 'Sent At')
-
-            print("hellos")
-            fig1 = linkedin.plot(con_df_by_week, 'Connected On', 'count', 'Weeks', 'Number of Connections',
-                                 'Bar Plot - Number of Connections per week', (15, 5), '#8D6CAB')
-
-            fig2 = linkedin.plot(invites_sent_by_week, 'Sent At', 'count', 'Weeks', 'Number of Invites',
-                                 'Bar Plot - Number of Invites Sent per week', (15, 5), '#8D6CAB')
-
-            fig3 = linkedin.plot(invites_received_by_week, 'Sent At', 'count', 'Weeks', 'Number of Invites',
-                                 'Bar Plot - Number of Invites Sent per week', (15, 5), '#8D6CAB')
-            pdf.savefig(fig1)
-            pdf.savefig(fig2)
-            pdf.savefig(fig3)
-
+            inv_rec = linkedin.plot(invites_received_by_week, 'Sent At', 'count', 'Weeks', 'Number of Invites', 'Number of Invites Received per week', (15, 5), '#8D6CAB')
+            inv_rec.savefig('inv_rec.png')
+            pdf.image('inv_rec.png', w=8.5, x=0)
+            subprocess.call(['rm', 'inv_rec.png'])
+            
+        
         if user_args.facebook is not None:
-            fb = data[2]
+ 
+            pdf.add_page()
+            pdf.set_font('Arial', 'B', 20)
+            pdf.cell(w=0, h=0.5, txt="Facebook", align='C', ln=1)
+        
+            fb_path = user_args.facebook
+            fb_friends_file = 'html/friends.htm'
+            fb_friends_fname = fb_path + '/' + fb_friends_file
+            fb_timeline_file = 'html/timeline.htm'
+            fb_timeline_fname = fb_path + '/' + fb_timeline_file
+ 
+            friends_df = facebook.clean_friends(fb_friends_fname)
+ 
+            days,month, year = facebook.clean_timeline(fb_timeline_fname)    
+                
+            activity_per_day = facebook.plot(days, 'Days', 'Count', 'Day Of Week', 'Timeline Count', 'Bar plot', (15,5), 'purple')
+            activity_per_day.savefig('activity_per_day.png')
+            pdf.image('activity_per_day.png', w=7, x=0)
+            subprocess.call(['rm', 'activity_per_day.png'])
+
+            activity_per_month = facebook.plot(month, 'Date', 'Count', 'Month', 'Activity count across months', 'Bar plot', (15,5), 'blue')
+            activity_per_month.savefig('activity_per_month.png')
+            pdf.image('activity_per_month.png', w=7, x=0)
+            subprocess.call(['rm', 'activity_per_month.png'])
+            
+            activity_per_year = facebook.plot(year, 'Date', 'Count', 'Year', 'Activity count', 'Bar plot- Activity Across the Years', (15,5), 'red')
+            activity_per_year.savefig('activity_per_year.png')
+            pdf.image('activity_per_year.png', w=7, x=0)
+            subprocess.call(['rm', 'activity_per_year.png'])
+                        
+            friends_per_year = facebook.plot(friends_df, 'Year', 'Date', 'Year', 'New Friends count', 'Bar plot- New Friend count made Across the Years', (15,5), 'red')
+            friends_per_year.savefig('friends_per_year.png')
+            pdf.image('friends_per_year.png', w=7, x=0)
+            subprocess.call(['rm', 'friends_per_year.png'])
+        
 
         if user_args.calendar is not None:
+            pdf.add_page()
+            pdf.set_font('Arial', 'B', 20)
+            pdf.cell(w=0, h=0.5, txt="Calendar", align='C', ln=1)
+            
             calendar_file = user_args.calendar
-            print(calendar_file)
-            fig_list = gcal.get_plots(calendar_file)
-            for fig in fig_list:
-                pdf.savefig(fig)
+            time_per_month, events_per_month, total_events = gcal.get_plots(calendar_file)
+            #fig_list = gcal.get_plots(calendar_file)
+            
+            #for fig in fig_list:
+                #fig.savefig('temp.png')
+                #pdf.image('temp.png', w=8.5, x=0)
+                #subprocess.call(['rm', 'temp.png'])
+               
+            time_per_month.savefig('time_per_month.png')
+            pdf.image('time_per_month.png', w=8.5, x=0)
+            subprocess.call(['rm', 'time_per_month.png'])
 
+            events_per_month.savefig('events_per_month.png')
+            pdf.image('events_per_month.png', w=8.5, x=0)
+            subprocess.call(['rm', 'events_per_month.png'])
 
-        pdf.close()
+            total_events.savefig('total_events.png')
+            pdf.image('total_events.png', w=6, x=0.3)
+            subprocess.call(['rm', 'total_events.png'])
+        
+        
+        # generate combined plot
+        
 
-
-                
+        pdf.output('report.pdf', 'F')
         return "Report generated successfully"
     
     except:        
         print(sys.exc_info()[0])
         return "Unable to generate report"
-   
-    """
-    try:
-                
-        if li:
-            
-            con_df_by_week = linkedin.clean_df(con_df, 'Connected On')
-            invites_sent, invites_received = groupby.get_sent_receive_invites(invites_df, 'Direction')
-            invites_sent_by_week = groupby.clean_df(invites_sent, 'Sent At')
-            invites_received_by_week = groupby.clean_df(invites_received, 'Sent At')
-            
-            
-            plot(con_df_by_week,'Connected On','Email Address', 'Weeks', 
-                'Number of Connections', 'Bar Plot - Number of Connections per week', 
-                (15,5), 'purple')
-            
-            plot(invites_sent_by_week,'Sent At','From', 'Weeks', 
-                'Number of Invites', 'Bar Plot - Number of Invites Sent per week', 
-                (15,5), 'green')
-            
-            plot(invites_received_by_week,'Sent At','From', 'Weeks', 
-                'Number of Invites', 'Bar Plot - Number of Invites Sent per week', 
-                (15,5), 'red')
-            
-            recruiters_df = import_recruiters_contacts('Connections.csv')
-            
-
-        if fb:
-            
-            
-            # FACEBOOK TIMELINE
-
-            days, month, year = clean_timeline(fname)
-
-            plot(days, 'Days', 'Count', 'Day Of Week', 'Timeline Count', 
-                'Bar plot', (15,5), 'purple')
-            plt.show()
-
-            plot(days, 'Days', 'Count', 'Day Of Week', 'Timeline Count', 
-                'Bar plot', (15,5), 'purple')
-
-            plt.show()
-
-            plot(month, 'Date', 'Count', 'Month', 'Activity count across months', 'Bar plot',
-                    (15,5), 'blue')
-            plt.show()
-
-            plot(year, 'Date', 'Count', 'Year', 'Activity count', 'Bar plot- Activity Across the Years',
-                    (15,5), 'red')
-            plt.show()
-
-            # FACEBOOK FRIENDS
-            
-            year = clean_friends()
-            plot(year, 'Year', 'Date', 'Year', 'New Friends count', 'Bar plot- New Friend count made Across the Years',
-            (15,5), 'red')
-            plt.show()
-
-        if gcal:
-            pass
-    
-    """
 
 
-
-# user_args = sys.argv
-# validate_args(user_args)
-# data = open_files(user_args)[1]
-# print(build_report(user_args, data))
-
-# https://matplotlib.org/api/backend_pdf_api.html#matplotlib.backends.backend_pdf.PdfPages
-# https://sukhbinder.wordpress.com/2015/09/09/pdf-with-matplotlib/
 
 def main():
     parser = argparse.ArgumentParser(
         description='Analyzes social media events to track time spent on activities.')
     parser.add_argument('-T',
                         '--twitter',
-                        help=('The directory for twitter data')
+                        help=('The directory for Twitter data')
                         )
     parser.add_argument('-L',
                         '--linkedin',
-                        help=('The directory for linkedin data')
+                        help=('The directory for LinkedIn data')
                         )
     parser.add_argument('-F',
                         '--facebook',
-                        help='the calendar file (.ics)'
-                        #type=argparse.FileType('r', encoding='iso-8859-1'),
+                        help=('The directory for Facebook data')
+                        #type=argparse.FileType('r', encoding='iso-8859-1')
                        )
     parser.add_argument('-C',
                         '--calendar',
-                        help=('the path containing calendar files')
+                        help=('The Google Calendar file (.ics)')
                         )
-
 
     args = parser.parse_args()
     print(args)
-    return build_report(args,'data')
+    return build_report(args, 'data')
                         # .twitter,
                         #      args.linkedin,
                         #      args.facebook,

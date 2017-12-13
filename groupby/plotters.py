@@ -39,12 +39,12 @@ def plot_tweetDate(x,y, xlabel, ylabel, title, fig_size, fig_color):
     return fig
 
 def plot_wc(x):
-        fig = plt.figure(figsize = (60,20))
-        plt.axis("off")
-        plt.title('Hashtags Word Cloud',fontsize=50,fontweight='bold' )
-        wordcloud = WordCloud(background_color = 'black',width = 4000,height = 2000).generate(' '.join(str(e) for e in x))
-        plt.imshow(wordcloud)
-        return fig
+    fig = plt.figure(figsize = (60,20))
+    plt.axis("off")
+    plt.title('Hashtags Word Cloud',fontsize=50,fontweight='bold' )
+    wordcloud = WordCloud(background_color = 'black',width = 4000,height = 2000).generate(' '.join(str(e) for e in x))
+    plt.imshow(wordcloud)
+    return fig
 
 def plot_sentiment(sentiments):
     plt.style.use('seaborn-white')
@@ -56,5 +56,5 @@ def plot_sentiment(sentiments):
     plt.yticks(fontsize=16,fontstyle='italic')
     plt.xticks(sentiments['year'],fontsize=16,fontstyle='italic')
     fig.set_size_inches(16,10)
-    return
+    return fig
 # GCAL+SOC
