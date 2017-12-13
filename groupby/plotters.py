@@ -27,34 +27,44 @@ def plot(x,y,z, xlabel, ylabel, title, fig_size, fig_color, flag):
 
 
 def plot_tweetDate(x,y, xlabel, ylabel, title, fig_size, fig_color):
-    plt.style.use('seaborn-white')
-    fig,ax= plt.subplots(nrows=1)
-    ax.plot(x['month'],x['tweet_id'], color = '#1DA1F2',marker='o',linewidth=2)
-    ax.set_title(title,fontsize=24,fontweight='bold')
-    ax.set_xlabel(xlabel,fontsize=18)
-    ax.set_ylabel(ylabel,fontsize=18)
-    plt.xticks(x['month'], y,fontsize=16,fontstyle='italic')
-    plt.yticks(fontsize=16,fontstyle='italic')
-    fig.set_size_inches(fig_size)
-    return fig
+    try:
+        plt.style.use('seaborn-white')
+        fig,ax= plt.subplots(nrows=1)
+        ax.plot(x['month'],x['tweet_id'], color = '#1DA1F2',marker='o',linewidth=2)
+        ax.set_title(title,fontsize=24,fontweight='bold')
+        ax.set_xlabel(xlabel,fontsize=18)
+        ax.set_ylabel(ylabel,fontsize=18)
+        plt.xticks(x['month'], y,fontsize=16,fontstyle='italic')
+        plt.yticks(fontsize=16,fontstyle='italic')
+        fig.set_size_inches(fig_size)
+        return fig
+    except:
+        return "Can't generate plot"
+
 
 def plot_wc(x):
-    fig = plt.figure(figsize = (60,20))
-    plt.axis("off")
-    plt.title('Hashtags Word Cloud',fontsize=50,fontweight='bold' )
-    wordcloud = WordCloud(background_color = 'black',width = 1000,height = 500).generate(' '.join(str(e) for e in x))
-    plt.imshow(wordcloud)
-    return fig
+    try:
+        fig = plt.figure(figsize = (60,20))
+        plt.axis("off")
+        plt.title('Hashtags Word Cloud',fontsize=50,fontweight='bold' )
+        wordcloud = WordCloud(background_color = 'black',width = 1000,height = 500).generate(' '.join(str(e) for e in x))
+        plt.imshow(wordcloud)
+        return fig
+    except:
+        return "Can't generate plot"
+
 
 def plot_sentiment(sentiments):
-    plt.style.use('seaborn-white')
-    fig,ax= plt.subplots(nrows=1)
-    ax.plot(sentiments['year'],sentiments['score'], color = '#1DA1F2',marker='o',linewidth=2)
-    ax.set_title('Sentiment by Year',fontsize=24,fontweight='bold')
-    ax.set_xlabel('Year',fontsize=18)
-    ax.set_ylabel('Average Sentiment',fontsize=18)
-    plt.yticks(fontsize=16,fontstyle='italic')
-    plt.xticks(sentiments['year'],fontsize=16,fontstyle='italic')
-    fig.set_size_inches(16,10)
-    return fig
-# GCAL+SOC
+    try:
+        plt.style.use('seaborn-white')
+        fig,ax= plt.subplots(nrows=1)
+        ax.plot(sentiments['year'],sentiments['score'], color = '#1DA1F2',marker='o',linewidth=2)
+        ax.set_title('Sentiment by Year',fontsize=24,fontweight='bold')
+        ax.set_xlabel('Year',fontsize=18)
+        ax.set_ylabel('Average Sentiment',fontsize=18)
+        plt.yticks(fontsize=16,fontstyle='italic')
+        plt.xticks(sentiments['year'],fontsize=16,fontstyle='italic')
+        fig.set_size_inches(16,10)
+        return fig
+    except:
+        return "Can't generate plot"
