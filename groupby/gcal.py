@@ -52,7 +52,6 @@ def _process_calendar(calendar_file):
         allday: if true, includes all day events in processing
         grouping_regex_strs: regular expressions for grouping patterns
     """
-    print("Calendar file name", calendar_file)
     calendar = ics.Calendar(open(calendar_file).read())
     cal_df = pd.DataFrame(columns=['day', 'month', 'year', 'hour', 'event_name', 'duration'])
     groups = defaultdict(lambda: 0)
