@@ -40,10 +40,12 @@ Calendar data can be analyzed ***in addition*** to one or more social media data
 
 | Option | Argument | Example Argument |
 | --- | --- | --- |
-| -T | Path to Twitter data directory | ~/Downloads/Twitter |
-| -F | Path to Facebook data directory | ../backups/Facebook12-20-2014 |
-| -L | Path to LinkedIn data directory | data |
-| -C | Path to Calendar data file | ~/Documents/mycal.ics |
+| -T, --twitter | Path to Twitter data directory | ~/Downloads/Twitter |
+| -F, --facebook | Path to Facebook data directory | ../backups/Facebook12-20-2014 |
+| -L, --linkedin | Path to LinkedIn data directory | data |
+| -C, --calendar | Path to Calendar data file | ~/Documents/mycal.ics |
+| -O, --output | Path to desired report output location | ~ |
+
 
 The simplest use case is to analyze a **single social media dataset:** 
 
