@@ -26,15 +26,18 @@
 
 #### main()
 
-- **Description:**
-- **Inputs:**
-- **Outputs:**
+- **Description:** Reads user arguments, validates them, and uses them to call build_report() 
+- **Inputs:** Arguments passed from command line via the Python argparse library
+- **Outputs:** Error messages, help messages, etc. in response to user input
 
 #### build_report()
 
-- **Description:**
-- **Inputs:**
-- **Outputs:**
+- **Description:** As indicated by user arguments, 
+  - ... cleans and processes datasets by calling functions in facebook.py, linkedin.py, gcal.py, twitter.py, and together.py;
+  - ... creates graphs by calling functions in plotters.py, gcal.py, facebook.py, linkedin.py, and together.py;
+  - ... combines graphs into a PDF report using the Python [FPDF library](https://pyfpdf.readthedocs.io/en/latest/)
+- **Inputs:** Arguments, as validated by main()
+- **Outputs:** PDF report to user (or error message)
 
 ### facebook.py
 
@@ -92,17 +95,17 @@
 - **Description:** The objective is to analyze calendar events, duration and frequency over a 1 year period.
 - **Inputs:** The ics file format contains the following attributes:
    - ***calendar.ics*** - This is the raw calendar format file which contains all the events in the user's calendar.
-        - BEGIN: Beginning of an event or alarm. Values are VEVENT/ALARM
-        - DTSTAMP:20170323T082322Z
-        - LOCATION:Location of Event.
-        - DESCRIPTION: Description of the event
-        - ORGANIZER: Event organizer
-        - SEQUENCE: Whether this is a repeated event. Values are 1/0
-        - SUMMARY: Event title/summary
-        - DTSTART: Timestamp for event start
-        - DTEND: Timestamp for event end
-        - CREATED: Event created on date
-        - RRULE: Rule defined if the event is recurring
+      - BEGIN: Beginning of an event or alarm. Values are VEVENT/ALARM
+      - DTSTAMP:20170323T082322Z
+      - LOCATION:Location of Event.
+      - DESCRIPTION: Description of the event
+      - ORGANIZER: Event organizer
+      - SEQUENCE: Whether this is a repeated event. Values are 1/0
+      - SUMMARY: Event title/summary
+      - DTSTART: Timestamp for event start
+      - DTEND: Timestamp for event end
+      - CREATED: Event created on date
+      - RRULE: Rule defined if the event is recurring
 - **Outputs:** Same as above, the idea is to transform the ics to a pandas DataFrame format for easier analysis.
 
 ### together.py
