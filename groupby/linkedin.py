@@ -8,6 +8,14 @@ import datetime
 def open_linkedin(fname):
     """
     Function to read linkedIn data and return a data DataFrame
+
+    Parameters:
+    -----------
+    fname: LinkedIn csv file
+
+    Returns:
+    --------
+    data : LinkedIn dataframe
     """
 
     try:
@@ -21,6 +29,16 @@ def open_linkedin(fname):
 def clean_df(df, date_column):
     """
     Function to use linked in data frame, aggregare it by week and return a data frame
+
+    Parameters:
+    -----------
+    df : LinkedIn DataFrame
+    date_column : Name of date_column
+
+    Returns:
+    --------
+    DataFrame
+    df_by_week: LinkedIn data aggregated by week
     """
 
     df['count'] = 1
@@ -40,6 +58,17 @@ def get_sent_receive_invites(df, direction_column):
     """
     Function to return subsets of linkedIn data frame 
     With rows corresponding to invites sent and a second data frame with rows corresponding to invites invites_received
+
+    Parameters:
+    -----------
+    df : LinkedIn DataFrame
+    direction_column : INGOING or OUTGOING
+
+    Returns:
+    --------
+    DataFrame
+    invites_sent: LinkedIn data subset to include only connections sent rows
+    invites_received: LinkedIn data subset to include only connections received rows
     """
 
     invites_sent = df[df[direction_column] == 'OUTGOING']
@@ -51,6 +80,15 @@ def import_recruiters_contacts(path):
 
     """
     Function to return the list of recruiters connected with, from the linkedIn dataset
+
+    Parameters:
+    -----------
+    path: Path to LinkedIn file
+
+    Returns:
+    --------
+    Dataframe
+    recruiters_df: Dataframe consisting of list of recruiters along with their positions
     """
 
     contacts_df = open_linkedin(path)
@@ -64,6 +102,22 @@ def plot(df, x,y, xlabel, ylabel, title, fig_size, fig_color):
 
     """
     Functions to plot linkedIn figures
+
+    Parameters
+    ----------
+    df : Facebook DataFrame
+    x  : Data to plot on x-axis
+    y  : Data to plot on y-axis
+    xlabel : Label for x-axis
+    ylabel : Label for y-axix
+    title : Plot title
+    fig_size : Size of output figure
+    fig_color : Color for the bar chart
+
+    Returns
+    -------
+    Figure object of line charts
+
     """
     
     fig,ax= plt.subplots(nrows=1)
