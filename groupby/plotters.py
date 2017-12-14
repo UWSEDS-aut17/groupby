@@ -6,7 +6,24 @@ def plot(x,y,z, xlabel, ylabel, title, fig_size, fig_color, flag):
     """
     Plotting function for twitter and linkedIn calender data.
     Returns fig objects , which is used for printing to pdf later
+
+    Parameters:
+    -----------
+    x : Social Media dataframe
+    y : y-axis list
+    z:  x-axis list
+    xlabel: Label of x-axis
+    ylabel : Label of y-axis
+    Title: Plot title
+    fig_size: Figure fig size
+    fig_color : Figure color
+    Flag : Social media type flag (-L / -T)
+
+    Returns:
+    --------
+    Figure object
     """
+
     plt.style.use('seaborn-white')
     try:
         fig,ax= plt.subplots(nrows=1)
@@ -33,6 +50,20 @@ def plot(x,y,z, xlabel, ylabel, title, fig_size, fig_color, flag):
 def plot_tweetDate(x,y, xlabel, ylabel, title, fig_size, fig_color):
     """
     Plots monthly twitter activity and returns a fig objects
+
+    Parameters:
+    -----------
+    x : Social Media dataframe
+    y : y-axis list
+    xlabel: Label of x-axis
+    ylabel : Label of y-axis
+    title: Plot title
+    fig_size: Figure fig size
+    fig_color : Figure color
+
+    Returns:
+    --------
+    Figure object
     """
 
     try:
@@ -54,6 +85,14 @@ def plot_wc(x):
     """
     Plots a WordCloud of hashtags.
     Returns fig objects
+
+    Parameters:
+    -----------
+    x: List of Hashtags
+
+    Returns:
+    --------
+    Figure object
     """
     try:
         fig = plt.figure(figsize = (60,20))
@@ -70,7 +109,16 @@ def plot_sentiment(sentiments):
     """
     Plots line chart for setiment analysis from twitter data
     Returns fig object
+
+    Parameters:
+    -----------
+    sentiments: Sentiments dataframe 
+
+    Returns:
+    --------
+    Figure object plotting sentiment data
     """
+    
     try:
         plt.style.use('seaborn-white')
         fig,ax= plt.subplots(nrows=1)
