@@ -20,6 +20,7 @@ def build_report(user_args):
     
     Parameters
     ----------
+    user_args : 
     
     """
 

@@ -4,7 +4,7 @@ As the internal structure of the archives may change over time, this file maps f
 Variables from this script are used by main.py.
 """
 
-import main
+import groupby.command_line as main
 
 
 linkedin_cons = main.args_linkedin + 'Connections.csv'
