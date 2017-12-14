@@ -11,7 +11,7 @@ class LinkedInTest(unittest.TestCase):
     def test_open_linkedin(self, MockOS):
         mock_os = MockOS()
         mock_os.open_linkedin.return_value = self.df
-        cal_df = mock_os.open_tweets("anypath")
+        cal_df = mock_os.open_linkedin("anypath")
         self.assertIsNotNone(cal_df)
 
     @mock.patch('groupby.linkedin')
@@ -20,8 +20,6 @@ class LinkedInTest(unittest.TestCase):
         mock_os.import_recruiters_contacts.return_value = self.df
         cal_df = mock_os.import_recruiters_contacts("anypath")
         self.assertIsNotNone(cal_df)
-
-
 
 
 if __name__ == '__main__':
