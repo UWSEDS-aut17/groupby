@@ -14,7 +14,19 @@ import calendar
 def make_month(df,date_column,flag):
     """
     Function to use a social media data frame and return a data frame of Year-Month and activity count
+
+    Parameters:
+    -----------
+    df : Social media dataframe
+    data_column : Date column name specif to social media dataset
+    flag: Flag to identify type of social media dataset
+
+    Returns:
+    --------
+    dataframe
+    Activity aggregated over Year-Month
     """
+
     df['date'] = pd.to_datetime(df[date_column]).dt.date
     df['year'] = pd.to_datetime(df[date_column]).dt.year
     df['month'] = pd.to_datetime(df[date_column]).dt.month
@@ -37,7 +49,18 @@ def make_month(df,date_column,flag):
 def plot_crossds(joined_df):
     """
     Plots a line chart for overall activity across all social media platform
+
+    Parameters:
+    -----------
+
+    joined_df : Overall social media dataset
+
+    Returns:
+    --------
+    fig
+    Plot of activity across social media platforms
     """
+    
     try:
         plt.style.use('seaborn-darkgrid')
         fig,ax= plt.subplots(nrows=1)
