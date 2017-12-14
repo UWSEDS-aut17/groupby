@@ -5,9 +5,9 @@
 
 ![](doc/project-vision.png)
 
-Browsing, interacting, and creating content on social media has become a way of life for many people. Although one's [personal Facebook data](https://www.facebook.com/help/131112897028467), [Twitter data](https://support.twitter.com/articles/20170160#), and other social media data can be downloaded, there appears to be a dearth of tools to facilitate analysis of that data--for example, [NameGenWeb](https://github.com/oxfordinternetinstitute/NameGenWeb) was created by the Oxford Internet Institute to assist Facebook users in exporting their networks, but the tool is no longer maintained or usable. 
+Browsing, interacting, and creating content on social media has become a way of life for many people. Although some or all of one's social media data can often be downloaded, there appears to be a dearth of tools to facilitate analysis of that data--for example, [NameGenWeb](https://github.com/oxfordinternetinstitute/NameGenWeb) was created by the Oxford Internet Institute to assist Facebook users in exporting their networks, but the tool is no longer maintained or usable. 
 
-Because we believe that social media users--not only marketers--deserve to understand their social media behavior, we are attempting a tool project that will enable users to gain very simple insights into their social media use. In addition to providing some summary of activities on each platform, we anticipate enabling users to explore several questions that depend on integration of data sources:
+Because we believe that social media users--not only marketers--deserve to understand their social media behavior, we are attempting a tool project that will enable users to gain very simple insights into their social media use. Currently, our tool is capable of ingesting datasets from **Facebook, LinkedIn, Twitter, and Google Calendar.** In addition to providing some summary of activities on each platform, we anticipate enabling users to explore several questions that depend on integration of data sources:
 
 - Do their levels of activity across different social media platforms rise and fall together, or do they cycle between one platform or another? 
 - What times of day do they tend to be most active on social media?
@@ -16,7 +16,9 @@ Because we believe that social media users--not only marketers--deserve to under
 
 ## Getting Started
 
-### Install this tool
+### Install
+
+Installation makes our code available as a [command line tool](https://github.com/UWSEDS-aut17/groupby#use-the-tool-command-line) as well as a Python module that can be imported and used within your own code:
 
 - Clone the github repo: [https://github.com/UWSEDS-aut17/groupby.git](https://github.com/UWSEDS-aut17/groupby.git)
 - From the command line, navigate to the repo and run these commands:
@@ -53,26 +55,22 @@ Calendar data can be analyzed ***in addition*** to one or more social media data
 | -C, --calendar | Path to Calendar data file | ~/Documents/mycal.ics |
 | -O, --output | Path to desired report output location | ~ |
 
-
 The simplest use case is to analyze a **single social media dataset:** 
 
 ```
-python main.py -T path/Twitter_directory
+groupby -T path/Twitter_directory -O ~/Desktop
 ```
 
 You can analyze **multiple social media datasets** simultaneously but separately: 
 
 ```
-python main.py -T path/Twitter_directory -F path/Facebook_directory
+groupby -T path/Twitter_directory -F path/Facebook_directory -O ~/Desktop
 ```
 
-Finally, you can analyze one or more **social media datasets in conjunction with calendar data:** 
+Finally, you can analyze **all social media datasets in conjunction with calendar data:** 
 
 ```
-python main.py -T path/Twitter_directory -F path/Facebook_directory -C path/Google_Calendar_directory
+groupby -T path/Twitter_directory -F path/Facebook_directory -C path/Google_Calendar_directory -L path/Twitter_directory -O ~/Desktop
 ```
-
-In all cases, the program will attempt to analyze the data and generate a PDF report.
-
 
 
