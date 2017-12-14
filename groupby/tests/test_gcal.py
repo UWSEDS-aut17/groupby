@@ -4,7 +4,7 @@ import unittest
 from groupby import gcal
 
 
-class RmTestCase(unittest.TestCase):
+class GCalTest(unittest.TestCase):
     df = pd.DataFrame([[1, 2, 2017, 5, "A", 60], [2, 3, 2017, 5, "C", 60], [4, 5, 2017, 5, "B", 60], [5, 7, 2017, 5, "D", 600]],
                       columns=['day', 'month', 'year', 'hour', 'event_name', 'duration'])
     date_df = pd.DataFrame([[1, 2, 2015], [12, 12, 2017]], columns=['day', 'month', 'year'])
