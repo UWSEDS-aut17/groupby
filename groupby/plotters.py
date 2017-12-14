@@ -3,6 +3,10 @@ from wordcloud import WordCloud
 
 
 def plot(x,y,z, xlabel, ylabel, title, fig_size, fig_color, flag):
+    """
+    Plotting function for twitter and linkedIn calender data.
+    Returns fig objects , which is used for printing to pdf later
+    """
     plt.style.use('seaborn-white')
     try:
         fig,ax= plt.subplots(nrows=1)
@@ -27,6 +31,10 @@ def plot(x,y,z, xlabel, ylabel, title, fig_size, fig_color, flag):
 
 
 def plot_tweetDate(x,y, xlabel, ylabel, title, fig_size, fig_color):
+    """
+    Plots monthly twitter activity and returns a fig objects
+    """
+
     try:
         plt.style.use('seaborn-white')
         fig,ax= plt.subplots(nrows=1)
@@ -43,6 +51,10 @@ def plot_tweetDate(x,y, xlabel, ylabel, title, fig_size, fig_color):
 
 
 def plot_wc(x):
+    """
+    Plots a WordCloud of hashtags.
+    Returns fig objects
+    """
     try:
         fig = plt.figure(figsize = (60,20))
         plt.axis("off")
@@ -55,6 +67,10 @@ def plot_wc(x):
 
 
 def plot_sentiment(sentiments):
+    """
+    Plots line chart for setiment analysis from twitter data
+    Returns fig object
+    """
     try:
         plt.style.use('seaborn-white')
         fig,ax= plt.subplots(nrows=1)

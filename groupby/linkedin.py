@@ -6,6 +6,10 @@ import datetime
 
 
 def open_linkedin(fname):
+    """
+    Function to read linkedIn data and return a data DataFrame
+    """
+
     try:
         data = pd.read_csv(fname, encoding = "ISO-8859-1")
         return data
@@ -15,6 +19,10 @@ def open_linkedin(fname):
 
 
 def clean_df(df, date_column):
+    """
+    Function to use linked in data frame, aggregare it by week and return a data frame
+    """
+
     df['count'] = 1
     df[date_column] = pd.to_datetime(df[date_column])
     df['date_minus_time'] = df[date_column].apply(
@@ -28,12 +36,23 @@ def clean_df(df, date_column):
 
 
 def get_sent_receive_invites(df, direction_column):
+
+    """
+    Function to return subsets of linkedIn data frame 
+    With rows corresponding to invites sent and a second data frame with rows corresponding to invites invites_received
+    """
+
     invites_sent = df[df[direction_column] == 'OUTGOING']
     invites_received = df[df[direction_column] == 'INCOMING']
     return invites_sent, invites_received
 
 
 def import_recruiters_contacts(path):
+
+    """
+    Function to return the list of recruiters connected with, from the linkedIn dataset
+    """
+
     contacts_df = open_linkedin(path)
     words = ['Recruiter', 'Talent', 'Sourcer', 'Recruiting']
     contacts_df['Position'] = contacts_df['Position'].dropna().apply(lambda x: 'Recruiter' if 
@@ -42,6 +61,11 @@ def import_recruiters_contacts(path):
     return recruiters_df
 
 def plot(df, x,y, xlabel, ylabel, title, fig_size, fig_color):
+
+    """
+    Functions to plot linkedIn figures
+    """
+    
     fig,ax= plt.subplots(nrows=1)
     ax.plot(df[x],df[y], color = fig_color)
     ax.set_title(title)
