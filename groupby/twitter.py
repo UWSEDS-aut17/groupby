@@ -10,6 +10,9 @@ import sys
 
 
 def open_tweets(fname):
+    """
+    This function reads the twitter.csv file and returns a dataframe
+    """
     try:
         tweets_df = pd.read_csv(fname)
         return tweets_df
@@ -20,6 +23,9 @@ def open_tweets(fname):
 
 
 def tweet_explore(tweets_df):
+    """
+    Creates subset of twitter data frame to return unique tweets and number of retweeted tweets
+    """
     unique_tweets = tweets_df.tweet_id.nunique()
     retweeted = tweets_df.retweeted_status_id.nunique()
     return unique_tweets, retweeted
@@ -27,6 +33,10 @@ def tweet_explore(tweets_df):
 
 
 def date_clean(tweets_df):
+    """
+    Performs data wrangling on twitter date columns to return count of tweets aggregated monthly.
+    It also returns month lables to be used in the plotting functions
+    """
     tweets_df['month'] = pd.to_datetime(tweets_df['timestamp']).dt.month
     tweets_per_month = tweets_df.groupby(['month'])['tweet_id'].count().reset_index()
     labels = ['Jan','Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep' , 'Oct', 'Nov', 'Dec']
@@ -35,6 +45,10 @@ def date_clean(tweets_df):
 
 
 def hashtag_clean(tweets_df):
+    """
+    Function to clean data and return a list of hashags from each tweets.
+    It also returns the number of occurance of each hashtag, and hashtag id to be used in the plotting functions.
+    """
     try:
         hashtags = tweets_df.text.str.findall(r'#.*?(?=\s|$)')
         _hashtags_list = []
@@ -62,6 +76,10 @@ def hashtag_clean(tweets_df):
 
 
 def mentions_clean(tweets_df):
+    """
+    Function to clean data and return a list of friend mentions from each tweets.
+    It also returns the number of occurance of each mention, and hashtag id to be used in the plotting functions.
+    """
     
     try:
         friends = tweets_df.text.str.findall(r'@.*?(?=\s|$)')
@@ -95,6 +113,9 @@ def mentions_clean(tweets_df):
 
 
 def sentiment_dict(fp):
+    """
+    Function to itemize word and scores in the sentiment text file
+    """
     try:
         scores_dict = {}
         sf = open(fp)
@@ -108,6 +129,9 @@ def sentiment_dict(fp):
 
 
 def tweet_score(tweets,scores_dict,tweets_df):
+    """
+    Function to calculate the average sentiment score for each year
+    """
     tweets_df['year'] = pd.to_datetime(tweets_df['timestamp']).dt.year
     tweets = []
 
