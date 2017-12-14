@@ -17,7 +17,7 @@ def open_linkedin(fname):
     """
 
     try:
-        data = pd.read_csv(fname, encoding = "ISO-8859-1")
+        data = pd.read_csv(fname, encoding="ISO-8859-1")
         return data
     except:
         print("\n\n Please provide a valid path to your LinkedIn directory")
@@ -26,7 +26,8 @@ def open_linkedin(fname):
 
 def clean_df(df, date_column):
     """
-    Function to use linked in data frame, aggregare it by week and return a data frame
+    Function to use linked in data frame, aggregare it by week and return a
+    data frame
 
     Parameters:
     -----------
@@ -47,15 +48,16 @@ def clean_df(df, date_column):
 
     week_counts = df['count'].resample('W').sum()
     week_counts = week_counts.fillna(0)
-    df_by_week = pd.DataFrame({date_column: week_counts.index, 'count': week_counts.values})
+    df_by_week = pd.DataFrame(
+        {date_column: week_counts.index, 'count': week_counts.values})
     return df_by_week
 
 
 def get_sent_receive_invites(df, direction_column):
-
     """
-    Function to return subsets of linkedIn data frame 
-    With rows corresponding to invites sent and a second data frame with rows corresponding to invites invites_received
+    Function to return subsets of linkedIn data frame
+    With rows corresponding to invites sent and a second data frame with
+    rows corresponding to invites invites_received
 
     Parameters:
     -----------
@@ -66,7 +68,8 @@ def get_sent_receive_invites(df, direction_column):
     --------
     DataFrame
     invites_sent: LinkedIn data subset to include only connections sent rows
-    invites_received: LinkedIn data subset to include only connections received rows
+    invites_received: LinkedIn data subset to include only connections
+    received rows
     """
 
     invites_sent = df[df[direction_column] == 'OUTGOING']
@@ -75,9 +78,9 @@ def get_sent_receive_invites(df, direction_column):
 
 
 def import_recruiters_contacts(path):
-
     """
-    Function to return the list of recruiters connected with, from the linkedIn dataset
+    Function to return the list of recruiters connected with, from the
+    linkedIn dataset
 
     Parameters:
     -----------
@@ -86,18 +89,20 @@ def import_recruiters_contacts(path):
     Returns:
     --------
     Dataframe
-    recruiters_df: Dataframe consisting of list of recruiters along with their positions
+    recruiters_df: Dataframe consisting of list of recruiters along with
+    their positions
     """
 
     contacts_df = open_linkedin(path)
     words = ['Recruiter', 'Talent', 'Sourcer', 'Recruiting']
-    contacts_df['Position'] = contacts_df['Position'].dropna().apply(lambda x: 'Recruiter' if 
-                                                   (any(word in x for word in words)) else x,1)
+    contacts_df['Position'] = contacts_df['Position'].dropna().apply(
+        lambda x: 'Recruiter' if
+        (any(word in x for word in words)) else x, 1)
     recruiters_df = contacts_df[contacts_df['Position'] == 'Recruiter']
     return recruiters_df
 
-def plot(df, x,y, xlabel, ylabel, title, fig_size, fig_color):
 
+def plot(df, x, y, xlabel, ylabel, title, fig_size, fig_color):
     """
     Functions to plot linkedIn figures
 
@@ -117,9 +122,9 @@ def plot(df, x,y, xlabel, ylabel, title, fig_size, fig_color):
     Figure object of line charts
 
     """
-    
-    fig,ax= plt.subplots(nrows=1)
-    ax.plot(df[x],df[y], color = fig_color)
+
+    fig, ax = plt.subplots(nrows=1)
+    ax.plot(df[x], df[y], color=fig_color)
     ax.set_title(title)
     ax.set_xlabel(xlabel)
     ax.set_ylabel(ylabel)

@@ -6,7 +6,6 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 
-
 def _group(s, groups):
     """Group a string using regex groups.
 
@@ -57,18 +56,19 @@ def _process_calendar(calendar_file):
     """
 
     calendar = ics.Calendar(open(calendar_file).read())
-    cal_df = pd.DataFrame(columns=['day', 'month', 'year', 'hour', 'event_name', 'duration'])
+    cal_df = pd.DataFrame(
+        columns=['day', 'month', 'year', 'hour', 'event_name', 'duration'])
     groups = defaultdict(lambda: 0)
     total_seconds = 0
     i = 0
     for event in calendar.events:
         start_date = arrow.get(event.begin)
         end_date = arrow.get(event.end)
-        cal_df.loc[i] = [start_date.datetime.day, start_date.datetime.month, start_date.datetime.year,
+        cal_df.loc[i] = [start_date.datetime.day, start_date.datetime.month,
+                         start_date.datetime.year,
                          start_date.datetime.hour,
                          event.name, event.duration.total_seconds()]
         i += 1
-
 
     return cal_df
 
@@ -128,7 +128,8 @@ def plot(x, y, z, xlabel, ylabel, title, fig_size, fig_color, flag):
         return "Can't generate plot"
 
 
-def plot_data(x, y, x_column, y_column, xlabel, ylabel, title, fig_size, fig_color):
+def plot_data(x, y, x_column, y_column, xlabel, ylabel, title, fig_size,
+              fig_color):
     """Plots gcal data
     Parameters
     ----------
@@ -155,6 +156,7 @@ def plot_data(x, y, x_column, y_column, xlabel, ylabel, title, fig_size, fig_col
     fig.set_size_inches(fig_size)
     return fig
 
+
 def get_plots(cal_df):
     """ Calls plotter function and returns plot objects
 
@@ -166,7 +168,7 @@ def get_plots(cal_df):
     Figure objects
     """
 
-    #calendar_file = 'data/shsher@uw.edu.ics'
+    # calendar_file = 'data/shsher@uw.edu.ics'
 
     cal_df['minutes'] = cal_df['duration'] / 60
     cal_df['hours'] = cal_df['duration'] / 3600
@@ -176,7 +178,8 @@ def get_plots(cal_df):
     cal_df = cal_df[(cal_df['hours'] < 24) & (cal_df['hours'] > 0)]
 
     cal_df['count'] = 1
-    cal_min = cal_df.groupby(['event_name'], as_index=False)['event_name', 'count', 'minutes'].sum()
+    cal_min = cal_df.groupby(['event_name'], as_index=False)[
+        'event_name', 'count', 'minutes'].sum()
     cal_min.sort_values('minutes', ascending=False)
     cal_month = cal_df.groupby('month', as_index=False)['count'].sum()
     cal_month_time = cal_df.groupby('month', as_index=False)['hours'].sum()
@@ -195,16 +198,21 @@ def get_plots(cal_df):
               "November",
               "December"]
 
-    fig1 = plot_data(cal_month_time, months, 'month', 'hours', 'Month', 'Hours Spent ',
-                   'Total Time Spent Per Month', (15, 5), '#db3236')
+    fig1 = plot_data(cal_month_time, months, 'month', 'hours', 'Month',
+                     'Hours Spent ',
+                     'Total Time Spent Per Month', (15, 5), '#db3236')
 
-    fig2 = plot_data(cal_month, months, 'month', 'count', 'Month', 'Number of Events ',
-                   'Total Events Per Month', (15, 5), '#db3236')
+    fig2 = plot_data(cal_month, months, 'month', 'count', 'Month',
+                     'Number of Events ',
+                     'Total Events Per Month', (15, 5), '#db3236')
 
-    fig3 = plot_data(cal_year_time, [2016, 2017, 2018], 'year', 'count', 'Year',
-                   'Number of Events', 'Number of Events', (10, 5), '#db3236')
+    fig3 = plot_data(cal_year_time, [2016, 2017, 2018], 'year', 'count',
+                     'Year',
+                     'Number of Events', 'Number of Events', (10, 5),
+                     '#db3236')
 
-    return [fig1,fig2,fig3]
+    return [fig1, fig2, fig3]
+
 
 def get_cal_dates(cal_df):
     """ Function to return calender dates dataframe to be used for overall plot
@@ -218,11 +226,8 @@ def get_cal_dates(cal_df):
     DataFrame
     Datas when user had a calender event
     """
-    
-    cal_dates = pd.DataFrame(columns=['Date','count'])
-    cal_dates['Date']  = pd.to_datetime(cal_df[['day','month','year']])
-    cal_dates['count']=1
+
+    cal_dates = pd.DataFrame(columns=['Date', 'count'])
+    cal_dates['Date'] = pd.to_datetime(cal_df[['day', 'month', 'year']])
+    cal_dates['count'] = 1
     return cal_dates
-
-
-
