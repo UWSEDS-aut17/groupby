@@ -1,14 +1,6 @@
-"""python main.py -T data
-
-"""
-
 
 import argparse
-from datetime import datetime
 from fpdf import FPDF
-import matplotlib.pyplot as plt
-from matplotlib.backends.backend_pdf import PdfPages
-import os
 import pandas as pd
 import subprocess
 import sys
@@ -20,170 +12,14 @@ import groupby.plotters as plotters
 import groupby.together as together
 import groupby.twitter as twitter
 
-cwd = os.getcwd()
-
 pd.options.mode.chained_assignment = None
 
 
-def validate_args(user_args):
-    r"""Check user-provided arguments for validity.
-        
-    Parameters
-    ----------
-    user_args : list of strings
-        arguments passed from command line to script via sys.argv
-        
-    Returns
-    -------
-    msg : str or None
-        error message
-        
-    """
-
-    if len(user_args) < 3:
-        print("\n\n Please indicate at least one social media dataset, " 
-            "for example: \n\t python groupby.py -T path/Twitter_directory/")
-        return "Failed to provide minimum argument"    
-
-    options = user_args[1::2]
-    soc_med = False
-    
-    for opt in options:
-        if opt not in ['-T', '-F', '-L', '-C']:
-            print("\n\n Please indicate valid options: \n\t -T, -F, -L, or -C")
-            return "Wrong option provided (not -T, -F, -L or -C)"
-        if opt in ['-T', '-F', '-L']:
-            soc_med = True
-  
-    if soc_med == False:
-        print("\n\n Please indicate at least one social media dataset, "
-            "for example: \n\t python groupby.py -T path/Twitter_directory/")
-        return "Failed to provide social media data" 
-    
-    if (len(user_args)-1) % 2 != 0:
-        print("\n\n For every option (-T, -F, -L, -C), indicate a "
-            "corresponding path or filename, as appropriate. For example: "
-            "\n\t python groupby.py -T path/here/")
-        return "Incomplete option:argument pair"
-    
-    return
-
-
-
-def open_files(user_args):
-    r"""Open files and save data.
-    
-    Parses the list of arguments provided by the user, calling other modules
-    to open the files.
-    
-    Parameters
-    ----------
-    user_args : list of strings
-        arguments passed from command line to script via sys.argv    
-    
-    Returns
-    -------
-    data : list of lists
-    
-        data[0] : confirmation/error message for testing
-    
-        data[1] : list containing the data
-        
-            data[1][0] : pandas dataframe of tweets, error message, or None
-            
-            data[1][1] : list of pandas dataframes, error message, or None
-                data[1][1][0] : pandas dataframe of LinkedIn connections
-                data[1][1][1] : pandas dataframe of LinkedIn invitations
-            
-            data[1][2] : list of pandas dataframes, error message, or None
-                data[1][2][0] : pandas dataframe of Facebook friends
-                data[1][2][1] : pandas dataframe of Facebook timeline
-            
-            data[1][3] : icalendar.Calendar, error message, or None
-            
-        data[3] : list of Booleans
-            data[3][0] : True if Twitter data opened successfully
-            data[3][1] : True if LinkedIn data opened successfully
-            data[3][2] : True if Facebook data opened successfully
-            data[3][3] : True if Google Calendar data opened successfully
-    
-    """
-    
-    status = [False, False, False, False]
-    tw = None
-    li = None
-    fb = None
-    gcal = None
-    
-    try:
-    
-        for i, val in enumerate(user_args):
-            
-            if val == '-T':
-                tw_path = user_args[i+1]
-                tw_file = 'tweets.csv'
-                tw_fname = cwd + '/' + tw_path + '/' + tw_file
-                tw = twitter.open_tweets(tw_fname)
-                #if tw != "Can't read Twitter data":
-                    #status[0] = True
-
-            if val == '-L':
-                li_path = user_args[i+1]
-                li_con_file = 'Connections.csv'
-                li_con_fname = cwd + '/' + li_path + '/' + li_con_file
-                con_df = linkedin.open_linkedin(li_con_fname)            
-                li_invites_file = 'Invitations.csv'
-                li_invites_fname = cwd + '/' + li_path + '/' + li_invites_file
-                invites_df = linkedin.open_linkedin(li_invites_fname)
-                li = [con_df, invites_df]
-                #if li[0] != "Can't read LinkedIn data":
-                    #status[1] = True
-
-            if val == '-F':
-                fb_path = user_args[i+1]
-                fb_friends_file = 'html/friends.htm'
-                fb_friends_fname = fb_path + '/' + fb_friends_file
-                friends_df = facebook.open_friends(fb_friends_fname)
-                print(len(friends_df))
-                print(type(friends_df))
-                fb_timeline_file = 'html/timeline.htm'
-                fb_timeline_fname = fb_path + '/' + fb_timeline_file
-                timeline_df = facebook.open_timeline(fb_timeline_fname)
-                fb = [friends_df, timeline_df]
-                #if fb[0] != "Can't read Facebook data":
-                    #status[2] = True
-                
-            if val == '-C':
-                gcal_file = user_args[i+1]
-                gcal = gcal.open_gcal(gcal_file)
-                #if gcal != "Can't read Google Calendar data":
-                    #status[3] = True
-                
-        return ["File(s) loaded successfully", [tw, li, fb, gcal], status]
-    
-    except:
-        return "Unable to load file(s)"
-
-
-
-def build_report(user_args, data):    
+def build_report(user_args):    
     r"""Build PDF report with data visualizations and tables.
     
     Parameters
     ----------
-    data : list of lists
-    
-        data[0] : pandas dataframe of tweets, error message, or None
-        
-        data[1] : list of pandas dataframes, error message, or None
-            data[1][0] : pandas dataframe of LinkedIn connections
-            data[1][1] : pandas dataframe of LinkedIn invitations
-            
-        data[2] : list of pandas dataframes, error message, or None
-            data[2][0] : pandas dataframe of Facebook friends
-            data[2][1] : pandas dataframe of Facebook timeline
-            
-        data[3] : icalendar.Calendar, error message, or None
     
     """
 
@@ -240,12 +76,9 @@ def build_report(user_args, data):
             tw_path = user_args.twitter
             tw_file = "tweets.csv"
             tw_fname = tw_path + '/' + tw_file
-            try:
-                tw = twitter.open_tweets(tw_fname)
-                tweets_df = tw
-            except:
-                print("Couldn't load Twitter file")
-
+            tw = twitter.open_tweets(tw_fname)
+            tweets_df = tw
+                
             unique_tweets, retweeted = twitter.tweet_explore(tweets_df)
             tweets = "Total number of unique tweets: {}".format(unique_tweets)
             retweets = "Total retweeted tweets: {}".format(retweeted)
@@ -278,8 +111,8 @@ def build_report(user_args, data):
             pdf.image('tweet_wordcloud.png', w=18, x=-3.5, y=1)
             subprocess.call(['rm', 'tweet_wordcloud.png'])
             
-            scores_dict = twitter.sentiment_dict('data/AFINN-111.txt')
-            sentiments = twitter.tweet_score(tweets,scores_dict,tweets_df)
+            scores_dict = twitter.sentiment_dict('./groupby/data/AFINN-111.txt')
+            sentiments = twitter.tweet_score(tweets, scores_dict, tweets_df)
             sent_plot = plotters.plot_sentiment(sentiments)
             sent_plot.savefig('sent_plot.png')
             pdf.add_page('P')
@@ -416,6 +249,4 @@ def main():
                         )
 
     args = parser.parse_args()
-    return build_report(args, 'data')
-
-#main()
+    return build_report(args)

@@ -95,14 +95,16 @@ def mentions_clean(tweets_df):
 
 
 def sentiment_dict(fp):
-    scores_dict = {}
-    sf = open(fp)
-    for line in sf:
-        word,score = line.split("\t")
-        scores_dict[word] = int(score)
-    sf.close()
-    return scores_dict
-
+    try:
+        scores_dict = {}
+        sf = open(fp)
+        for line in sf:
+            word,score = line.split("\t")
+            scores_dict[word] = int(score)
+        sf.close()
+        return scores_dict
+    except:
+        print("Can't write sentiment dict")
 
 
 def tweet_score(tweets,scores_dict,tweets_df):
