@@ -19,11 +19,14 @@ import calendar
 def _group(s, groups):
     """Group a string using regex groups.
 
-    Args:
-        s: the string to group
-        groups: a list of tuples of (regex pattern, replacement string)
+    Parameters:
+    -----------
+    s: the string to group
+    groups: a list of tuples of (regex pattern, replacement string)
+
     Returns:
-        the group for the string
+    --------
+    s: the group for the string
     """
     for pattern, replacement in groups:
         if pattern.match(s):
@@ -34,10 +37,13 @@ def _group(s, groups):
 def _total_hours(seconds):
     """Converts seconds to hours.
 
-    Args:
-        seconds: the total seconds
+    Parameters:
+    -----------
+    seconds: the total seconds
+
     Returns:
-        the total hours as a float
+    --------
+    the total hours as a float
     """
     return seconds / 3600.0
 
@@ -45,13 +51,20 @@ def _total_hours(seconds):
 def _process_calendar(calendar_file):
     """Processes a calendar, grouping events by name.
 
-    Args:
-        calendar_file: the ics calendar file
-        start_date: the starting date, or None
-        end_date: the end date, or None
-        allday: if true, includes all day events in processing
-        grouping_regex_strs: regular expressions for grouping patterns
+    Parameters:
+    -----------
+    calendar_file: the ics calendar file
+    start_date: the starting date, or None
+    end_date: the end date, or None
+    allday: if true, includes all day events in processing
+    grouping_regex_strs: regular expressions for grouping patterns
+
+    Returns:
+    --------
+    DataFrame
+    cal_df : Calender DataFrame grouped by event
     """
+
     calendar = ics.Calendar(open(calendar_file).read())
     cal_df = pd.DataFrame(columns=['day', 'month', 'year', 'hour', 'event_name', 'duration'])
     groups = defaultdict(lambda: 0)
@@ -72,11 +85,16 @@ def _process_calendar(calendar_file):
 def _valid_date(s):
     """Validates and converts a date as arrow-compatible.
 
-    Args:
-        s: the string argument
+    Parameters:
+    -----------
+    s: the string argument
+
     Returns:
+    --------
         an arrow date
+
     Raises:
+    -------
         ArgumentTypeError: if the date is invalid
     """
     try:
@@ -87,6 +105,22 @@ def _valid_date(s):
 
 
 def plot(x, y, z, xlabel, ylabel, title, fig_size, fig_color, flag):
+    """Plots gcal data
+    Parameters
+    ----------
+    x : Gcal DataFrame
+    x  : Data to plot on x-axis
+    y  : Data to plot on y-axis
+    xlabel : Label for x-axis
+    ylabel : Label for y-axix
+    fig_size : Size of output figure
+    fig_color : Color for the bar chart
+    flag: Gcal flag
+
+    Returns
+    -------
+    Figure object of bar plots
+    """
     try:
         fig, ax = plt.subplots(nrows=1)
         ax.bar(z[0:5], y[0:5], color=fig_color)
@@ -104,6 +138,23 @@ def plot(x, y, z, xlabel, ylabel, title, fig_size, fig_color, flag):
 
 
 def plot_data(x, y, x_column, y_column, xlabel, ylabel, title, fig_size, fig_color):
+    """Plots gcal data
+    Parameters
+    ----------
+    x : Gcal DataFrame
+    x  : Data to plot on x-axis
+    y  : Data to plot on y-axis
+    xlabel : Label for x-axis
+    ylabel : Label for y-axix
+    title: Figure title
+    fig_size : Size of output figure
+    fig_color : Color for the bar chart
+
+    Returns
+    -------
+    Figure object of bar plots
+    """
+
     fig, ax = plt.subplots(nrows=1)
     ax.bar(x[x_column], x[y_column], color=fig_color)
     ax.set_title(title)
@@ -114,6 +165,16 @@ def plot_data(x, y, x_column, y_column, xlabel, ylabel, title, fig_size, fig_col
     return fig
 
 def get_plots(cal_df):
+    """ Calls plotter function and returns plot objects
+
+    Parameters:
+    -----------
+    cal_df: Calender DataFrame
+
+    Returns:
+    Figure objects
+    """
+
     #calendar_file = 'data/shsher@uw.edu.ics'
 
     cal_df['minutes'] = cal_df['duration'] / 60
@@ -155,6 +216,18 @@ def get_plots(cal_df):
     return [fig1,fig2,fig3]
 
 def get_cal_dates(cal_df):
+    """ Function to return calender dates dataframe to be used for overall plot
+
+    Parameters:
+    -----------
+    cal_df : Calender dataframe
+
+    Returns:
+    --------
+    DataFrame
+    Datas when user had a calender event
+    """
+    
     cal_dates = pd.DataFrame(columns=['Date','count'])
     cal_dates['Date']  = pd.to_datetime(cal_df[['day','month','year']])
     cal_dates['count']=1
