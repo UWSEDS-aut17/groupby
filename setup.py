@@ -47,6 +47,8 @@ opts = dict(name='groupby',
                               #'subprocess',
                               'wordcloud'
                               ],
+            package_data={'groupby':['data/*']},
+            include_package_data=True,
             test_suite='nose.collector',
             tests_require=['nose'],
             scripts=['bin/groupby']

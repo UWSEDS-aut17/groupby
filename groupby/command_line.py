@@ -113,6 +113,7 @@ def build_report(user_args):
             subprocess.call(['rm', 'tweet_wordcloud.png'])
             
             scores_dict = twitter.sentiment_dict('./groupby/data/AFINN-111.txt')
+            scores_dict = twitter.sentiment_dict('./groupby/data/AFINN-111.txt')
             sentiments = twitter.tweet_score(tweets, scores_dict, tweets_df)
             sent_plot = plotters.plot_sentiment(sentiments)
             sent_plot.savefig('sent_plot.png')

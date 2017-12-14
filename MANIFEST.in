@@ -1,0 +1,4 @@
+include README.md
+include doc/*.md
+include groupby/data/tweets.csv
+include groupby/data/shsher@uw.edu.ics
