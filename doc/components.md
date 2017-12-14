@@ -22,16 +22,29 @@
 
 ## Component specifications
 
+### command_line.py
+
+#### main()
+
+- **Description:**
+- **Inputs:**
+- **Outputs:**
+
+#### build_report()
+
+- **Description:**
+- **Inputs:**
+- **Outputs:**
+
 ### facebook.py
 
 #### open_facebook()
 
-- **Description:** Facebook gives us multiple html files, that are parsed into Python using beautifulsoup. From here we aim to give the user a snapshot of their Facebook usage.
+- **Description:** Facebook gives us multiple html files, that are parsed into Python using beautifulsoup.
 - **Inputs:**
   - ***Friends.html*** - contains data about your list of friends, when you became friends with them, and the people you decided to terminate your friendship with. These are hidden in the 'div class = contents', and will be unwrapped into a pandas dataframe for information to display the social activeness since the inception of the user account.
   - ***Timeline.html*** - contains data about the activity on the user's timeline / profile. Here the necessary information will be extracted from 'div class = 'meta' and 'div class = comment', fed into a pandas dataframe to show the activity of the user over time, and whether there are any specific months which see higher usage.
-  - ***Ads.html*** - information about the ads displayed to the user. Aim to analyze or display the list of ads that have been displayed to the user, and which organizations/ pages have contact information about the user.
--**Outputs:** - The outputs are the necessary dataframes needed for future / next functions, stripped of the html content.
+- **Outputs:** - The outputs are the necessary dataframes needed for future / next functions, stripped of the html content.
 
 ### linkedin.py
 
@@ -91,3 +104,11 @@
         - CREATED: Event created on date
         - RRULE: Rule defined if the event is recurring
 - **Outputs:** Same as above, the idea is to transform the ics to a pandas DataFrame format for easier analysis.
+
+### together.py
+
+#### make_month()
+
+- **Description:**
+- **Inputs:**
+- **Outputs:**
