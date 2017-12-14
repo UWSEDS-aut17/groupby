@@ -12,7 +12,17 @@ from matplotlib.backends.backend_pdf import PdfPages
 def read_facebook_timeline_data(filename):
     """
     This function reads in the appropriate html file for timeline information
+
+    Parameters
+    ----------
+    filename: Facebook file
+
+    Returns
+    -------
+    Beautiful soup html parsed object
+
     """
+
     with open(filename) as f:
         soup = BeautifulSoup(f, "lxml")
     return soup
@@ -22,7 +32,21 @@ def clean_timeline(filename):
     Calls the read_facebook_timeline_data function, and then strips
     data of all html tags. Once done this creates the information for
     usage across days of the week, month of the year and year.
+
+    Parameters
+    ----------
+    filename: Facebook file
+
+    Returns
+    -------
+    Pandas series
+    days : Days of facebook activity
+    month : Month of facebook activity
+    year : Year of facebook activity
+    data : Complete date of facebooks activity
+
     """
+
     soup = read_facebook_timeline_data(filename)
     timeline_info = soup.find_all("div", class_ = 'meta')
 
@@ -74,6 +98,26 @@ def clean_timeline(filename):
     return days, month, year, date
 
 def plot(df, x,y, xlabel, ylabel, title, fig_size, fig_color):
+
+    """
+    Plotter function to plot facebook data
+
+    Parameters
+    ----------
+    df : Facebook DataFrame
+    x  : Data to plot on x-axis
+    y  : Data to plot on y-axis
+    xlabel : Label for x-axis
+    ylabel : Label for y-axix
+    title : Plot title
+    fig_size : Size of output figure
+    fig_color : Color for the bar chart
+
+    Returns
+    -------
+    Figure object of bar plots
+    """
+
     fig,ax= plt.subplots(nrows=1)
     ax.bar(df.index,df[y], color = '#3b5998')
     ax.set_title(title)
@@ -86,6 +130,14 @@ def plot(df, x,y, xlabel, ylabel, title, fig_size, fig_color):
 def read_facebook_friends_data(filename):
     """
     This function reads in the appropriate html file for friends information
+
+    Parameters
+    ----------
+    filename: Facebook html file
+
+    Returns
+    -------
+    soup : Parse beautiful soup object
     """
     with open(filename) as f:
         soup = BeautifulSoup(f, "lxml")
@@ -96,6 +148,15 @@ def clean_friends(filename):
     Calls the read_facebook_friends_data function, and then strips
     data of all html tags. Once done this creates the information for
     friends made across the years.
+
+    Parameters
+    ----------
+    filename: Facebook html file
+
+    Returns
+    -------
+    dataframe
+    year : Aggregate data for friends made across the year
     """
     soup = read_facebook_friends_data(filename)
     friends_info = soup.find_all('div', class_ = 'contents')
