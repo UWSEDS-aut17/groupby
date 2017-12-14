@@ -112,8 +112,10 @@ def build_report(user_args):
             pdf.image('tweet_wordcloud.png', w=18, x=-3.5, y=1)
             subprocess.call(['rm', 'tweet_wordcloud.png'])
             
-            scores_dict = twitter.sentiment_dict('./groupby/data/AFINN-111.txt')
-            scores_dict = twitter.sentiment_dict('./groupby/data/AFINN-111.txt')
+            try:
+                scores_dict = twitter.sentiment_dict('./groupby/data/AFINN-111.txt')
+            except:
+                scores_dict = twitter.sentiment_dict('data/AFINN-111.txt')
             sentiments = twitter.tweet_score(tweets, scores_dict, tweets_df)
             sent_plot = plotters.plot_sentiment(sentiments)
             sent_plot.savefig('sent_plot.png')
