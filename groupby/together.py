@@ -1,14 +1,7 @@
 
 import pandas as pd
-import numpy as np
-import seaborn as sns
 import matplotlib.pyplot as plt
-import datetime
-from collections import Counter
-import re
 import matplotlib.dates as mdates
-from bs4 import BeautifulSoup
-import calendar
 
 
 def make_month(df,date_column,flag):

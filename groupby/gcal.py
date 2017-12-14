@@ -1,18 +1,9 @@
 import argparse
 import arrow
-import codecs
-import datetime
 import ics
-import itertools
-import pyparsing as pp
-import re
-import os
 from collections import defaultdict
-import io
 import pandas as pd
-import matplotlib
 import matplotlib.pyplot as plt
-import calendar
 
 
 

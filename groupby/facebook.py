@@ -6,8 +6,6 @@ import matplotlib.pyplot as plt
 from bs4 import BeautifulSoup
 import calendar
 import numpy as np
-import seaborn as sns
-from matplotlib.backends.backend_pdf import PdfPages
 
 def read_facebook_timeline_data(filename):
     """
