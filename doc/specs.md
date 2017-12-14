@@ -4,7 +4,7 @@
 
 ## Problem statement
 
-Enable social media users to gain insights about their social media use
+Enable social media users to gain insights about their social media use.
 
 <br>
 
@@ -41,8 +41,6 @@ Our user ...
 
 ### Summarize Facebook data
 
-_**Prerequisite:** User has downloaded their Facebook data and our script to the same directory, and has opened a Bash terminal there_
-
 - **User:** Launches program, providing filename argument
 - **Program:**
     - (if invalid arguments) Returns argument options
@@ -53,15 +51,25 @@ _**Prerequisite:** User has downloaded their Facebook data and our script to the
 
 ### Summarize LinkedIn data
 
-...
+- **User:** Launches program, providing filename argument
+- **Program:**
+    - (if invalid arguments) Returns argument options
+    - (if invalid file) Returns input requirements
+    - (if valid file argument)
+        - Parses CSV to extract items of interest
+        - Outputs summary to file
 
 ### Summarize Twitter data
 
-...
-
+- **User:** Launches program, providing filename argument
+- **Program:**
+    - (if invalid arguments) Returns argument options
+    - (if invalid file) Returns input requirements
+    - (if valid file argument)
+        - Parses CSV to extract items of interest
+        - Outputs summary to file
+        
 ### Summarize Google Calendar data
-
-_**Prerequisite:** User has downloaded their Google Calendar data and our script to the same directory, and has opened a Bash terminal there_
 
 - **User:** Launches program, providing filename argument
 - **Program:**
@@ -73,23 +81,13 @@ _**Prerequisite:** User has downloaded their Google Calendar data and our script
             - Corrects for overlap between all-day events and scheduled events
         - Outputs summary to file
         
-### Identify peak hours for social media activity in aggregate
-
-...
-
 ### Compare temporal trends across different social media platforms
-
-_**Prerequisite:** User has downloaded their Facebook and Twitter along with our script to the same directory, and has opened a Bash terminal there_
 
 - **User:** Launches program, providing filename arguments
 - **Program:**
     - (if invalid arguments) Returns argument options
     - (if invalid files) Returns input requirements
     - (if valid file arguments)
-        - Parses JSON and HTML files to extract datetimes for events of interest
-        - Aggregates activity by time of day
+        - Parses all datasets
+        - Aggregates activity/
         - Outputs data visualization
-
-### Compare social media activity with other activities
-
-...

@@ -4,31 +4,33 @@
 
 ## Component list
 
-So that users can analyze their social media data as detailed in our use cases, we need the following components for each of our four datasets (Twitter, Facebook, LinkedIn, Google Calendar):
 
-- **read_X_data()** - read each dataset into native data structures
-- **summarize_X_data()** - calculate meaningful summary statistics and visualizations for X dataset
-- **aggregate_X_data()** - aggregate selected activities for each dataset (# per day or # per week)
-- **peak_hours()** and **time_use()** - compare and analyze the aggregated versions of our datasets
-- **choose_report()** - handles command line-based interactions with user (displaying options, help messages, error messages, calling other functions to produce the desired report)
+| Name | Purpose | Input | Output | 
+| --- | --- | --- | --- |
+| command_line.py | Supports command line tool | Arguments from command line | PDF report to user |
+| facebook.py | Opens, cleans, and aggregates Facebook data | Arguments from command line | pandas dataframes |
+| gcal.py | Opens, cleans, and aggregates Google Calendar data | Arguments from command line | pandas dataframes, matplotlib figures |
+| linkedin.py | Opens, cleans, and aggregates LinkedIn data | Arguments from command line | pandas dataframes |
+| twitter.py | Opens, cleans, and aggregates Twitter data | Arguments from command line | pandas dataframes |
+| plotters.py | Creates data visualizations | pandas dataframes | matplotlib figures |
+| together.py | Combines dataframes and visualizes all together | pandas dataframes | matplotlib figure |
+
+![](components.png)
+
 
 <br>
 
 ## Component specifications
 
+
 ### read_Facebook_data()
 
-- **Description:** Facebook gives us multiple html files, that are parsed into python using beautifulsoup. From here we aim to give the user a snapshot of their facebook usage.
-
+- **Description:** Facebook gives us multiple html files, that are parsed into Python using beautifulsoup. From here we aim to give the user a snapshot of their Facebook usage.
 - **Inputs:**
   -***Friends.html*** - contains data about your list of friends, when you became friends with them, and the people you decided to terminate your friendship with. These are hidden in the 'div class = contents', and will be unwrapped into a pandas dataframe for information to display the social activeness since the inception of the user account.
-
   -***Timeline.html*** - contains data about the activity on the user's timeline / profile. Here the necessary information will be extracted from 'div class = 'meta' and 'div class = comment', fed into a pandas dataframe to show the activity of the user over time, and whether there are any specific months which see higher usage.
-
   -***Ads.html*** - information about the ads displayed to the user. Aim to analyze or display the list of ads that have been displayed to the user, and which organizations/ pages have contact information about the user.
-
 -**Outputs:** - The outputs are the necessary dataframes needed for future / next functions, stripped of the html content. Summarize_facebook_data will perform further analysis.
-
 
 ### read_LinkedIn_data()
 
@@ -62,8 +64,7 @@ So that users can analyze their social media data as detailed in our use cases, 
     - retweeted_status_user_id - Numeric ID of user who retweets
     - retweeted_status_timestamp - Time of retweet
     - expanded_urls - Contains any URLs posted with the tweet
-
-    We will be loading the the above csv file, on to a pandas dataframe for subsequent analysis.
+  - We will be loading the the above csv file, on to a pandas dataframe for subsequent analysis.
 - **Outputs:** The ouput is a dataframes obtained by reading the input csv files, with the same features/columns.
 
 ### read_GCal_data()
@@ -82,30 +83,4 @@ So that users can analyze their social media data as detailed in our use cases, 
         - DTEND: Timestamp for event end
         - CREATED: Event created on date
         - RRULE: Rule defined if the event is recurring
-
 - **Outputs:** Same as above, the idea is to transform the ics to a pandas DataFrame format for easier analysis.
-
-```
-# psuedocode here
-```
-
-### summarize_X_data()
-
-...
-
-### aggregate_X_data()
-
-...
-
-### peak_hours()
-
-- ... in aggregate
-- ... broken down by platform
-
-### time_use()
-
-...
-
-### choose_report()
-
-...
