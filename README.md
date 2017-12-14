@@ -35,14 +35,11 @@ Installation makes our code available as a [command line tool](https://github.co
 
 ### Obtain your data
 
-To use this tool, you must download and unzip ***at least one*** of these datasets from a personal social media account (note that there can be a delay of a day or so, depending on the platform):
+To use this tool, you must download and unzip at least one of these datasets from your personal accounts (note that there can be a delay of a day or so, depending on the platform):
 
 - Facebook - [Official instructions](https://www.facebook.com/help/131112897028467)
 - Twitter - [Official instructions](https://support.twitter.com/articles/20170160#)
 - LinkedIn - [Official instructions](https://www.linkedin.com/help/linkedin/answer/50191/accessing-your-account-data?lang=en)
-
-Calendar data can be analyzed ***in addition*** to one or more social media datasets:
-
 - Google Calendar - [Official instructions](https://support.google.com/calendar/answer/37111?hl=en)
 
 ### Use the tool (command line)
